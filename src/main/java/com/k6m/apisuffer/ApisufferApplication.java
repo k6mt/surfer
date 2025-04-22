@@ -1,4 +1,4 @@
-package src.main.java.com.k6m.apisuffer;
+package com.k6m.apisuffer;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
