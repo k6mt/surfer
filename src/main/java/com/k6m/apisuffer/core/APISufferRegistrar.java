@@ -1,6 +1,5 @@
 package com.k6m.apisuffer.core;
 
-import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
@@ -13,17 +12,10 @@ public class APISufferRegistrar implements ImportBeanDefinitionRegistrar {
     public void registerBeanDefinitions(AnnotationMetadata metadata, BeanDefinitionRegistry registry) {
         String basePackage = ClassUtils.getPackageName(metadata.getClassName());
 
-        BeanDefinitionBuilder processorBuilder = BeanDefinitionBuilder
-                .genericBeanDefinition(ApiScannerProcessor.class);
-        registry.registerBeanDefinition("apiScannerProcessor", processorBuilder.getBeanDefinition());
+        BeanDefinitionBuilder beanDefinitionBuilder = BeanDefinitionBuilder.genericBeanDefinition(APISufferAspect.class);
+        beanDefinitionBuilder.addPropertyValue("basePackage", basePackage);
 
-        /**
-         * Aspect Registrar (Constructor injection + basePackage attribute)
-         */
-        BeanDefinitionBuilder aspectBuilder = BeanDefinitionBuilder
-                .genericBeanDefinition(APISufferAspect.class);
-        aspectBuilder.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_CONSTRUCTOR);
-        aspectBuilder.addPropertyValue("basePackage", basePackage);
-        registry.registerBeanDefinition("apiSufferAspect", aspectBuilder.getBeanDefinition());
+        registry.registerBeanDefinition("apiSufferAspect",
+                beanDefinitionBuilder.getBeanDefinition());
     }
 }
