@@ -1,5 +1,7 @@
 package com.k6m.surfer;
 
+import com.k6m.surfer.loadtest.controller.LoadTestController;
+import com.k6m.surfer.loadtest.core.LoadGenerator;
 import org.springframework.aop.Advisor;
 import org.springframework.aop.aspectj.AspectJExpressionPointcut;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
@@ -10,6 +12,16 @@ import org.springframework.context.annotation.Bean;
 
 @AutoConfiguration
 public class SurferAutoConfiguration {
+
+  @Bean
+  LoadGenerator loadGenerator() {
+    return new LoadGenerator();
+  }
+
+  @Bean
+  LoadTestController loadTestController() {
+    return new LoadTestController(loadGenerator());
+  }
 
   @Bean
   public Advisor traceAdvisor() {
