@@ -1,0 +1,22 @@
+{
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ],
+  "compilerOptions": {
+    "baseUrl": ".", //tsconfig.json이 존재하는 루트 디렉토리를 기준
+    "paths": {
+      "@_types/*": ["src/@types/*"],
+      "@_apis/*": ["src/api/*"],
+      "@_assets/*": ["src/assets/*"],
+      "@_components/*": ["src/components/*"],
+      "@_hooks/*": ["src/hooks/*"],
+      "@_pages/*": ["src/pages/*"],
+      "@_styles/*": ["src/styles/*"],
+      "@_utils/*": ["src/utils/*"],
+      "@_icons/*": ["public/assets/icons/*"],
+      "@_images/*": ["public/assets/images/*"]
+    }
+  }
+}
