@@ -1,6 +1,5 @@
 package com.k6m.surfer;
 
-import com.k6m.surfer.loadtest.config.LoadTestConfig;
 import com.k6m.surfer.loadtest.controller.LoadTestController;
 import com.k6m.surfer.loadtest.core.LoadGenerator;
 import org.springframework.aop.Advisor;

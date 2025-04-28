@@ -34,13 +34,6 @@ public class LoadTestController {
                                             @RequestParam("requestPerSecond") int requestPerSecond,
                                             @RequestParam("durationSeconds") int durationSeconds) {
         MetricsCollector.reset();
-        System.out.println("Load test started");
-        System.out.println("  url: " + url);
-        System.out.println("  method: " + method);
-        System.out.println("  body: " + body);
-        System.out.println("  threadCount: " + threadCount);
-        System.out.println("  requestPerSecond: " + requestPerSecond);
-        System.out.println("  durationSeconds: " + durationSeconds);
 
         loadGenerator.start(url, method, body, threadCount, requestPerSecond, durationSeconds);
         return ResponseEntity.ok("Load test started");
