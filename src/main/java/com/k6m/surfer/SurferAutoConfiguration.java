@@ -5,7 +5,9 @@ import com.k6m.surfer.loadtest.core.LoadGenerator;
 import org.springframework.aop.Advisor;
 import org.springframework.aop.aspectj.AspectJExpressionPointcut;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 
 @AutoConfiguration
@@ -33,6 +35,14 @@ public class SurferAutoConfiguration {
     pointcut.setExpression(expression);
 
     return new DefaultPointcutAdvisor(pointcut, new SurferMethodInterceptor(basePackage));
+  }
+
+  @Bean
+  public ApplicationRunner surferApiScannerRunner(){
+    return args -> {
+      String basePackage = detectMainPackage();
+      new SurferApiScanner(basePackage).apiScan();
+    };
   }
 
 
