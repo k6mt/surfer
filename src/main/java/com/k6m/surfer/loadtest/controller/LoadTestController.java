@@ -27,13 +27,21 @@ public class LoadTestController {
     }
 
     @PostMapping("/start")
-    public ResponseEntity<String> startLoad(@RequestParam String url,
-                                            @RequestParam String method,
-                                            @RequestParam(required = false) String body,
-                                            @RequestParam int threadCount,
-                                            @RequestParam int requestPerSecond,
-                                            @RequestParam int durationSeconds) {
+    public ResponseEntity<String> startLoad(@RequestParam("url") String url,
+                                            @RequestParam("method") String method,
+                                            @RequestParam(value = "body", required = false) String body,
+                                            @RequestParam("threadCount") int threadCount,
+                                            @RequestParam("requestPerSecond") int requestPerSecond,
+                                            @RequestParam("durationSeconds") int durationSeconds) {
         MetricsCollector.reset();
+        System.out.println("Load test started");
+        System.out.println("  url: " + url);
+        System.out.println("  method: " + method);
+        System.out.println("  body: " + body);
+        System.out.println("  threadCount: " + threadCount);
+        System.out.println("  requestPerSecond: " + requestPerSecond);
+        System.out.println("  durationSeconds: " + durationSeconds);
+
         loadGenerator.start(url, method, body, threadCount, requestPerSecond, durationSeconds);
         return ResponseEntity.ok("Load test started");
     }
