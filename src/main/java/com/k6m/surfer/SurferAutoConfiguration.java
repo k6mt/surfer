@@ -2,6 +2,8 @@ package com.k6m.surfer;
 
 import com.k6m.surfer.loadtest.controller.LoadTestController;
 import com.k6m.surfer.loadtest.core.LoadGenerator;
+import com.opencsv.bean.StatefulBeanToCsv;
+import java.io.Writer;
 import org.springframework.aop.Advisor;
 import org.springframework.aop.aspectj.AspectJExpressionPointcut;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
@@ -17,10 +19,19 @@ public class SurferAutoConfiguration {
   LoadGenerator loadGenerator() {
     return new LoadGenerator();
   }
+  @Bean
+  public CsvConverter csvConverter() {
+    return new CsvConverter();
+  }
 
   @Bean
-  LoadTestController loadTestController() {
-    return new LoadTestController(loadGenerator());
+  public Config config() {
+    return new Config();
+  }
+
+  @Bean
+  LoadTestController loadTestController(CsvConverter csvConverter, Config config) {
+    return new LoadTestController(loadGenerator(), csvConverter, config);
   }
 
   @Bean
@@ -44,7 +55,6 @@ public class SurferAutoConfiguration {
       new SurferApiScanner(basePackage).apiScan();
     };
   }
-
 
   private String detectMainPackage() {
     for (StackTraceElement element : Thread.currentThread().getStackTrace()) {
