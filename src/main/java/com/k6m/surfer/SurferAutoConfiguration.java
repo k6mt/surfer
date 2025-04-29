@@ -1,5 +1,8 @@
 package com.k6m.surfer;
 
+import com.k6m.surfer.apiscan.controller.ApiScanController;
+import com.k6m.surfer.apiscan.core.SurferApiAnalyzer;
+import com.k6m.surfer.apiscan.core.SurferApiScanner;
 import com.k6m.surfer.loadtest.controller.LoadTestController;
 import com.k6m.surfer.loadtest.core.LoadGenerator;
 import org.springframework.aop.Advisor;
@@ -7,7 +10,6 @@ import org.springframework.aop.aspectj.AspectJExpressionPointcut;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 
 @AutoConfiguration
@@ -24,6 +26,19 @@ public class SurferAutoConfiguration {
   }
 
   @Bean
+  SurferApiScanner surferApiScanner(){return new SurferApiScanner(detectMainPackage());}
+
+  @Bean
+  SurferApiAnalyzer surferApiAnalyzer(SurferApiScanner surferApiScanner){
+    return new SurferApiAnalyzer(surferApiScanner);
+  };
+
+  @Bean
+  ApiScanController apiScanController(SurferApiScanner surferApiScanner, SurferApiAnalyzer surferApiAnalyzer) {
+    return new ApiScanController(surferApiScanner, surferApiAnalyzer);
+  }
+
+  @Bean
   public Advisor traceAdvisor() {
     AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
     String basePackage = detectMainPackage();
@@ -36,15 +51,6 @@ public class SurferAutoConfiguration {
 
     return new DefaultPointcutAdvisor(pointcut, new SurferMethodInterceptor(basePackage));
   }
-
-  @Bean
-  public ApplicationRunner surferApiScannerRunner(){
-    return args -> {
-      String basePackage = detectMainPackage();
-      new SurferApiScanner(basePackage).apiScan();
-    };
-  }
-
 
   private String detectMainPackage() {
     for (StackTraceElement element : Thread.currentThread().getStackTrace()) {
