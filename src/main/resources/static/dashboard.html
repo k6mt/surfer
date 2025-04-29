@@ -44,6 +44,16 @@
 <form id="loadForm">
     <label>Target URL: <input type="text" name="url" value="http://localhost:8080/api/test" required></label><br><br>
 
+    <label>API 선택:
+        <select id="apiDropdown" name="apiDropdown">
+            <option value="">로딩 중...</option>
+        </select>
+    </label><br><br>
+
+    <button type="button" id="analyzeButton">Analyze API</button><br><br>
+
+    <div id="analyzeResult"></div>
+
     <label>HTTP Method:
         <select name="method">
             <option value="GET" selected>GET</option>
@@ -99,6 +109,9 @@
     const stopButton = document.getElementById('stopButton');
     const resetButton = document.getElementById('resetButton');
     const progressBar = document.getElementById('progressBar');
+
+    const analyzeResult = document.getElementById('analyzeResult');
+    const analyzeButton = document.getElementById('analyzeButton');
 
     const successCtx = document.getElementById('successChart').getContext('2d');
     const failureCtx = document.getElementById('failureChart').getContext('2d');
@@ -223,6 +236,43 @@
             alert('Load test completed!');
         }
     }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        try {
+            const response = await fetch('/scan/list');
+            const data = await response.json();
+
+            apiDropdown.innerHTML = '';
+            data.forEach(item => {
+                const option = document.createElement('option');
+                option.value = item.method + " " + item.url;
+                option.textContent = `[${item.method}] ${item.url}`;
+                apiDropdown.appendChild(option);
+            });
+        } catch (error) {
+            console.error('API 목록 불러오기 실패:', error);
+            apiDropdown.innerHTML = '<option value="">불러오기 실패</option>';
+        }
+    });
+
+    analyzeButton.addEventListener('click', async () => {
+        const selectedApi = apiDropdown.value;
+        if (!selectedApi) {
+            alert('API를 선택하세요!');
+            return;
+        }
+
+        const [methodType, url] = selectedApi.split(" ");
+        try {
+            const encodeUrl = encodeURIComponent(url);
+            const response = await fetch(`/scan?methodType=${methodType}&encodeUrl=${encodeUrl}`);
+            const data = await response.json();
+            analyzeResult.innerHTML = `<h3>분석 결과</h3><pre>${JSON.stringify(data, null, 2)}</pre>`;
+        } catch (error) {
+            console.error('분석 실패:', error);
+            analyzeResult.innerHTML = '<p>분석 실패</p>';
+        }
+    });
 </script>
 </body>
 </html>
