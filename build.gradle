@@ -35,8 +35,7 @@ dependencies {
 
 
 //build for frontend
-
-def frontendDir = "$projectDir/frontend/suffer"
+def frontendDir = "$projectDir/frontend/surfer"
 
 System.out.println("$frontendDir")
 
@@ -78,6 +77,6 @@ tasks.register("buildReact", Exec){
 tasks.register("copyBuildFiles", Copy) {
     dependsOn("buildReact")
     from("$frontendDir/dist")
-    into("$projectDir/src/main/resources/static")
+    into("$projectDir/src/main/resources/META-INF/resources/k6m-surfer")
 }
 

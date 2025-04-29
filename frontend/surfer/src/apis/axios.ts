@@ -32,12 +32,8 @@ API.interceptors.request.use(
 
 API.interceptors.response.use(
   (response: AxiosResponse) => {
-    console.log({
-      status: response.status,
-      statusText: response.statusText,
-      data: response.data,
-    });
-    return response.data;
+    console.log({ ...response });
+    return response;
   },
   async (error: AxiosError) => {
     console.warn(error.config?.url + " API response error", {
