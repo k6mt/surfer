@@ -61,7 +61,7 @@ public class LoadTestController {
       );
 
       csvConverter.writeCsv(
-          config.getHome().getLoadTestHistoryDirectory().toPath(),
+          filePath,
           List.of(requestLog)
       );
     } catch (Exception e) {
