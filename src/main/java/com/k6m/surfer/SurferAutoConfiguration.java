@@ -7,10 +7,11 @@ import org.springframework.aop.aspectj.AspectJExpressionPointcut;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
-import org.springframework.context.ApplicationContext;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 
 @AutoConfiguration
+@EnableConfigurationProperties(ConfigProperties.class)
 public class SurferAutoConfiguration {
 
   @Bean
@@ -38,7 +39,7 @@ public class SurferAutoConfiguration {
   }
 
   @Bean
-  public ApplicationRunner surferApiScannerRunner(){
+  public ApplicationRunner surferApiScannerRunner() {
     return args -> {
       String basePackage = detectMainPackage();
       new SurferApiScanner(basePackage).apiScan();
@@ -56,4 +57,6 @@ public class SurferAutoConfiguration {
     }
     return "";
   }
+
+
 }
