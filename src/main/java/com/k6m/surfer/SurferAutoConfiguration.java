@@ -15,6 +15,7 @@ import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.context.annotation.Bean;
 
 @AutoConfiguration
+@EnableConfigurationProperties(ConfigProperties.class)
 public class SurferAutoConfiguration {
 
   @Bean
@@ -73,4 +74,6 @@ public class SurferAutoConfiguration {
     }
     return "";
   }
+
+
 }
