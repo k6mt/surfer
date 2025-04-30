@@ -1,9 +1,9 @@
-import DashBoard from "./pages/DashBoard";
+import AppRouter from "@utils/AppRouter";
 
 function App() {
   return (
     <>
-      <DashBoard />
+      <AppRouter />
     </>
   );
 }

@@ -2,7 +2,7 @@ import React from "react";
 import { useLoadTest } from "@hooks/useLoadTest";
 import { API } from "@apis/axios";
 
-export default function DashBoardForm() {
+export default function LoadTestForm() {
   interface Field {
     name: string;
     value: string;
@@ -97,8 +97,6 @@ export default function DashBoardForm() {
       const response = await API.post("/load/start", null, {
         params: formData,
       });
-
-      console.log(response);
 
       if (response.status === 200) {
         console.log("Load test started successfully:", response.data);

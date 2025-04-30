@@ -37,8 +37,6 @@ dependencies {
 //build for frontend
 def frontendDir = "$projectDir/frontend/surfer"
 
-System.out.println("$frontendDir")
-
 sourceSets {
     main {
         resources {
