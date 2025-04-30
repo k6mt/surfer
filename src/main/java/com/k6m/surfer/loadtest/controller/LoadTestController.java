@@ -1,7 +1,7 @@
 package com.k6m.surfer.loadtest.controller;
 
-import com.k6m.surfer.Config;
-import com.k6m.surfer.CsvConverter;
+import com.k6m.surfer.config.HomeConfig;
+import com.k6m.surfer.util.CsvConverter;
 import com.k6m.surfer.logger.RequestLog;
 import com.k6m.surfer.loadtest.core.LoadGenerator;
 import com.k6m.surfer.loadtest.core.MetricsCollector;
@@ -24,10 +24,10 @@ public class LoadTestController {
 
   private final LoadGenerator loadGenerator;
   private final CsvConverter csvConverter;
-  private final Config config;
+  private final HomeConfig homeConfig;
 
-  public LoadTestController(LoadGenerator loadGenerator, CsvConverter csvConverter, Config config) {
-    this.config = config;
+  public LoadTestController(LoadGenerator loadGenerator, CsvConverter csvConverter, HomeConfig homeConfig) {
+    this.homeConfig = homeConfig;
     this.loadGenerator = loadGenerator;
     this.csvConverter = csvConverter;
   }
@@ -56,7 +56,7 @@ public class LoadTestController {
       );
 
       Path filePath = Paths.get(
-          config.getHome().getLoadTestHistoryDirectory().getAbsolutePath(),
+          homeConfig.getHome().getLoadTestHistoryDirectory().getAbsolutePath(),
           "load_test_log.csv"
       );
 

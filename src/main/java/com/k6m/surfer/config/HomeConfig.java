@@ -1,7 +1,8 @@
-package com.k6m.surfer;
+package com.k6m.surfer.config;
 
 
 import com.k6m.surfer.logger.CoreLogger;
+import com.k6m.surfer.model.Home;
 import jakarta.annotation.PostConstruct;
 import java.io.File;
 import org.apache.commons.io.FilenameUtils;
@@ -9,21 +10,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.apache.commons.lang3.StringUtils;
 
-public class Config {
+public class HomeConfig {
 
   private static final String SURFER_DEFAULT_FOLDER = ".surfer";
-  private static final Logger LOG = LoggerFactory.getLogger(Config.class);
+  private static final Logger LOG = LoggerFactory.getLogger(HomeConfig.class);
   private Home home;
 
   /**
    * Make it singleton
    */
-  Config() {
+  HomeConfig() {
 
   }
 
   /**
-   * Initialize the {@link Config} object
+   * Initialize the {@link HomeConfig} object
    */
   @PostConstruct
   public void init() {

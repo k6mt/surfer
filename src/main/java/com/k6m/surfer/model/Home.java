@@ -1,4 +1,4 @@
-package com.k6m.surfer;
+package com.k6m.surfer.model;
 
 import static com.k6m.surfer.util.Preconditions.checkNotNull;
 
@@ -7,6 +7,10 @@ import java.io.File;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Home class which enables the easy resource access in ${SURFER_HOME}
+ * directory.
+ */
 public class Home {
 
   private static final Logger LOGGER = (Logger) LoggerFactory.getLogger(Home.class);

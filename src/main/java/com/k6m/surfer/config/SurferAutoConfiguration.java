@@ -1,17 +1,17 @@
-package com.k6m.surfer;
+package com.k6m.surfer.config;
 
+import com.k6m.surfer.util.CsvConverter;
+import com.k6m.surfer.SurferMethodInterceptor;
 import com.k6m.surfer.apiscan.controller.ApiScanController;
 import com.k6m.surfer.apiscan.core.SurferApiAnalyzer;
 import com.k6m.surfer.apiscan.core.SurferApiScanner;
 import com.k6m.surfer.loadtest.controller.LoadTestController;
 import com.k6m.surfer.loadtest.core.LoadGenerator;
-import com.opencsv.bean.StatefulBeanToCsv;
-import java.io.Writer;
 import org.springframework.aop.Advisor;
 import org.springframework.aop.aspectj.AspectJExpressionPointcut;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
-import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 
 @AutoConfiguration
@@ -28,13 +28,13 @@ public class SurferAutoConfiguration {
   }
 
   @Bean
-  public Config config() {
-    return new Config();
+  public HomeConfig config() {
+    return new HomeConfig();
   }
 
   @Bean
-  LoadTestController loadTestController(CsvConverter csvConverter, Config config) {
-    return new LoadTestController(loadGenerator(), csvConverter, config);
+  LoadTestController loadTestController(CsvConverter csvConverter, HomeConfig homeConfig) {
+    return new LoadTestController(loadGenerator(), csvConverter, homeConfig);
   }
 
   @Bean
