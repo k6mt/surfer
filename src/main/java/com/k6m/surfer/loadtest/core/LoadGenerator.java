@@ -8,9 +8,6 @@ import java.util.concurrent.Executors;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.reactive.function.BodyInserters;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 @Service
 public class LoadGenerator {
 
@@ -22,7 +19,7 @@ public class LoadGenerator {
     private HttpMethod httpMethod;
     private String requestBody;
 
-    public void start(String url, String method, String body, int threadCount, int requestPerSecond, int durationSeconds) {
+  public void start(String url, String method, String body, int threadCount, int requestPerSecond, int durationSeconds) {
         running = true;
         this.targetUrl = url;
         this.httpMethod = HttpMethod.valueOf(method.toUpperCase());

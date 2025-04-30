@@ -1,0 +1,279 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Load Test Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .chart-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+        .chart-box {
+            width: 45%;
+            min-width: 300px;
+            height: 300px;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+        #progressBarContainer {
+            width: 100%;
+            background-color: #ddd;
+            height: 30px;
+            margin-top: 20px;
+        }
+        #progressBar {
+            height: 30px;
+            width: 0%;
+            background-color: #4CAF50;
+            text-align: center;
+            color: white;
+            line-height: 30px;
+        }
+    </style>
+</head>
+<body>
+<h1>Load Test Controller</h1>
+
+<form id="loadForm">
+    <label>Target URL: <input type="text" name="url" value="http://localhost:8080/api/test" required></label><br><br>
+
+    <label>API 선택:
+        <select id="apiDropdown" name="apiDropdown">
+            <option value="">로딩 중...</option>
+        </select>
+    </label><br><br>
+
+    <button type="button" id="analyzeButton">Analyze API</button><br><br>
+
+    <div id="analyzeResult"></div>
+
+    <label>HTTP Method:
+        <select name="method">
+            <option value="GET" selected>GET</option>
+            <option value="POST">POST</option>
+            <option value="PUT">PUT</option>
+            <option value="DELETE">DELETE</option>
+        </select>
+    </label><br><br>
+
+    <label>Request Body (JSON, POST/PUT만 적용):</label><br>
+    <textarea name="body" rows="4" cols="50" placeholder='{"key":"value"}'></textarea><br><br>
+
+    <label>Thread Count: <input type="number" name="threadCount" value="10" required></label><br><br>
+    <label>Requests Per Second (per thread): <input type="number" name="requestPerSecond" value="5" required></label><br><br>
+    <label>Duration (seconds): <input type="number" name="durationSeconds" value="60" required></label><br><br>
+
+    <button type="submit">Start Load Test</button>
+</form>
+
+<br>
+<button id="stopButton">Stop Load Test</button>
+<button id="resetButton">Reset Charts</button>
+
+<div id="progressBarContainer">
+    <div id="progressBar">0%</div>
+</div>
+
+<div class="chart-container">
+    <div class="chart-box">
+        <h3>Success Count</h3>
+        <canvas id="successChart"></canvas>
+    </div>
+    <div class="chart-box">
+        <h3>Failure Count</h3>
+        <canvas id="failureChart"></canvas>
+    </div>
+    <div class="chart-box">
+        <h3>Avg Response Time (ms)</h3>
+        <canvas id="responseTimeChart"></canvas>
+    </div>
+    <div class="chart-box">
+        <h3>Error Rate (%)</h3>
+        <canvas id="errorRateChart"></canvas>
+    </div>
+</div>
+
+<script>
+    let intervalId = null;
+    let testStartTime = null;
+    let testDurationMs = 0;
+
+    const form = document.getElementById('loadForm');
+    const stopButton = document.getElementById('stopButton');
+    const resetButton = document.getElementById('resetButton');
+    const progressBar = document.getElementById('progressBar');
+
+    const analyzeResult = document.getElementById('analyzeResult');
+    const analyzeButton = document.getElementById('analyzeButton');
+
+    const successCtx = document.getElementById('successChart').getContext('2d');
+    const failureCtx = document.getElementById('failureChart').getContext('2d');
+    const responseTimeCtx = document.getElementById('responseTimeChart').getContext('2d');
+    const errorRateCtx = document.getElementById('errorRateChart').getContext('2d');
+
+    const successChart = createLineChart(successCtx, 'Success Count');
+    const failureChart = createLineChart(failureCtx, 'Failure Count');
+    const responseTimeChart = createLineChart(responseTimeCtx, 'Avg Response Time (ms)');
+    const errorRateChart = createLineChart(errorRateCtx, 'Error Rate (%)');
+
+    function createLineChart(ctx, label) {
+        return new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: label,
+                    data: [],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                maintainAspectRatio: true,
+                responsive: true,
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+    }
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const formData = new FormData(form);
+        const params = new URLSearchParams();
+        for (const [key, value] of formData.entries()) {
+            params.append(key, value);
+        }
+
+        await fetch('/load/start?' + params.toString(), { method: 'POST' });
+        alert('Load test started!');
+
+        const durationSeconds = parseInt(formData.get('durationSeconds'));
+        testStartTime = Date.now();
+        testDurationMs = durationSeconds * 1000;
+
+        if (intervalId) {
+            clearInterval(intervalId);
+        }
+        intervalId = setInterval(fetchMetricsAndUpdateCharts, 1000);
+    });
+
+    stopButton.addEventListener('click', async () => {
+        await fetch('/load/stop', { method: 'POST' });
+        alert('Load test stopped!');
+
+        if (intervalId) {
+            clearInterval(intervalId);
+            intervalId = null;
+        }
+    });
+
+    resetButton.addEventListener('click', () => {
+        resetCharts();
+        alert('Charts have been reset!');
+    });
+
+    async function fetchMetricsAndUpdateCharts() {
+        const response = await fetch('/load/metrics');
+        const data = await response.json();
+        const now = new Date().toLocaleTimeString();
+
+        const totalRequests = data.successCount + data.failureCount;
+        const errorRate = totalRequests === 0 ? 0 : (data.failureCount / totalRequests) * 100;
+
+        successChart.data.labels.push(now);
+        successChart.data.datasets[0].data.push(data.successCount);
+        successChart.update();
+
+        failureChart.data.labels.push(now);
+        failureChart.data.datasets[0].data.push(data.failureCount);
+        failureChart.update();
+
+        responseTimeChart.data.labels.push(now);
+        responseTimeChart.data.datasets[0].data.push(data.averageResponseTimeMs);
+        responseTimeChart.update();
+
+        errorRateChart.data.labels.push(now);
+        errorRateChart.data.datasets[0].data.push(errorRate.toFixed(2));
+        errorRateChart.update();
+
+        updateProgressBar();
+    }
+
+    function resetCharts() {
+        [successChart, failureChart, responseTimeChart, errorRateChart].forEach(chart => {
+            chart.data.labels = [];
+            chart.data.datasets[0].data = [];
+            chart.update();
+        });
+        progressBar.style.width = '0%';
+        progressBar.innerText = '0%';
+    }
+
+    function updateProgressBar() {
+        if (!testStartTime || testDurationMs === 0) {
+            return;
+        }
+        const elapsed = Date.now() - testStartTime;
+        const percentage = Math.min((elapsed / testDurationMs) * 100, 100).toFixed(0);
+
+        progressBar.style.width = `${percentage}%`;
+        progressBar.innerText = `${percentage}%`;
+
+        if (percentage >= 100) {
+            if (intervalId) {
+                clearInterval(intervalId);
+                intervalId = null;
+            }
+            alert('Load test completed!');
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        try {
+            const response = await fetch('/scan/list');
+            const data = await response.json();
+
+            apiDropdown.innerHTML = '';
+            data.forEach(item => {
+                const option = document.createElement('option');
+                option.value = item.method + " " + item.url;
+                option.textContent = `[${item.method}] ${item.url}`;
+                apiDropdown.appendChild(option);
+            });
+        } catch (error) {
+            console.error('API 목록 불러오기 실패:', error);
+            apiDropdown.innerHTML = '<option value="">불러오기 실패</option>';
+        }
+    });
+
+    analyzeButton.addEventListener('click', async () => {
+        const selectedApi = apiDropdown.value;
+        if (!selectedApi) {
+            alert('API를 선택하세요!');
+            return;
+        }
+
+        const [methodType, url] = selectedApi.split(" ");
+        try {
+            const encodeUrl = encodeURIComponent(url);
+            const response = await fetch(`/scan?methodType=${methodType}&encodeUrl=${encodeUrl}`);
+            const data = await response.json();
+            analyzeResult.innerHTML = `<h3>분석 결과</h3><pre>${JSON.stringify(data, null, 2)}</pre>`;
+        } catch (error) {
+            console.error('분석 실패:', error);
+            analyzeResult.innerHTML = '<p>분석 실패</p>';
+        }
+    });
+</script>
+</body>
+</html>
