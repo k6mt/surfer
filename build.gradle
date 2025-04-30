@@ -40,3 +40,48 @@ dependencies {
     implementation 'com.opencsv:opencsv:5.9'
 }
 
+//build for frontend
+def frontendDir = "$projectDir/frontend/surfer"
+
+sourceSets {
+    main {
+        resources {
+            srcDirs = ["$projectDir/src/main/resources"]
+        }
+    }
+}
+
+processResources { dependsOn "copyBuildFiles" }
+
+tasks.register('installReact', Exec){
+    workingDir("$frontendDir")
+    inputs.dir("$frontendDir")
+    group = BasePlugin.BUILD_GROUP
+    if(System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')){
+        commandLine "npm.cmd", "audit", "fix"
+        commandLine 'npm.cmd', 'install'
+    } else {
+        commandLine "npm", "audit", "fix"
+        commandLine "npm", "install"
+    }
+}
+
+tasks.register("buildReact", Exec){
+    dependsOn("installReact")
+    workingDir("$frontendDir")
+    inputs.dir("$frontendDir")
+    group = BasePlugin.BUILD_GROUP
+    if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
+        commandLine "npm.cmd", "run-script", "build"
+    } else {
+        commandLine "npm", "run-script", "build"
+    }
+}
+
+tasks.register("copyBuildFiles", Copy) {
+    dependsOn("buildReact")
+    from("$frontendDir/dist")
+    into("$projectDir/src/main/resources/META-INF/resources/k6m-surfer")
+}
+
+
