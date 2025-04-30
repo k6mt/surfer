@@ -1,4 +1,4 @@
-package com.k6m.surfer.methodtrace.Controller;
+package com.k6m.surfer.methodtrace.controller;
 
 import com.k6m.surfer.methodtrace.Trace;
 import com.k6m.surfer.methodtrace.Tracer;
