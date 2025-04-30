@@ -59,7 +59,7 @@ public class SurferAutoConfiguration {
   }
 
   @Bean
-  public Advisor traceAdvisor() {
+  public Advisor traceAdvisor(Tracer tracer) {
     AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
     String basePackage = detectMainPackage();
 
@@ -69,7 +69,7 @@ public class SurferAutoConfiguration {
 
     pointcut.setExpression(expression);
 
-    return new DefaultPointcutAdvisor(pointcut, new SurferMethodInterceptor(basePackage, tracer()));
+    return new DefaultPointcutAdvisor(pointcut, new SurferMethodInterceptor(basePackage, tracer));
   }
 
   @Bean
