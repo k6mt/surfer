@@ -1,2 +1,2 @@
-com.k6m.surfer.SurferAutoConfiguration
+com.k6m.surfer.config.SurferAutoConfiguration
 com.k6m.surfer.SurferSpaAutoConfiguration
