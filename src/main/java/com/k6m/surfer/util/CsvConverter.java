@@ -1,4 +1,4 @@
-package com.k6m.surfer;
+package com.k6m.surfer.util;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 import com.opencsv.bean.StatefulBeanToCsv;

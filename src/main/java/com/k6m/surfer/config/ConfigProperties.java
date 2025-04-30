@@ -1,4 +1,4 @@
-package com.k6m.surfer;
+package com.k6m.surfer.config;
 
 import jakarta.annotation.PostConstruct;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -11,7 +11,7 @@ public class ConfigProperties {
   private boolean result = true;
 
   /*
-   * yml설정을 잘 가져오는지 확인
+   * Check if the YAML configuration is loaded correctly.
    */
   @PostConstruct
   public void logConfig() {
