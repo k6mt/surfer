@@ -5,6 +5,7 @@ import com.k6m.surfer.apiscan.core.SurferApiAnalyzer;
 import com.k6m.surfer.apiscan.core.SurferApiScanner;
 import com.k6m.surfer.loadtest.controller.LoadTestController;
 import com.k6m.surfer.loadtest.core.LoadGenerator;
+import com.k6m.surfer.methodtrace.Controller.TraceController;
 import com.k6m.surfer.methodtrace.SurferMethodInterceptor;
 import com.k6m.surfer.methodtrace.Tracer;
 import com.k6m.surfer.util.CsvConverter;
@@ -87,5 +88,9 @@ public class SurferAutoConfiguration {
     return "";
   }
 
+  @Bean
+  public TraceController traceController(Tracer tracer) {
+    return new TraceController(tracer);
+  }
 
 }
