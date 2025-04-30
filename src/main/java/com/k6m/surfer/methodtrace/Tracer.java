@@ -9,6 +9,10 @@ public class Tracer {
   private final Map<String, Trace> traceMap = new ConcurrentHashMap<>();
   private final ThreadLocal<Trace> traceHolder = new ThreadLocal<>();
 
+  public Map<String, Trace> getTraceMap() {
+    return traceMap;
+  }
+
   public void begin(String traceId, MethodInvocation invocation) {
     Trace trace = traceHolder.get();
 

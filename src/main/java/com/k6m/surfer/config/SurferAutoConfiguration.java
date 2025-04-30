@@ -7,6 +7,7 @@ import com.k6m.surfer.loadtest.controller.LoadTestController;
 import com.k6m.surfer.loadtest.core.LoadGenerator;
 import com.k6m.surfer.methodtrace.SurferMethodInterceptor;
 import com.k6m.surfer.methodtrace.Tracer;
+import com.k6m.surfer.methodtrace.controller.TraceController;
 import com.k6m.surfer.util.CsvConverter;
 import org.springframework.aop.Advisor;
 import org.springframework.aop.aspectj.AspectJExpressionPointcut;
@@ -58,7 +59,7 @@ public class SurferAutoConfiguration {
   }
 
   @Bean
-  public Advisor traceAdvisor() {
+  public Advisor traceAdvisor(Tracer tracer) {
     AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
     String basePackage = detectMainPackage();
 
@@ -68,7 +69,7 @@ public class SurferAutoConfiguration {
 
     pointcut.setExpression(expression);
 
-    return new DefaultPointcutAdvisor(pointcut, new SurferMethodInterceptor(basePackage, tracer()));
+    return new DefaultPointcutAdvisor(pointcut, new SurferMethodInterceptor(basePackage, tracer));
   }
 
   @Bean
@@ -87,5 +88,9 @@ public class SurferAutoConfiguration {
     return "";
   }
 
+  @Bean
+  public TraceController traceController(Tracer tracer) {
+    return new TraceController(tracer);
+  }
 
 }
