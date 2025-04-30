@@ -1,12 +1,13 @@
 package com.k6m.surfer.config;
 
-import com.k6m.surfer.util.CsvConverter;
-import com.k6m.surfer.SurferMethodInterceptor;
 import com.k6m.surfer.apiscan.controller.ApiScanController;
 import com.k6m.surfer.apiscan.core.SurferApiAnalyzer;
 import com.k6m.surfer.apiscan.core.SurferApiScanner;
 import com.k6m.surfer.loadtest.controller.LoadTestController;
 import com.k6m.surfer.loadtest.core.LoadGenerator;
+import com.k6m.surfer.methodtrace.SurferMethodInterceptor;
+import com.k6m.surfer.methodtrace.Tracer;
+import com.k6m.surfer.util.CsvConverter;
 import org.springframework.aop.Advisor;
 import org.springframework.aop.aspectj.AspectJExpressionPointcut;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
@@ -22,6 +23,7 @@ public class SurferAutoConfiguration {
   LoadGenerator loadGenerator() {
     return new LoadGenerator();
   }
+
   @Bean
   public CsvConverter csvConverter() {
     return new CsvConverter();
@@ -38,15 +40,20 @@ public class SurferAutoConfiguration {
   }
 
   @Bean
-  SurferApiScanner surferApiScanner(){return new SurferApiScanner(detectMainPackage());}
+  SurferApiScanner surferApiScanner() {
+    return new SurferApiScanner(detectMainPackage());
+  }
 
   @Bean
-  SurferApiAnalyzer surferApiAnalyzer(SurferApiScanner surferApiScanner){
+  SurferApiAnalyzer surferApiAnalyzer(SurferApiScanner surferApiScanner) {
     return new SurferApiAnalyzer(surferApiScanner);
-  };
+  }
+
+  ;
 
   @Bean
-  ApiScanController apiScanController(SurferApiScanner surferApiScanner, SurferApiAnalyzer surferApiAnalyzer) {
+  ApiScanController apiScanController(SurferApiScanner surferApiScanner,
+      SurferApiAnalyzer surferApiAnalyzer) {
     return new ApiScanController(surferApiScanner, surferApiAnalyzer);
   }
 
@@ -61,7 +68,12 @@ public class SurferAutoConfiguration {
 
     pointcut.setExpression(expression);
 
-    return new DefaultPointcutAdvisor(pointcut, new SurferMethodInterceptor(basePackage));
+    return new DefaultPointcutAdvisor(pointcut, new SurferMethodInterceptor(basePackage, tracer()));
+  }
+
+  @Bean
+  public Tracer tracer() {
+    return new Tracer();
   }
 
   private String detectMainPackage() {
