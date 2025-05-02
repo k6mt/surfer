@@ -15,12 +15,10 @@ public class HomeConfig {
   private static final String SURFER_DEFAULT_FOLDER = ".surfer";
   private static final Logger LOG = LoggerFactory.getLogger(HomeConfig.class);
   private Home home;
+  private final ConfigProperties configProperties;
 
-  /**
-   * Make it singleton
-   */
-  HomeConfig() {
-
+  public HomeConfig(ConfigProperties configProperties) {
+    this.configProperties = configProperties;
   }
 
   /**
@@ -38,18 +36,17 @@ public class HomeConfig {
     return new Home(homeDirectory);
   }
 
-  public static String getUserHome() {
+  public String getUserHome() {
+
+    String userHomeFromConfig = configProperties.getHomePath();
     String userHomeFromEnv = System.getenv("SURFER_HOME");
     String userHomeFromProperty = System.getProperty("surfer.home");
 
-    if (!StringUtils.equals(userHomeFromEnv, userHomeFromProperty)) {
-      CoreLogger.LOGGER.warn("The path to ngrinder-home is ambiguous:");
-      CoreLogger.LOGGER.warn("    System Environment:  SURFER_HOME={}", userHomeFromEnv);
-      CoreLogger.LOGGER.warn("    Java System Property:  surfer.home={}", userHomeFromProperty);
-      CoreLogger.LOGGER.warn("    '{}' is accepted.", userHomeFromProperty);
-    }
-
-    String userHome = StringUtils.defaultIfEmpty(userHomeFromProperty, userHomeFromEnv);
+    String userHome = StringUtils.firstNonBlank(
+        userHomeFromConfig,
+        userHomeFromProperty,
+        userHomeFromEnv
+    );
 
     if (StringUtils.isEmpty(userHome)) {
       userHome = System.getProperty("user.home") + File.separator + SURFER_DEFAULT_FOLDER;
@@ -58,6 +55,16 @@ public class HomeConfig {
     } else if (StringUtils.startsWith(userHome, "." + File.separator)) {
       userHome = System.getProperty("user.dir") + File.separator + userHome.substring(2);
     }
+
+
+    if (StringUtils.isNoneBlank(userHomeFromConfig, userHomeFromProperty, userHomeFromEnv)) {
+      CoreLogger.LOGGER.warn("Multiple home path sources detected:");
+      CoreLogger.LOGGER.warn("    Config Property: surfer.config.home-path={}", userHomeFromConfig);
+      CoreLogger.LOGGER.warn("    System Property: surfer.home={}", userHomeFromProperty);
+      CoreLogger.LOGGER.warn("    Environment: SURFER_HOME={}", userHomeFromEnv);
+      CoreLogger.LOGGER.warn("    Selected path: {}", userHome);
+    }
+
     return FilenameUtils.normalize(userHome);
   }
 
