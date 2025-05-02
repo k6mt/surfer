@@ -301,6 +301,6 @@ header {
   }
 
   .header__logo {
-    font-size: var(--fs-xxl);
+    font-size: var(--fs-xl);
   }
 }

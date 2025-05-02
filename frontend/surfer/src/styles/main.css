@@ -9,7 +9,7 @@ body,
   margin: 0;
   font-family: "Noto Sans KR", sans-serif;
   line-height: 1.5;
-  background: linear-gradient(to bottom, #a2ded0, #ffffff);
+  background: linear-gradient(180deg, #a2ded0, #ffffff);
   padding-bottom: 1rem;
 }
 

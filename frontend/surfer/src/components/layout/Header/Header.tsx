@@ -1,5 +1,5 @@
 import NavItem from "@components/layout/Header/NavItem";
-import k6MLogo from "@images/k6m-surfer_logo.png";
+import K6MLogo from "@images/k6m-surfer_logo.png";
 import type { Nav } from "@_types/shared";
 import Burger from "@components/layout/Header/Burger";
 import BurgerUI from "@components/layout/Header/BurgerUI";
@@ -22,7 +22,7 @@ const Header = () => {
         <div className="header__logo">
           <p className="header__logo_text">K6M Surfer</p>
           <div className="header__logo_img_container">
-            <img className="header__logo_img" src={k6MLogo} />
+            <img className="header__logo_img" src={K6MLogo} alt="Surfer Logo" />
           </div>
           <div></div>
         </div>
