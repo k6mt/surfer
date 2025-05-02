@@ -27,14 +27,22 @@ const Header = () => {
           <div></div>
         </div>
         <nav className="header__nav">
-          {NAV_ITMES.map((item) => (
-            <div className="header__nav_item" key={item.to}>
-              <NavItem key={item.to} to={item.to} label={item.label} />
-            </div>
-          ))}
+          <div className="header__nav_list">
+            {NAV_ITMES.map((item) => (
+              <div className="header__nav_item" key={item.to}>
+                <NavItem key={item.to} to={item.to} label={item.label} />
+              </div>
+            ))}
+          </div>
+
+          <div className="header__nav_burger">
+            <Burger
+              open={isOpen}
+              onToggle={() => setIsOpen((o: boolean) => !o)}
+            />
+            <BurgerUI open={isOpen} navitems={NAV_ITMES} />
+          </div>
         </nav>
-        <Burger open={isOpen} onToggle={() => setIsOpen((o: boolean) => !o)} />
-        <BurgerUI open={isOpen} navitems={NAV_ITMES} />
       </header>
     </div>
   );
