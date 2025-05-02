@@ -24,7 +24,7 @@
 
     "baseUrl": ".",
     "paths": {
-      "@types/*": ["src/@types/*"],
+      "@_types/*": ["src/@types/*"],
       "@apis/*": ["src/apis/*"],
       "@assets/*": ["src/assets/*"],
       "@components/*": ["src/components/*"],
@@ -32,8 +32,8 @@
       "@pages/*": ["src/pages/*"],
       "@styles/*": ["src/styles/*"],
       "@utils/*": ["src/utils/*"],
-      "@icons/*": ["public/assets/icons/*"],
-      "@images/*": ["public/assets/images/*"]
+      "@icons/*": ["src/assets/icons/*"],
+      "@images/*": ["src/assets/images/*"]
     }
   },
   "include": ["src", "index.ts"]

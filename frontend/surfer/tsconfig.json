@@ -10,7 +10,7 @@
     "module": "ESNext",
     "lib": ["ES6", "DOM"],
     "esModuleInterop": true,
-    "typeRoots": ["/node_modules/@types", "./src/@types"], // 컴파일 목록에 자동으로 포함시킬 패키지들의 기준 디렉토리
+    "typeRoots": ["/node_modules/@types", "src/@types"], // 컴파일 목록에 자동으로 포함시킬 패키지들의 기준 디렉토리
     // .d.ts 파일을 읽을 폴더를 node_modules/@types에서 node_modules/my-tslib로 변경
     "types": ["node", "jest", "express"], // typeRoots 디렉토리 내에 존재하는 패키지들 중 어떤 패키지들을 컴파일 목록에 포함시킬지
     // 만약 types가 지정되어 있지 않다면 typeRoots에 지정된 경로의 패키지들은 전부 컴파일 목록에 자동으로 포함
@@ -20,7 +20,7 @@
 
     "baseUrl": ".", //tsconfig.json이 존재하는 루트 디렉토리를 기준
     "paths": {
-      "@types/*": ["src/@types/*"],
+      "@_types/*": ["src/@types/*"],
       "@apis/*": ["src/apis/*"],
       "@assets/*": ["src/assets/*"],
       "@components/*": ["src/components/*"],
@@ -28,8 +28,8 @@
       "@pages/*": ["src/pages/*"],
       "@styles/*": ["src/styles/*"],
       "@utils/*": ["src/utils/*"],
-      "@icons/*": ["public/assets/icons/*"],
-      "@images/*": ["public/assets/images/*"]
+      "@icons/*": ["src/assets/icons/*"],
+      "@images/*": ["src/assets/images/*"]
     }
   }
 }

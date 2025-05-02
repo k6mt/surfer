@@ -1,4 +1,4 @@
-@import "reset.css";
+@import "normalize.css";
 @import "header.css";
 @import "variables.css";
 
@@ -8,6 +8,7 @@ body,
   height: 100%;
   margin: 0;
   font-family: "Noto Sans KR", sans-serif;
+  line-height: 1.5;
 }
 
 main {
@@ -18,28 +19,59 @@ main {
 
 .layout__container {
   max-width: var(--container-max-width);
-  margin: 0 auto;
   padding: var(--container-gutter);
   font-size: var(--fs-md);
   background-color: azure;
   display: flex;
 }
 
-@media (max-width: 768px) {
+/* Mobile Small*/
+@media (max-width: 479px) {
+  #root {
+    font-size: var(--fs-sm);
+  }
   .layout__container {
     width: 100%;
-    margin: 0 auto;
     font-size: var(--fs-sm);
     display: flex;
   }
 }
 
-/* Mobile */
-@media (max-width: 576px) {
+/* Mobile Medium*/
+@media all and (min-width: 480px) and (max-width: 767px) {
+  #root {
+    font-size: var(--fs-sm);
+  }
+
   .layout__container {
     width: 100%;
-    margin: 0 auto;
-    font-size: var(--fs-xs);
+    font-size: var(--fs-sm);
+    display: flex;
+  }
+}
+
+/* Mobile Large*/
+@media all and (min-width: 768px) and (max-width: 1023px) {
+  #root {
+    font-size: var(--fs-md);
+  }
+
+  .layout__container {
+    width: 100%;
+    font-size: var(--fs-md);
+    display: flex;
+  }
+}
+
+/* Laptop & Tablet*/
+@media all and (min-width: 1024px) and (max-width: 1279px) {
+  #root {
+    font-size: var(--fs-md);
+  }
+
+  .layout__container {
+    width: 100%;
+    font-size: var(--fs-md);
     display: flex;
   }
 }
