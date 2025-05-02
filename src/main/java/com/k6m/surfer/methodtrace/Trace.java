@@ -1,5 +1,6 @@
 package com.k6m.surfer.methodtrace;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -8,8 +9,6 @@ public class Trace {
 
   private String traceId;
   private int depth;
-  private List<Trace> nextTraces;
-  private Trace previousTrace;
   private String className;
   private String methodName;
   private Long startTimeMs;
@@ -17,8 +16,9 @@ public class Trace {
   private Long resultTimeMs;
   private Object[] parameters;
   private Object returnValue;
-  private Throwable exception;
-  private String message;
+  @JsonIgnore
+  private Trace previousTrace;
+  private List<Trace> nextTraces;
 
   public Trace(String traceId, String className, String methodName, Object[] parameters) {
     this.traceId = traceId;
@@ -89,14 +89,6 @@ public class Trace {
     return returnValue;
   }
 
-  public Throwable getException() {
-    return exception;
-  }
-
-  public String getMessage() {
-    return message;
-  }
-
   public Trace getPreviousTrace() {
     return previousTrace;
   }
@@ -118,7 +110,6 @@ public class Trace {
     return "Trace{" +
         "traceId='" + traceId + '\'' +
         ", depth=" + depth +
-        ", nextTraces=" + nextTraces +
         ", className='" + className + '\'' +
         ", methodName='" + methodName + '\'' +
         ", startTimeMs=" + startTimeMs +
@@ -126,8 +117,7 @@ public class Trace {
         ", resultTimeMs=" + resultTimeMs +
         ", parameters=" + Arrays.toString(parameters) +
         ", returnValue=" + returnValue +
-        ", exception=" + exception +
-        ", message='" + message + '\'' +
+        ", nextTraces=" + nextTraces +
         '}';
   }
 }

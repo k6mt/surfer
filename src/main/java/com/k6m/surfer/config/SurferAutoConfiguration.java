@@ -31,8 +31,8 @@ public class SurferAutoConfiguration {
   }
 
   @Bean
-  public HomeConfig config() {
-    return new HomeConfig();
+  public HomeConfig config(ConfigProperties configProperties) {
+    return new HomeConfig(configProperties);
   }
 
   @Bean
