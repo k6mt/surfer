@@ -1,4 +1,4 @@
-import LoadTestForm from "@components/LoadTestForm";
+import LoadTestForm from "@components/loadtest/LoadTestForm";
 
 function LoadTest() {
   return (

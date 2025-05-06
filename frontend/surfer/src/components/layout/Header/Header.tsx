@@ -20,7 +20,7 @@ const Header = () => {
     <div>
       <header className="header">
         <div className="header__logo">
-          <p className="header__logo_text">K6M Surfer</p>
+          <p className="header__logo_text">Surfer</p>
           <div className="header__logo_img_container">
             <img className="header__logo_img" src={K6MLogo} alt="Surfer Logo" />
           </div>
@@ -36,10 +36,7 @@ const Header = () => {
           </div>
 
           <div className="header__nav_burger">
-            <Burger
-              open={isOpen}
-              onToggle={() => setIsOpen((o: boolean) => !o)}
-            />
+            <Burger open={isOpen} onToggle={() => setIsOpen((o: boolean) => !o)} />
             <BurgerUI open={isOpen} navitems={NAV_ITMES} />
           </div>
         </nav>

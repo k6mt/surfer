@@ -27,7 +27,7 @@ header {
 }
 
 .header__logo_text {
-  font-size: var(--fs-lg);
+  font-size: var(--fs-xl);
   font-weight: bold;
   background-image: var(--color-gradient);
   background-clip: text;
