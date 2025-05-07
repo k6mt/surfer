@@ -89,8 +89,9 @@ public class SurferAutoConfiguration {
   }
 
   @Bean
-  public TraceController traceController(Tracer tracer) {
-    return new TraceController(tracer);
+  public TraceController traceController(Tracer tracer, HomeConfig homeConfig,
+      CsvConverter csvConverter) {
+    return new TraceController(tracer, homeConfig, csvConverter);
   }
 
 }
