@@ -5,6 +5,9 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 import org.springframework.http.HttpMethod;
 import org.springframework.web.reactive.function.BodyInserters;
 
@@ -12,7 +15,7 @@ import org.springframework.web.reactive.function.BodyInserters;
 public class LoadGenerator {
 
     private final WebClient webClient = WebClient.create();
-    private final ExecutorService executorService = Executors.newCachedThreadPool();
+    private ExecutorService executorService;
     private volatile boolean running = false;
 
     private String targetUrl;
@@ -21,6 +24,7 @@ public class LoadGenerator {
 
   public void start(String url, String method, String body, int threadCount, int requestPerSecond, int durationSeconds) {
         running = true;
+        executorService = Executors.newCachedThreadPool();
         this.targetUrl = url;
         this.httpMethod = HttpMethod.valueOf(method.toUpperCase());
         this.requestBody = body;
@@ -28,6 +32,13 @@ public class LoadGenerator {
         for (int i = 0; i < threadCount; i++) {
             executorService.submit(() -> sendRequests(requestPerSecond, durationSeconds));
         }
+
+      ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+      scheduler.schedule(() -> {
+          stop();
+          System.out.println("[LoadTest] duration expired. Auto-stopped.");
+          scheduler.shutdown();
+      }, durationSeconds, TimeUnit.SECONDS);
     }
 
     private void sendRequests(int requestPerSecond, int durationSeconds) {
@@ -65,6 +76,12 @@ public class LoadGenerator {
 
     public void stop() {
         running = false;
+        executorService.shutdown();
     }
+
+    public boolean isRunning() {
+        return running;
+    }
+
 }
 

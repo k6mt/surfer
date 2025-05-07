@@ -4,6 +4,7 @@ import MethodSelect from "@components/loadtest/MethodSelect";
 import { Field } from "@_types/shared";
 import BodyArea from "@components/loadtest/BodyArea";
 import CountArea from "@components/loadtest/CountArea";
+import { useLoadTestContext } from "@hooks/useLoadTestContext";
 
 export default function LoadTestForm() {
   // Validation functions for each form field
@@ -20,6 +21,8 @@ export default function LoadTestForm() {
 
   let IntervalID: NodeJS.Timeout | null = null; // Declare IntervalID as a number or null
 
+  const { setMetrics } = useLoadTestContext(); // Use context to set metrics
+
   //REACT HOOKS CAN`T USE IN CALLBACK!!
   const url: Field = {
     name: "url",
@@ -33,14 +36,16 @@ export default function LoadTestForm() {
     label: "HTTP Method",
     type: "select",
     options: ["GET", "POST", "PUT", "PATCH", "DELETE"],
-    state: useLoadTest("GET", (value) => ["GET", "POST", "PUT", "PATCH", "DELETE"].includes(value)),
+    state: useLoadTest("GET", (value) =>
+      ["GET", "POST", "PUT", "PATCH", "DELETE"].includes(value)
+    ),
   };
 
   const body: Field = {
     name: "body",
     label: "Request Body (JSON)",
     type: "textarea",
-    state: useLoadTest('{"key":"value"}', validateBody),
+    state: useLoadTest(`{"key":"value"}`, validateBody),
   };
 
   const threadCount: Field = {
@@ -64,7 +69,14 @@ export default function LoadTestForm() {
     state: useLoadTest("60", validateDurationSeconds),
   };
 
-  const fields: Field[] = [url, method, body, threadCount, requestPerSecond, durationSeconds];
+  const fields: Field[] = [
+    url,
+    method,
+    body,
+    threadCount,
+    requestPerSecond,
+    durationSeconds,
+  ];
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
@@ -107,15 +119,23 @@ export default function LoadTestForm() {
   async function fetchMetricsAndUpdateCharts() {
     try {
       const response = await API.get("/load/metrics");
-      console.log("Metrics data:", response.data);
+      const data = response.data;
+      console.log("Metrics data:", data);
       // Update charts with the fetched metrics data
+      setMetrics(data);
+
+      // Polling stop
+      if (data.isRunning === false && IntervalID) {
+        clearInterval(IntervalID); // Clear the interval when the load test is not running
+        IntervalID = null; // Reset IntervalID to null
+      }
     } catch (error) {
       console.error("Error fetching metrics:", error);
     }
   }
 
   return (
-    <div>
+    <>
       <form id="loadForm" onSubmit={handleSubmit}>
         <div className="url-container">
           <div className="url-method-row">
@@ -142,17 +162,25 @@ export default function LoadTestForm() {
             />
           </div>
           <button className="url-send-btn" type="submit">
-            <div className="url-send-btn-txt">Run</div>
+            <div className="url-send-btn-txt">Send</div>
           </button>
         </div>
 
-        {url.state.hasError && <div className="form-error">Invalid Target URL</div>}
+        {url.state.hasError && (
+          <div className="form-error">Invalid Target URL</div>
+        )}
 
-        <BodyArea field={body} />
-        <CountArea field={threadCount} />
-        <CountArea field={requestPerSecond} />
-        <CountArea field={durationSeconds} />
+        <div className="form-data-container">
+          <div className="form-data-count">
+            <CountArea field={threadCount} />
+            <CountArea field={requestPerSecond} />
+            <CountArea field={durationSeconds} />
+          </div>
+          <div className="form-data-body">
+            <BodyArea field={body} />
+          </div>
+        </div>
       </form>
-    </div>
+    </>
   );
 }

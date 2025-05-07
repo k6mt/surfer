@@ -1,9 +1,5 @@
 import { Field } from "@_types/shared";
 
-// interface BodyAreaProps {
-//   field: Field;
-// }
-
 const BodyArea = ({ field }: { field: Field }) => {
   return (
     <div className="textarea-container">

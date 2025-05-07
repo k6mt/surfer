@@ -1,11 +1,13 @@
+import LoadMetricsChart from "@components/loadtest/LoadMetricsChart";
 import LoadTestForm from "@components/loadtest/LoadTestForm";
+import { LoadTestProvider } from "@context/LoadTestContextProvider";
 
 function LoadTest() {
   return (
-    <div>
-      <h1>Load Test</h1>
+    <LoadTestProvider>
       <LoadTestForm />
-    </div>
+      <LoadMetricsChart />
+    </LoadTestProvider>
   );
 }
 

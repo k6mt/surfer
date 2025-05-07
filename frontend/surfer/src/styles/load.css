@@ -1,3 +1,7 @@
+#loadForm {
+  height: 90%;
+}
+
 .url-container {
   display: flex;
   margin-bottom: 0.5rem;
@@ -6,6 +10,7 @@
 
 .url-method-row {
   display: flex;
+  flex: 1;
   align-items: center;
   background-color: white;
   border: 1px solid var(--color-gradient);
@@ -17,10 +22,19 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: yellow;
+  background-color: var(--color-accent);
   border-radius: 8px;
   border: 1px solid transparent;
   width: calc(80vw * 0.1);
+}
+
+.url-send-btn:hover {
+  background-color: var(--color-accent-dark);
+  border: 1px solid var(--color-accent);
+}
+
+.url-send-btn-txt {
+  color: white;
 }
 
 .divider {
@@ -52,7 +66,7 @@
 
 .custom-select {
   position: relative;
-  width: 100px;
+  width: 120px;
 }
 
 .custom-select-box {
@@ -137,21 +151,23 @@
 }
 
 .textarea-container {
+  display: contents;
   position: relative;
-  margin-bottom: 1rem;
+  width: 100%;
 }
 
 .textarea-label {
-  font-size: var(--fs-sm);
+  font-size: var(--fs-md);
   font-weight: bold;
   margin-bottom: 0.25rem;
   display: block;
   padding: 0.2rem;
+  grid-row: 1;
 }
 
 .textarea-field {
   width: 100%;
-  height: 140px;
+  height: 100%;
   resize: none;
   padding: 0.75rem;
   border-radius: 8px;
@@ -167,21 +183,29 @@
 }
 
 .form-group {
-  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  background-color: #f9f9f9;
   transition: border 0.2s ease;
 }
 
 .form-group .form-label {
   font-weight: bold;
-  display: block;
-  margin-bottom: 0.25rem;
+  font-size: var(--fs-md);
+  color: #333;
 }
 
 .form-group .form-input {
-  width: 100%;
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  border: 2px solid #ccc;
+  font-size: 1rem;
+  outline: none;
+  transition: border 0.2s ease;
 }
 
 .form-group .form-input:focus {
@@ -194,4 +218,59 @@
   color: red;
   margin-top: 0.25rem;
   font-size: 0.875rem;
+}
+
+.form-data-container {
+  display: grid;
+  grid-template-rows: 1fr 3.5fr;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.form-data-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  background-color: #f9f9f9;
+  transition: border 0.2s ease;
+}
+
+.form-data-count {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.chart-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  background-color: #f9f9f9;
+  transition: border 0.2s ease;
+}
+
+.chart-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 600px;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  background-color: #f9f9f9;
+  transition: border 0.2s ease;
+}
+
+.chart-content {
+  flex: 1;
+  width: 99%;
+  text-align: center;
 }
