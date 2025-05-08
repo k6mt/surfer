@@ -21,7 +21,7 @@ export default function LoadTestForm() {
 
   let IntervalID: NodeJS.Timeout | null = null; // Declare IntervalID as a number or null
 
-  const { setMetrics } = useLoadTestContext(); // Use context to set metrics
+  const { setMetrics, setConfig } = useLoadTestContext(); // Use context to set metrics
 
   //REACT HOOKS CAN`T USE IN CALLBACK!!
   const url: Field = {
@@ -121,6 +121,9 @@ export default function LoadTestForm() {
       const response = await API.get("/load/metrics");
       const data = response.data;
       console.log("Metrics data:", data);
+      setConfig({
+        duration: parseInt(durationSeconds.state.value),
+      });
       // Update charts with the fetched metrics data
       setMetrics(data);
 
@@ -166,9 +169,14 @@ export default function LoadTestForm() {
           </button>
         </div>
 
-        {url.state.hasError && (
-          <div className="form-error">Invalid Target URL</div>
-        )}
+        <div
+          className="form-error"
+          style={{
+            visibility: url.state.hasError === true ? "visible" : "hidden",
+          }}
+        >
+          Invalid Target URL
+        </div>
 
         <div className="form-data-container">
           <div className="form-data-count">

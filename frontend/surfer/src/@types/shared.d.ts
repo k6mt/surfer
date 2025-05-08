@@ -14,9 +14,16 @@ export interface Field {
 export interface LoadTest {
   value: string;
   handleInputChange: (
-    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+    event: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
   ) => void;
   hasError: boolean;
+}
+
+export interface TimePoint {
+  x: Date;
+  y: number;
 }
 /*
 const fields: Field[] = [

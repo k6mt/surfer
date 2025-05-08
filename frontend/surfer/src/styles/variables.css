@@ -44,6 +44,8 @@
     var(--color-gradient-start) 35%,
     var(--color-gradient-end) 100%
   );
+
+  /* Card */
 }
 
 @media (prefers-color-scheme: dark) {
