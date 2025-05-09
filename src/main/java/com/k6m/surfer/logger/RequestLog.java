@@ -1,7 +1,6 @@
 package com.k6m.surfer.logger;
 
 import com.opencsv.bean.CsvBindByPosition;
-import java.time.LocalDateTime;
 
 public class RequestLog extends Log {
 
@@ -15,7 +14,7 @@ public class RequestLog extends Log {
   private HttpMethod httpMethod;
 
   @CsvBindByPosition(position = 3, required = true)
-  private LocalDateTime requestTime;
+  private String requestTime;
 
   @CsvBindByPosition(position = 4, required = false)
   private String requestBody;
@@ -24,12 +23,16 @@ public class RequestLog extends Log {
     GET, POST, PUT, DELETE, HEAD, OPTIONS
   }
 
-  public RequestLog(String requestId, String url, HttpMethod httpMethod, LocalDateTime requestTime, String requestBody) {
+  public RequestLog(String requestId, String url, HttpMethod httpMethod, String requestTime, String requestBody) {
     this.requestId = requestId;
     this.url = url;
     this.httpMethod = httpMethod;
     this.requestTime = requestTime;
     this.requestBody = requestBody;
+  }
+
+  public RequestLog(){
+
   }
 
   public String getRequestId() {
@@ -56,11 +59,11 @@ public class RequestLog extends Log {
     this.httpMethod = httpMethod;
   }
 
-  public LocalDateTime getRequestTime() {
+  public String getRequestTime() {
     return requestTime;
   }
 
-  public void setRequestTime(LocalDateTime requestTime) {
+  public void setRequestTime(String requestTime) {
     this.requestTime = requestTime;
   }
 
@@ -71,8 +74,6 @@ public class RequestLog extends Log {
   public void setRequestBody(String requestBody) {
     this.requestBody = requestBody;
   }
-
-
 
 }
 

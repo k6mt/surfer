@@ -51,7 +51,7 @@ public class LoadTestController {
           UUID.randomUUID().toString(),
           url,
           RequestLog.HttpMethod.valueOf(method.toUpperCase()),
-          LocalDateTime.now(),
+          LocalDateTime.now().toString(),
           body
       );
 
@@ -86,6 +86,7 @@ public class LoadTestController {
     metrics.put("successCount", MetricsCollector.getSuccessCount());
     metrics.put("failureCount", MetricsCollector.getFailureCount());
     metrics.put("averageResponseTimeMs", MetricsCollector.getAverageResponseMillis());
+    metrics.put("isRunning", loadGenerator.isRunning());
     return ResponseEntity.ok(metrics);
   }
 }
