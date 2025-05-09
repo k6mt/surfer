@@ -10,7 +10,7 @@ export default defineConfig({
     tsconfigPaths(),
     react(),
     visualizer({
-      open: true, // 빌드 끝나면 stats.html 자동 오픈
+      open: false,
       template: "treemap", // sunburst | treemap | network
       gzipSize: true,
       brotliSize: true,
@@ -19,7 +19,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "http://localhost:8080",
+        target: "http://localhost:8888",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },

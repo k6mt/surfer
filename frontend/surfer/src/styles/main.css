@@ -2,6 +2,7 @@
 @import "header.css";
 @import "variables.css";
 @import "load.css";
+@import "scanner.css";
 
 html,
 body,
@@ -23,6 +24,7 @@ main {
   padding: var(--container-gutter);
   font-size: var(--fs-md);
   background-color: inherit;
+  min-height: inherit;
 }
 
 /* Mobile Small*/
