@@ -5,6 +5,7 @@ import com.k6m.surfer.logger.RequestLog;
 import com.k6m.surfer.methodtrace.Trace;
 import com.k6m.surfer.methodtrace.Tracer;
 import com.k6m.surfer.util.CsvConverter;
+import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
@@ -67,6 +68,21 @@ public class TraceController {
       return ResponseEntity.notFound().build();
     }
     return ResponseEntity.ok(trace);
+  }
 
+  @GetMapping("/history")
+  public ResponseEntity<List<RequestLog>> getHistory() {
+    try{
+      File historyDir = homeConfig.getHome().getAPIHistoryDirectory();
+      File traceLogFile = new File(historyDir, "api_trace_log.csv");
+      String path = traceLogFile.getAbsolutePath();
+
+      return ResponseEntity.status(HttpStatus.OK).body(csvConverter.readCsv(
+          path,
+          RequestLog.class));
+    }catch (Exception e){
+      e.printStackTrace();
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    }
   }
 }
