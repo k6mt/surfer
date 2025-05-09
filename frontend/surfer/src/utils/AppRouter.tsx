@@ -1,9 +1,11 @@
 import MainLayout from "@components/layout/MainLayout";
-import DashBoard from "@pages/LoadTest";
 import Home from "@pages/Home";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import NotFound from "@pages/NotFound";
 import ErrorLayout from "@components/layout/ErrorLayout";
+import { lazy } from "react";
+
+const DashBoard = lazy(() => import("@pages/LoadTest"));
 
 const router = createBrowserRouter(
   [

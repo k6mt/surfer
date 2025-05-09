@@ -31,7 +31,21 @@
 
   /* Accent */
   --color-accent: #0070f3;
+  --color-accent-dark: #094992;
   --color-accent-light: #e5f1ff;
+  --color-accent-danger: #e06969;
+
+  /* Gradient */
+  --color-gradient-start: #0093e9;
+  --color-gradient-end: #80d0c7;
+  --color-gradient-angle: 160deg;
+  --color-gradient: linear-gradient(
+    var(--color-gradient-angle),
+    var(--color-gradient-start) 35%,
+    var(--color-gradient-end) 100%
+  );
+
+  /* Card */
 }
 
 @media (prefers-color-scheme: dark) {

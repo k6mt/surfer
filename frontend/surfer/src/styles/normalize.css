@@ -8,9 +8,17 @@
  * 2. Prevent adjustments of font size after orientation changes in iOS.
  */
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 html {
   line-height: 1.15; /* 1 */
-  -webkit-text-size-adjust: 100%; /* 2 */
+  -moz-text-size-adjust: none;
+  -webkit-text-size-adjust: none;
+  text-size-adjust: none;
 }
 
 /* Sections
@@ -21,6 +29,8 @@ html {
  */
 
 body {
+  min-height: 100vh;
+  line-height: 1.5;
   margin: 0;
 }
 
@@ -262,6 +272,14 @@ progress {
 
 textarea {
   overflow: auto;
+}
+
+ul,
+ol,
+li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
 /**

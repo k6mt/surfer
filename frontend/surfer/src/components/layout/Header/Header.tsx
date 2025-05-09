@@ -1,5 +1,5 @@
 import NavItem from "@components/layout/Header/NavItem";
-import k6MLogo from "@images/k6m-surfer_logo.png";
+import K6MLogo from "@images/k6m-surfer_logo.png";
 import type { Nav } from "@_types/shared";
 import Burger from "@components/layout/Header/Burger";
 import BurgerUI from "@components/layout/Header/BurgerUI";
@@ -20,21 +20,26 @@ const Header = () => {
     <div>
       <header className="header">
         <div className="header__logo">
-          <p className="header__logo_text">K6M Surfer</p>
+          <p className="header__logo_text">Surfer</p>
           <div className="header__logo_img_container">
-            <img className="header__logo_img" src={k6MLogo} />
+            <img className="header__logo_img" src={K6MLogo} alt="Surfer Logo" />
           </div>
           <div></div>
         </div>
         <nav className="header__nav">
-          {NAV_ITMES.map((item) => (
-            <div className="header__nav_item" key={item.to}>
-              <NavItem key={item.to} to={item.to} label={item.label} />
-            </div>
-          ))}
+          <div className="header__nav_list">
+            {NAV_ITMES.map((item) => (
+              <div className="header__nav_item" key={item.to}>
+                <NavItem key={item.to} to={item.to} label={item.label} />
+              </div>
+            ))}
+          </div>
+
+          <div className="header__nav_burger">
+            <Burger open={isOpen} onToggle={() => setIsOpen((o: boolean) => !o)} />
+            <BurgerUI open={isOpen} navitems={NAV_ITMES} />
+          </div>
         </nav>
-        <Burger open={isOpen} onToggle={() => setIsOpen((o: boolean) => !o)} />
-        <BurgerUI open={isOpen} navitems={NAV_ITMES} />
       </header>
     </div>
   );

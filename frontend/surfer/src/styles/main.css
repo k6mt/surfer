@@ -1,28 +1,28 @@
 @import "normalize.css";
 @import "header.css";
 @import "variables.css";
+@import "load.css";
 
 html,
 body,
 #root {
-  height: 100%;
   margin: 0;
   font-family: "Noto Sans KR", sans-serif;
   line-height: 1.5;
+  background: linear-gradient(180deg, #a2ded0, #b3c7c2);
+  padding-bottom: 1rem;
 }
 
 main {
   padding-top: 60px;
-  height: calc(100vh - 60px);
-  overflow: hidden;
+  min-height: calc(100vh - 60px);
 }
 
 .layout__container {
   max-width: var(--container-max-width);
   padding: var(--container-gutter);
   font-size: var(--fs-md);
-  background-color: azure;
-  display: flex;
+  background-color: inherit;
 }
 
 /* Mobile Small*/
@@ -33,7 +33,6 @@ main {
   .layout__container {
     width: 100%;
     font-size: var(--fs-sm);
-    display: flex;
   }
 }
 
@@ -46,7 +45,6 @@ main {
   .layout__container {
     width: 100%;
     font-size: var(--fs-sm);
-    display: flex;
   }
 }
 
@@ -59,7 +57,6 @@ main {
   .layout__container {
     width: 100%;
     font-size: var(--fs-md);
-    display: flex;
   }
 }
 
@@ -72,6 +69,5 @@ main {
   .layout__container {
     width: 100%;
     font-size: var(--fs-md);
-    display: flex;
   }
 }
