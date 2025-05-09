@@ -38,6 +38,9 @@ dependencies {
     implementation 'commons-io:commons-io:2.19.0'
 
     implementation 'com.opencsv:opencsv:5.9'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
+    testImplementation 'org.assertj:assertj-core:3.25.3'
 }
 
 //build for frontend
@@ -53,11 +56,11 @@ sourceSets {
 
 processResources { dependsOn "copyBuildFiles" }
 
-tasks.register('installReact', Exec){
+tasks.register('installReact', Exec) {
     workingDir("$frontendDir")
     inputs.dir("$frontendDir")
     group = BasePlugin.BUILD_GROUP
-    if(System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')){
+    if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
         commandLine "npm.cmd", "audit", "fix"
         commandLine 'npm.cmd', 'install'
     } else {
@@ -66,7 +69,7 @@ tasks.register('installReact', Exec){
     }
 }
 
-tasks.register("buildReact", Exec){
+tasks.register("buildReact", Exec) {
     dependsOn("installReact")
     workingDir("$frontendDir")
     inputs.dir("$frontendDir")
@@ -82,6 +85,10 @@ tasks.register("copyBuildFiles", Copy) {
     dependsOn("buildReact")
     from("$frontendDir/dist")
     into("$projectDir/src/main/resources/META-INF/resources/k6m-surfer")
+}
+
+test {
+    useJUnitPlatform()
 }
 
 

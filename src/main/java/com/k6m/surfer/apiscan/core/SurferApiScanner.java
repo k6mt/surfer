@@ -1,12 +1,9 @@
 package com.k6m.surfer.apiscan.core;
 
-import jakarta.annotation.PostConstruct;
+import org.reflections.Reflections;
 import org.reflections.scanners.Scanners;
 import org.reflections.util.ConfigurationBuilder;
-import org.springframework.stereotype.Component;
-import org.reflections.Reflections;
 import org.springframework.web.bind.annotation.*;
-
 
 import java.lang.reflect.Method;
 import java.util.*;
@@ -18,17 +15,17 @@ public class SurferApiScanner {
     private final Map<String, Method> apiMappingCache = new HashMap<>();
 
 
-    public SurferApiScanner(String basePackage){
+    public SurferApiScanner(String basePackage) {
         this.basePackage = basePackage;
     }
 
-    public Map<String, Method> getApiMappingCache(){
+    public Map<String, Method> getApiMappingCache() {
         return apiMappingCache;
     }
 
-    public List<Map<String, String>> apiScan(){
+    public List<Map<String, String>> apiScan() {
         List<Map<String, String>> apis = new ArrayList<>();
-        try{
+        try {
             System.out.println("[ApiScanner] Scanning basePackage: " + basePackage);
 
             Reflections reflections = new Reflections(new ConfigurationBuilder()
@@ -71,7 +68,7 @@ public class SurferApiScanner {
                 }
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
             System.err.println("[ApiScanner] Error during scanning: " + e.getMessage());
             e.printStackTrace();
         }
