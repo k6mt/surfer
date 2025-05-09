@@ -1,33 +1,29 @@
 package com.k6m.surfer.logger;
 
-import com.k6m.surfer.util.LocalDateTimeConverter;
-import com.opencsv.bean.CsvBindByName;
-import com.opencsv.bean.CsvCustomBindByName;
-
-import java.time.LocalDateTime;
+import com.opencsv.bean.CsvBindByPosition;
 
 public class RequestLog extends Log {
 
-  @CsvBindByName(column = "requestId", required = true)
+  @CsvBindByPosition(position = 0, required = true)
   private String requestId;
 
-  @CsvBindByName(column = "url", required = true)
+  @CsvBindByPosition(position = 1, required = true)
   private String url;
 
-  @CsvBindByName(column = "httpMethod", required = true)
+  @CsvBindByPosition(position = 2, required = true)
   private HttpMethod httpMethod;
 
-  @CsvCustomBindByName(column = "timestamp", converter = LocalDateTimeConverter.class)
-  private LocalDateTime requestTime;
+  @CsvBindByPosition(position = 3, required = true)
+  private String requestTime;
 
-  @CsvBindByName(column = "requestBody", required = false)
+  @CsvBindByPosition(position = 4, required = false)
   private String requestBody;
 
   public enum HttpMethod {
     GET, POST, PUT, DELETE, HEAD, OPTIONS
   }
 
-  public RequestLog(String requestId, String url, HttpMethod httpMethod, LocalDateTime requestTime, String requestBody) {
+  public RequestLog(String requestId, String url, HttpMethod httpMethod, String requestTime, String requestBody) {
     this.requestId = requestId;
     this.url = url;
     this.httpMethod = httpMethod;
@@ -35,7 +31,8 @@ public class RequestLog extends Log {
     this.requestBody = requestBody;
   }
 
-  public RequestLog() {
+  public RequestLog(){
+
   }
 
   public String getRequestId() {
@@ -62,11 +59,11 @@ public class RequestLog extends Log {
     this.httpMethod = httpMethod;
   }
 
-  public LocalDateTime getRequestTime() {
+  public String getRequestTime() {
     return requestTime;
   }
 
-  public void setRequestTime(LocalDateTime requestTime) {
+  public void setRequestTime(String requestTime) {
     this.requestTime = requestTime;
   }
 
@@ -77,4 +74,6 @@ public class RequestLog extends Log {
   public void setRequestBody(String requestBody) {
     this.requestBody = requestBody;
   }
+
 }
+

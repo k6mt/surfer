@@ -44,7 +44,7 @@ public class TraceController {
           UUID.randomUUID().toString(),
           url,
           RequestLog.HttpMethod.valueOf(method.toUpperCase()),
-          LocalDateTime.now(),
+          LocalDateTime.now().toString(),
           body
       );
       Path filePath = Paths.get(
