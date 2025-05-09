@@ -1,23 +1,26 @@
 package com.k6m.surfer.logger;
 
-import com.opencsv.bean.CsvBindByPosition;
+import com.k6m.surfer.util.LocalDateTimeConverter;
+import com.opencsv.bean.CsvBindByName;
+import com.opencsv.bean.CsvCustomBindByName;
+
 import java.time.LocalDateTime;
 
 public class RequestLog extends Log {
 
-  @CsvBindByPosition(position = 0, required = true)
+  @CsvBindByName(column = "requestId", required = true)
   private String requestId;
 
-  @CsvBindByPosition(position = 1, required = true)
+  @CsvBindByName(column = "url", required = true)
   private String url;
 
-  @CsvBindByPosition(position = 2, required = true)
+  @CsvBindByName(column = "httpMethod", required = true)
   private HttpMethod httpMethod;
 
-  @CsvBindByPosition(position = 3, required = true)
+  @CsvCustomBindByName(column = "timestamp", converter = LocalDateTimeConverter.class)
   private LocalDateTime requestTime;
 
-  @CsvBindByPosition(position = 4, required = false)
+  @CsvBindByName(column = "requestBody", required = false)
   private String requestBody;
 
   public enum HttpMethod {
@@ -30,6 +33,9 @@ public class RequestLog extends Log {
     this.httpMethod = httpMethod;
     this.requestTime = requestTime;
     this.requestBody = requestBody;
+  }
+
+  public RequestLog() {
   }
 
   public String getRequestId() {
@@ -71,8 +77,4 @@ public class RequestLog extends Log {
   public void setRequestBody(String requestBody) {
     this.requestBody = requestBody;
   }
-
-
-
 }
-
