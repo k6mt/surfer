@@ -1,10 +1,11 @@
 import { useLoadTest } from "@hooks/useLoadTest";
 import { API } from "@apis/axios";
-import MethodSelect from "@components/loadtest/MethodSelect";
+// import MethodSelect from "@components/loadtest/MethodSelect";
 import { Field } from "@_types/shared";
 import BodyArea from "@components/loadtest/BodyArea";
 import CountArea from "@components/loadtest/CountArea";
 import { useLoadTestContext } from "@hooks/useLoadTestContext";
+import UrlSendbox from "@components/common/UrlSendbox";
 
 export default function LoadTestForm() {
   // Validation functions for each form field
@@ -36,9 +37,7 @@ export default function LoadTestForm() {
     label: "HTTP Method",
     type: "select",
     options: ["GET", "POST", "PUT", "PATCH", "DELETE"],
-    state: useLoadTest("GET", (value) =>
-      ["GET", "POST", "PUT", "PATCH", "DELETE"].includes(value)
-    ),
+    state: useLoadTest("GET", (value) => ["GET", "POST", "PUT", "PATCH", "DELETE"].includes(value)),
   };
 
   const body: Field = {
@@ -69,14 +68,7 @@ export default function LoadTestForm() {
     state: useLoadTest("60", validateDurationSeconds),
   };
 
-  const fields: Field[] = [
-    url,
-    method,
-    body,
-    threadCount,
-    requestPerSecond,
-    durationSeconds,
-  ];
+  const fields: Field[] = [url, method, body, threadCount, requestPerSecond, durationSeconds];
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
@@ -140,7 +132,8 @@ export default function LoadTestForm() {
   return (
     <>
       <form id="loadForm" onSubmit={handleSubmit}>
-        <div className="url-container">
+        <UrlSendbox method={method} url={url} isOption={true} />
+        {/* <div className="url-container">
           <div className="url-method-row">
             <MethodSelect
               value={method.state.value}
@@ -167,7 +160,7 @@ export default function LoadTestForm() {
           <button className="url-send-btn" type="submit">
             <div className="url-send-btn-txt">Send</div>
           </button>
-        </div>
+        </div> */}
 
         <div
           className="form-error"

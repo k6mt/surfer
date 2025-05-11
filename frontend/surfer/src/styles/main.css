@@ -1,6 +1,7 @@
 @import "normalize.css";
 @import "header.css";
 @import "variables.css";
+@import "common.css";
 @import "load.css";
 @import "scanner.css";
 

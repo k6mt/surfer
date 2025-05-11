@@ -11,7 +11,12 @@ export function useScan<T = any>() {
       setLoading(true);
       const response = await API.get("api/scan/list");
       if (response.status === 200) {
-        setApis(response.data);
+        //Check null or non-length array
+        if (!response.data || (Array.isArray(response.data) && response.data.length === 0)) {
+          setApis(null);
+        } else {
+          setApis(response.data);
+        }
       } else {
         setError(response);
       }

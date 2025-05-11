@@ -2,11 +2,7 @@ import ApiBox from "@components/scanner/ApiBox";
 import { useScan } from "@hooks/useScan";
 import { useEffect } from "react";
 
-const ScannerList = ({
-  onApiClick,
-}: {
-  onApiClick: (method: string, url: string) => void;
-}) => {
+const ScannerList = ({ onApiClick }: { onApiClick: (method: string, url: string) => void }) => {
   const { apis, ApiScan, loading } = useScan();
 
   useEffect(() => {

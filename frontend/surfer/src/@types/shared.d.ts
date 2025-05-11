@@ -14,9 +14,7 @@ export interface Field {
 export interface LoadTest {
   value: string;
   handleInputChange: (
-    event: React.ChangeEvent<
-      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >
+    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => void;
   hasError: boolean;
 }
@@ -24,6 +22,14 @@ export interface LoadTest {
 export interface TimePoint {
   x: Date;
   y: number;
+}
+
+export interface Tab {
+  id: string;
+  method: string;
+  url: string;
+  response?: any;
+  isLoading: boolean;
 }
 
 /*

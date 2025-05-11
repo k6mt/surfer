@@ -1,32 +1,46 @@
-import React from "react";
+import { Tab } from "@_types/shared";
+import ContentBodySke from "@components/scanner/common/ContentBodySke";
+import TabContentTop from "@components/scanner/common/TabContentTop";
+import React, { useEffect } from "react";
 
 interface TabBodyProps {
-  tabs: any[];
+  tabs: Tab[];
   activeTab: string | null;
+  setTabs: React.Dispatch<React.SetStateAction<Tab[]>>;
 }
 
-const ContentBody: React.FC<TabBodyProps> = ({ tabs, activeTab }) => {
+const ContentBody: React.FC<TabBodyProps> = ({ tabs, activeTab, setTabs }) => {
+  const tab = tabs.find((t) => t.id === activeTab);
+
+  useEffect(() => {
+    const tab = tabs.find((t) => t.id === activeTab);
+    if (!tab) return;
+
+    if (tab.isLoading) {
+      setTabs((prev) => prev.map((t) => (t.id === tab.id ? { ...t, isLoading: false } : t)));
+    }
+  }, [tabs, activeTab]);
+
+  if (!tab) return;
+
   return (
     <div className="tab-body">
-      {tabs.map((tab) =>
-        tab.id === activeTab ? (
-          tab.isLoading ? (
-            <div key={tab.id} className="loading">
-              ⏳ 로딩 중...
-            </div>
-          ) : tab.error ? (
-            <div key={tab.id} className="error">
-              ❌ {tab.error}
-            </div>
-          ) : (
-            <pre key={tab.id} className="json">
-              {JSON.stringify(tab.response, null, 2)}
-            </pre>
-          )
-        ) : null
+      {tab.isLoading ? (
+        <ContentBodySke />
+      ) : (
+        <>
+          <TabContentTop tab={tab} />
+        </>
       )}
     </div>
   );
 };
 
 export default ContentBody;
+
+// <pre className="json">
+//   <div>id: {tab.id}</div>
+//   <div>method: {tab.method}</div>
+//   <div>url: {tab.url}</div>
+//   <div>응답: {JSON.stringify(tab.response, null, 2)}</div>
+// </pre>;

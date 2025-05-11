@@ -2,11 +2,11 @@ import { useState } from "react";
 
 interface MethodProps {
   value: string;
-  options?: string[];
+  isOption: boolean;
   onChange: (value: string) => void;
 }
 
-const MethodSelect: React.FC<MethodProps> = ({ value, options, onChange }) => {
+const MethodSelect: React.FC<MethodProps> = ({ value, isOption, onChange }) => {
   const [isOpen, setIsOpen] = useState(false);
   const toggleDropdown = () => setIsOpen((prev) => !prev);
   const handleSelect = (option: string) => {
@@ -14,13 +14,22 @@ const MethodSelect: React.FC<MethodProps> = ({ value, options, onChange }) => {
     setIsOpen(false);
   };
 
+  const options = ["GET", "POST", "PUT", "PATCH", "DELETE"];
+
+  const shouldShowOptions = isOpen && isOption;
+
   return (
-    <div className={`custom-select ${isOpen ? "open" : ""}`}>
-      <div className={`custom-select-box ${isOpen ? "open" : ""}`} onClick={toggleDropdown}>
+    <div className={`custom-select ${isOpen ? "open" : "close"}`}>
+      <div
+        className={`custom-select-box ${isOpen ? "open" : "close"} ${
+          isOption ? "list" : "no-list"
+        }`}
+        onClick={toggleDropdown}
+      >
         <div className={`selected-value ${value.toLowerCase()}`}>{value}</div>
-        <div className={`dropdown-icon ${isOpen ? "open" : ""}`}>&#9662;</div>
+        {isOption && <div className={`dropdown-icon ${isOpen ? "open" : ""}`}>&#9662;</div>}
       </div>
-      {isOpen && (
+      {shouldShowOptions && (
         <ul className="option-list">
           {options?.map((opt) => (
             <li

@@ -1,20 +1,13 @@
+import { Tab } from "@_types/shared";
 import ContentBody from "@components/scanner/ContentBody";
 import ContentHeader from "@components/scanner/ContentHeader";
 import React from "react";
-
-interface Tab {
-  id: string;
-  method: string;
-  url: string;
-  response?: any;
-  isLoading: boolean;
-  error?: string;
-}
 
 interface ScannerContentProps {
   tabs: Tab[];
   activeTab: string | null;
   setActiveTab: (id: string) => void;
+  setTabs: React.Dispatch<React.SetStateAction<Tab[]>>;
   removeTab: (id: string) => void;
 }
 
@@ -22,6 +15,7 @@ const ScannerContent: React.FC<ScannerContentProps> = ({
   tabs,
   activeTab,
   setActiveTab,
+  setTabs,
   removeTab,
 }) => {
   return (
@@ -32,28 +26,7 @@ const ScannerContent: React.FC<ScannerContentProps> = ({
         setActiveTab={setActiveTab}
         removeTab={removeTab}
       />
-      <ContentBody tabs={tabs} activeTab={activeTab} />
-      {/* <div className="tab-headers">
-        {tabs.map((tab) => (
-          <button
-            key={tab.id}
-            onClick={() => setActiveTab(tab.id)}
-            className={activeTab === tab.id ? "active" : ""}
-          >
-            {tab.method} {tab.url}
-          </button>
-        ))}
-      </div>
-
-      <div className="tab-body">
-        {tabs.map((tab) =>
-          tab.id === activeTab ? (
-            <pre key={tab.id} className="response-view">
-              {JSON.stringify(tab.response, null, 2)}
-            </pre>
-          ) : null
-        )}
-      </div> */}
+      <ContentBody tabs={tabs} activeTab={activeTab} setTabs={setTabs} />
     </div>
   );
 };
