@@ -17,31 +17,32 @@ const NAV_ITMES: Nav[] = [
 const Header = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   return (
-    <div>
-      <header className="header">
-        <div className="header__logo">
-          <p className="header__logo_text">Surfer</p>
-          <div className="header__logo_img_container">
-            <img className="header__logo_img" src={K6MLogo} alt="Surfer Logo" />
-          </div>
-          <div></div>
+    <header className="header">
+      <div className="header__logo">
+        <p className="header__logo_text">Surfer</p>
+        <div className="header__logo_img_container">
+          <img className="header__logo_img" src={K6MLogo} alt="Surfer Logo" />
         </div>
-        <nav className="header__nav">
-          <div className="header__nav_list">
-            {NAV_ITMES.map((item) => (
-              <div className="header__nav_item" key={item.to}>
-                <NavItem key={item.to} to={item.to} label={item.label} />
-              </div>
-            ))}
-          </div>
+        <div></div>
+      </div>
+      <nav className="header__nav">
+        <div className="header__nav_list">
+          {NAV_ITMES.map((item) => (
+            <div className="header__nav_item" key={item.to}>
+              <NavItem key={item.to} to={item.to} label={item.label} />
+            </div>
+          ))}
+        </div>
 
-          <div className="header__nav_burger">
-            <Burger open={isOpen} onToggle={() => setIsOpen((o: boolean) => !o)} />
-            <BurgerUI open={isOpen} navitems={NAV_ITMES} />
-          </div>
-        </nav>
-      </header>
-    </div>
+        <div className="header__nav_burger">
+          <Burger
+            open={isOpen}
+            onToggle={() => setIsOpen((o: boolean) => !o)}
+          />
+          <BurgerUI open={isOpen} navitems={NAV_ITMES} />
+        </div>
+      </nav>
+    </header>
   );
 };
 

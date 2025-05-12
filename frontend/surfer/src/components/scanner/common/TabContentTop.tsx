@@ -1,23 +1,37 @@
-import { Field, Tab } from "@_types/shared";
+import { Field, TabProps } from "@_types/shared";
 import UrlSendbox from "@components/common/UrlSendbox";
-import { useLoadTest } from "@hooks/useLoadTest";
 
-const TabContentTop = ({ tab }: { tab: Tab }) => {
+const TabContentTop: React.FC<TabProps> = ({ tab, onFieldChange }) => {
+  const validateMethod = (value: string) =>
+    ["GET", "POST", "PUT", "PATCH", "DELETE"].includes(value);
+
+  const validateUrl = (value: string) => value.trim() !== "";
+
   const method: Field = {
     name: "method",
     label: "HTTP Method",
     type: "select",
     options: ["GET", "POST", "PUT", "PATCH", "DELETE"],
-    state: useLoadTest(tab.method, (value) =>
-      ["GET", "POST", "PUT", "PATCH", "DELETE"].includes(value)
-    ),
+    state: {
+      value: tab.method,
+      handleInputChange(event) {
+        onFieldChange(tab.id, "method", event.target.value);
+      },
+      hasError: validateMethod(tab.method),
+    },
   };
 
   const url: Field = {
     name: "url",
     label: "Target URL",
     type: "text",
-    state: useLoadTest(tab.url, (value: string) => value.trim() !== ""),
+    state: {
+      value: tab.url,
+      handleInputChange(event) {
+        onFieldChange(tab.id, "url", event.target.value);
+      },
+      hasError: validateUrl(tab.url),
+    },
   };
 
   return (

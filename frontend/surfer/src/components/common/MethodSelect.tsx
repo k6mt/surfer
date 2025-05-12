@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 
 interface MethodProps {
   value: string;
@@ -27,14 +29,20 @@ const MethodSelect: React.FC<MethodProps> = ({ value, isOption, onChange }) => {
         onClick={toggleDropdown}
       >
         <div className={`selected-value ${value.toLowerCase()}`}>{value}</div>
-        {isOption && <div className={`dropdown-icon ${isOpen ? "open" : ""}`}>&#9662;</div>}
+        {isOption && (
+          <div className={`dropdown-icon ${isOpen ? "open" : ""}`}>
+            <FontAwesomeIcon icon={faAngleDown} />
+          </div>
+        )}
       </div>
       {shouldShowOptions && (
         <ul className="option-list">
           {options?.map((opt) => (
             <li
               key={opt}
-              className={`option-item ${opt.toLowerCase()} ${opt === value ? "selected" : ""}`}
+              className={`option-item ${opt.toLowerCase()} ${
+                opt === value ? "selected" : ""
+              }`}
               onClick={() => handleSelect(opt)}
             >
               {opt}

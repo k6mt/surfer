@@ -1,5 +1,9 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAngleRight, faAngleLeft, faClose } from "@fortawesome/free-solid-svg-icons";
+import {
+  faAngleRight,
+  faAngleLeft,
+  faClose,
+} from "@fortawesome/free-solid-svg-icons";
 import React, { useEffect, useRef, useState } from "react";
 interface TabHeaderProps {
   tabs: any[];
@@ -8,11 +12,16 @@ interface TabHeaderProps {
   removeTab: (id: string) => void;
 }
 
-const ContentHeader: React.FC<TabHeaderProps> = ({ tabs, activeTab, setActiveTab, removeTab }) => {
+const ContentHeader: React.FC<TabHeaderProps> = ({
+  tabs,
+  activeTab,
+  setActiveTab,
+  removeTab,
+}) => {
   const tabsRef = useRef<HTMLDivElement>(null);
   const scrollInterval = useRef<NodeJS.Timeout | null>(null);
   const scrollLeftBeforeRemove = useRef(0);
-  const SCROLL_AMOUNT = 200; // Move px amount when click button
+  const SCROLL_AMOUNT = 150; // Move px amount when click button
 
   const [isTabsDragging, setIsTabsDragging] = useState(false);
 
@@ -59,9 +68,8 @@ const ContentHeader: React.FC<TabHeaderProps> = ({ tabs, activeTab, setActiveTab
     if (!tabsRef.current) return;
     const amount = direction === "left" ? -SCROLL_AMOUNT : SCROLL_AMOUNT; //direction
     scrollInterval.current = setInterval(() => {
-      console.log("call");
-      tabsRef.current?.scrollBy({ left: amount, behavior: "auto" });
-    }, 100);
+      tabsRef.current?.scrollBy({ left: amount, behavior: "smooth" });
+    }, 200);
   };
 
   const stopButtonLongPress = () => {
@@ -90,7 +98,9 @@ const ContentHeader: React.FC<TabHeaderProps> = ({ tabs, activeTab, setActiveTab
     if (!tabsRef.current || !activeTab) return;
 
     const timeout = setTimeout(() => {
-      const activeTabElement = tabsRef.current?.querySelector(`[data-tab-id="${activeTab}"]`);
+      const activeTabElement = tabsRef.current?.querySelector(
+        `[data-tab-id="${activeTab}"]`
+      );
 
       if (activeTabElement instanceof HTMLElement) {
         activeTabElement.scrollIntoView({
@@ -106,7 +116,6 @@ const ContentHeader: React.FC<TabHeaderProps> = ({ tabs, activeTab, setActiveTab
 
   //remain scroll position when tab remove
   useEffect(() => {
-    console.log(tabs);
     if (tabsRef.current) {
       tabsRef.current.scrollLeft = scrollLeftBeforeRemove.current;
     }

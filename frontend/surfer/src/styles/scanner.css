@@ -2,8 +2,8 @@
   position: relative;
   display: grid;
   grid-template-columns: 2fr 8fr;
-  min-height: inherit;
   border-radius: 8px;
+  min-height: inherit;
 }
 
 .scanner-list {
@@ -222,10 +222,15 @@
 }
 
 .tab-body {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
   background-color: #f1f1f1;
   border-top: none;
   border-bottom-right-radius: 8px;
   color: #2b2b2b;
+  overflow: hidden;
 }
 
 .button-wrapper {
@@ -254,13 +259,57 @@
   Tab
 */
 
+.tab-body form {
+  display: grid;
+  grid-template-rows: auto 5fr 2fr;
+  height: 100%;
+  min-height: 0;
+}
+
 .tab-content.top-container {
-  margin: 1rem 2rem;
+  padding: 1rem 2rem;
   border-radius: 8px;
 }
 
 .tab-content.top-container .url-container {
   margin-bottom: 0;
+}
+
+.tab-content.center-container {
+  background-color: rgba(0, 0, 0, 0.15);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+  word-break: break-word;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+.tab-content.center-container .trace {
+  height: 0;
+  padding: 1rem 1rem;
+}
+
+.tab-content.bottom-container {
+  display: flex;
+  flex-direction: column;
+  grid-row: 3;
+}
+
+.tab-content.bottom-container .title {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+  font-size: var(--fs-lg);
+  padding: 0.5rem 0.5rem;
+}
+
+.tab-content.bottom-container .response {
+  flex: 1;
+  padding: 0.5rem 0.5rem;
+  word-break: break-word;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
 
 .tab-button {

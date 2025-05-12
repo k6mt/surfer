@@ -9,7 +9,7 @@ export function useScan<T = any>() {
   async function ApiScan() {
     try {
       setLoading(true);
-      const response = await API.get("api/scan/list");
+      const response = await API.get("/scan/list");
       if (response.status === 200) {
         //Check null or non-length array
         if (!response.data || (Array.isArray(response.data) && response.data.length === 0)) {

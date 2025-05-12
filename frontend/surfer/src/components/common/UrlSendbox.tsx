@@ -1,5 +1,5 @@
 import { Field } from "@_types/shared";
-import MethodSelect from "@components/loadtest/MethodSelect";
+import MethodSelect from "@components/common/MethodSelect";
 import React from "react";
 
 const UrlSendbox = ({
@@ -34,7 +34,7 @@ const UrlSendbox = ({
           value={url.state.value}
           onChange={url.state.handleInputChange}
           required
-          readOnly={!isOption}
+          // readOnly={!isOption}
         />
       </div>
       <button className="url-send-btn" type="submit">

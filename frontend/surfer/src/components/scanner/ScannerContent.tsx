@@ -26,7 +26,12 @@ const ScannerContent: React.FC<ScannerContentProps> = ({
         setActiveTab={setActiveTab}
         removeTab={removeTab}
       />
-      <ContentBody tabs={tabs} activeTab={activeTab} setTabs={setTabs} />
+      <ContentBody
+        tabs={tabs}
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        setTabs={setTabs}
+      />
     </div>
   );
 };

@@ -14,7 +14,9 @@ export interface Field {
 export interface LoadTest {
   value: string;
   handleInputChange: (
-    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+    event: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
   ) => void;
   hasError: boolean;
 }
@@ -30,6 +32,15 @@ export interface Tab {
   url: string;
   response?: any;
   isLoading: boolean;
+}
+
+export interface TabProps {
+  tab: Tab;
+  onFieldChange: (
+    tabId: string,
+    field: "method" | "url" | "response",
+    value: string
+  ) => void;
 }
 
 /*
