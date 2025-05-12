@@ -2,7 +2,6 @@ package com.k6m.surfer.methodtrace;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Trace {
@@ -18,6 +17,7 @@ public class Trace {
   private Object returnValue;
   @JsonIgnore
   private Trace previousTrace;
+  private String exceptionMessage;
   private List<Trace> nextTraces;
 
   public Trace(String traceId, String className, String methodName, Object[] parameters) {
@@ -93,6 +93,10 @@ public class Trace {
     return previousTrace;
   }
 
+  public String getExceptionMessage() {
+    return exceptionMessage;
+  }
+
   public void setReturnValue(Object returnValue) {
     this.returnValue = returnValue;
   }
@@ -105,19 +109,7 @@ public class Trace {
     this.endTimeMs = endTimeMs;
   }
 
-  @Override
-  public String toString() {
-    return "Trace{" +
-        "traceId='" + traceId + '\'' +
-        ", depth=" + depth +
-        ", className='" + className + '\'' +
-        ", methodName='" + methodName + '\'' +
-        ", startTimeMs=" + startTimeMs +
-        ", endTimeMs=" + endTimeMs +
-        ", resultTimeMs=" + resultTimeMs +
-        ", parameters=" + Arrays.toString(parameters) +
-        ", returnValue=" + returnValue +
-        ", nextTraces=" + nextTraces +
-        '}';
+  public void setExceptionMessage(String exceptionMessage) {
+    this.exceptionMessage = exceptionMessage;
   }
 }

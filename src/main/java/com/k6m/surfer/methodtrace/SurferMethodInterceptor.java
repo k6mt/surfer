@@ -24,9 +24,18 @@ public class SurferMethodInterceptor implements MethodInterceptor {
       return invocation.proceed();
     }
 
-    tracer.begin(traceId, invocation);
-    Object result = invocation.proceed();
-    tracer.end(result);
+    Object result = null;
+
+    try {
+      tracer.begin(traceId, invocation);
+      result = invocation.proceed();
+    } catch (Exception e) {
+      Trace trace = tracer.getTraceHolder().get();
+      trace.setExceptionMessage(e.getMessage());
+      throw e;
+    } finally {
+      tracer.end(result);
+    }
 
     return result;
   }
