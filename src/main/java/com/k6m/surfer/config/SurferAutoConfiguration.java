@@ -10,6 +10,7 @@ import com.k6m.surfer.methodtrace.Tracer;
 import com.k6m.surfer.methodtrace.controller.TraceController;
 import com.k6m.surfer.system.controller.SystemController;
 import com.k6m.surfer.util.CsvConverter;
+import com.k6m.surfer.util.ErrorSourceReader;
 import org.springframework.aop.Advisor;
 import org.springframework.aop.aspectj.AspectJExpressionPointcut;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
@@ -51,12 +52,16 @@ public class SurferAutoConfiguration {
         return new SurferApiAnalyzer(surferApiScanner);
     }
 
-    ;
-
     @Bean
     ApiScanController apiScanController(SurferApiScanner surferApiScanner,
                                         SurferApiAnalyzer surferApiAnalyzer) {
         return new ApiScanController(surferApiScanner, surferApiAnalyzer);
+    }
+
+    @Bean
+    public ErrorSourceReader errorSourceReader() {
+        String basePackage = detectMainPackage();
+        return new ErrorSourceReader(basePackage);
     }
 
     @Bean
