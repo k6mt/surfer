@@ -39,6 +39,11 @@ dependencies {
     implementation 'com.github.oshi:oshi-core:6.8.1'
 
     implementation 'com.opencsv:opencsv:5.9'
+
+    implementation 'com.github.javaparser:javaparser-symbol-solver-core:3.26.4'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
+    testImplementation 'org.assertj:assertj-core:3.25.3'
 }
 
 //build for frontend
