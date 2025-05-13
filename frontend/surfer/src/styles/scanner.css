@@ -1,9 +1,6 @@
 .scanner-container {
   position: relative;
-  display: grid;
-  grid-template-columns: 2fr 8fr;
   border-radius: 8px;
-  min-height: inherit;
 }
 
 .scanner-list {

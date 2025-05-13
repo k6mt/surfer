@@ -27,7 +27,7 @@ const Tracer = () => {
 
   return (
     <div className="scanner-container">
-      <ScannerList onApiClick={handleApiClick} />
+      {/* <ScannerList onApiClick={handleApiClick} /> */}
       <ScannerContent
         tabs={tabs}
         activeTab={activeTab}

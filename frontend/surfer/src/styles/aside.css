@@ -63,10 +63,10 @@
 /* Surfer List ( API List )*/
 .aside_surfer {
   height: 100%;
-  background-color: #1428a0;
+  background-color: #1429a0;
   color: white;
   padding: 1rem;
-  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.66);
 
   backdrop-filter: blur(12px);
   border-right: 1px solid rgba(255, 255, 255, 0.1);
@@ -87,7 +87,7 @@
 }
 
 .aside_surfer_box {
-  height: 90%;
+  height: 95%;
   position: relative;
   padding-bottom: 1rem;
 }
@@ -118,7 +118,7 @@
 }
 
 .aside_surfer_list::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.8);
 }
 
 .aside_surfer_scorll {
@@ -139,31 +139,37 @@
 }
 
 .surfer-item-box {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  display: grid;
+  grid-template-columns: 100px auto;
+  gap: 1rem;
   background-color: var(--color-surface);
   color: var(--color-text-primary);
   border-radius: 8px;
   padding: 0.7rem 0.7rem;
 }
 
-.surfer-item-box.get {
+.surfer-item-box .method {
+  text-align: center;
+  border-radius: 8px;
+  font-weight: bold;
+}
+
+.surfer-item-box.get .method {
   background-color: #e6f4ea;
   color: #2e7d32;
 }
 
-.surfer-item-box.post {
+.surfer-item-box.post .method {
   background-color: #e3f2fd;
   color: #1565c0;
 }
 
-.surfer-item-box.put {
+.surfer-item-box.put .method {
   background-color: #fff3e0;
   color: #ef6c00;
 }
 
-.surfer-item-box.delete {
+.surfer-item-box.delete .method {
   background-color: #fdecea;
   color: #c62828;
 }
