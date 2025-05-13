@@ -6,11 +6,14 @@ import axios, {
 
 import { Shared } from "../apis/@types/shared";
 
+const isDev = import.meta.env.MODE === "development";
+
 export const API = axios.create({
   timeout: 10000,
   headers: {
     "Content-Type": "application/json",
   },
+  baseURL: isDev ? "/api" : "",
 });
 
 API.interceptors.request.use(

@@ -22,12 +22,27 @@
 
   /* Background */
   --color-bg: #ffffff;
+  --color-bg-aside: #0f172a;
   --color-surface: #f8f8f8;
   --color-border: #e1e1e1;
+
+  --color-violet: #5d2167;
+  --color-violet-light: #bc82c4;
+  --color-darkviolet: #3c1a44;
+  --color-indigo: #6366f1;
+  --color-navy: #0f172a;
+  --color-bluenavy: #1e293b;
+
+  --color-samsung: #1428a0;
+
+  --color-aside-nav: rgba(255, 255, 255, 0.4);
 
   /* Text */
   --color-text-primary: #010101;
   --color-text-secondary: #666666;
+
+  --color-text-normal: rgba(255, 255, 255, 0.4);
+  --color-text-accent: rgba(255, 255, 255, 1);
 
   /* Accent */
   --color-accent: #0070f3;
@@ -36,13 +51,27 @@
   --color-accent-danger: #e06969;
 
   /* Gradient */
+  --color-gradient-angle: 180deg;
+
   --color-gradient-start: #0093e9;
   --color-gradient-end: #80d0c7;
-  --color-gradient-angle: 160deg;
   --color-gradient: linear-gradient(
-    var(--color-gradient-angle),
+    90deg,
     var(--color-gradient-start) 35%,
     var(--color-gradient-end) 100%
+  );
+
+  --color-gradient-aside: linear-gradient(
+    90deg,
+    var(--color-violet),
+    var(--color-darkviolet)
+  );
+
+  --color-gradient-samsung: linear-gradient(
+    90deg,
+    #2ab9f4 0%,
+    #5c86f0 50%,
+    #7b5ff0 100%
   );
 
   /* Card */
