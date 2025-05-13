@@ -1,12 +1,9 @@
 package com.k6m.surfer.apiscan.core;
 
-import jakarta.annotation.PostConstruct;
+import org.reflections.Reflections;
 import org.reflections.scanners.Scanners;
 import org.reflections.util.ConfigurationBuilder;
-import org.springframework.stereotype.Component;
-import org.reflections.Reflections;
 import org.springframework.web.bind.annotation.*;
-
 
 import java.lang.reflect.Method;
 import java.util.*;
@@ -18,17 +15,17 @@ public class SurferApiScanner {
     private final Map<String, Method> apiMappingCache = new HashMap<>();
 
 
-    public SurferApiScanner(String basePackage){
+    public SurferApiScanner(String basePackage) {
         this.basePackage = basePackage;
     }
 
-    public Map<String, Method> getApiMappingCache(){
+    public Map<String, Method> getApiMappingCache() {
         return apiMappingCache;
     }
 
-    public List<Map<String, String>> apiScan(){
-        List<Map<String, String>> apis = new ArrayList<>();
-        try{
+    public Map<String, List<Map<String, String>>> apiScan() {
+        Map<String, List<Map<String, String>>> apis = new HashMap<>();
+        try {
             System.out.println("[ApiScanner] Scanning basePackage: " + basePackage);
 
             Reflections reflections = new Reflections(new ConfigurationBuilder()
@@ -39,7 +36,7 @@ public class SurferApiScanner {
 
             for (Class<?> controller : controllers) {
                 System.out.println("[ApiScanner] Found controller class: " + controller.getName());
-
+                List<Map<String, String>> controllerApi = new ArrayList<>();
                 /**
                  *  Extract class-level path
                  */
@@ -62,20 +59,21 @@ public class SurferApiScanner {
                         Map<String, String> apiInfo = new HashMap<>();
                         apiInfo.put("url", fullPath);
                         apiInfo.put("method", httpMethod);
-                        apis.add(apiInfo);
+                        controllerApi.add(apiInfo);
                         /**
                          * Cache the mapping between (HTTP method + full URL) and the corresponding Java Method
                          */
                         apiMappingCache.put(httpMethod + ":" + fullPath, method);
                     }
                 }
+                apis.put(controller.getSimpleName(), controllerApi);
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
             System.err.println("[ApiScanner] Error during scanning: " + e.getMessage());
             e.printStackTrace();
         }
-
+        System.out.println(apis);
         return apis;
     }
 

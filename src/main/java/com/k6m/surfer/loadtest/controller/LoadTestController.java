@@ -51,7 +51,7 @@ public class LoadTestController {
           UUID.randomUUID().toString(),
           url,
           RequestLog.HttpMethod.valueOf(method.toUpperCase()),
-          LocalDateTime.now(),
+          LocalDateTime.now().toString(),
           body
       );
 

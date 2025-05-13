@@ -47,5 +47,9 @@ public class Tracer {
   public Map<String, Trace> getTraceMap() {
     return traceMap;
   }
+
+  public ThreadLocal<Trace> getTraceHolder() {
+    return traceHolder;
+  }
 }
 

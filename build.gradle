@@ -36,8 +36,14 @@ dependencies {
 
     implementation 'org.apache.commons:commons-lang3:3.12.0'
     implementation 'commons-io:commons-io:2.19.0'
+    implementation 'com.github.oshi:oshi-core:6.8.1'
 
     implementation 'com.opencsv:opencsv:5.9'
+
+    implementation 'com.github.javaparser:javaparser-symbol-solver-core:3.26.4'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
+    testImplementation 'org.assertj:assertj-core:3.25.3'
 }
 
 //build for frontend
@@ -61,7 +67,7 @@ tasks.register('installReact', Exec){
     workingDir("$frontendDir")
     inputs.dir("$frontendDir")
     group = BasePlugin.BUILD_GROUP
-    if(System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')){
+    if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
         commandLine "npm.cmd", "audit", "fix"
         commandLine 'npm.cmd', 'install'
     } else {
@@ -70,7 +76,7 @@ tasks.register('installReact', Exec){
     }
 }
 
-tasks.register("buildReact", Exec){
+tasks.register("buildReact", Exec) {
     dependsOn("installReact")
     workingDir("$frontendDir")
     inputs.dir("$frontendDir")

@@ -21,20 +21,20 @@ public class ApiScanController {
     private final SurferApiAnalyzer surferApiAnalyzer;
 
     public ApiScanController(SurferApiScanner surferApiScanner,
-                             SurferApiAnalyzer surferApiAnalyzer){
+                             SurferApiAnalyzer surferApiAnalyzer) {
         this.surferApiScanner = surferApiScanner;
         this.surferApiAnalyzer = surferApiAnalyzer;
     }
 
     @GetMapping("")
     public ResponseEntity<Map<String, Object>> analyze(@RequestParam("methodType") String methodType,
-                                                       @RequestParam("encodeUrl") String encodeUrl){
+                                                       @RequestParam("encodeUrl") String encodeUrl) {
         String url = URLDecoder.decode(encodeUrl, StandardCharsets.UTF_8);
         return ResponseEntity.ok(surferApiAnalyzer.analyzedApi(methodType, url));
     }
 
     @GetMapping("/list")
-    public ResponseEntity<List<Map<String,String>>> scan(){
+    public ResponseEntity<Map<String, List<Map<String, String>>>> scan() {
         return ResponseEntity.ok(surferApiScanner.apiScan());
     }
 
