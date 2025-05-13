@@ -1,24 +1,31 @@
+import { useState } from "react";
+import SurferMethodList from "./SurferMethodList";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
+
 interface SurferItemProps {
-  controller?: string | null;
-  method: string | null;
-  url: string | null;
+  controller: any | string | null;
+  methods: any | null;
 }
 
-const SurferItem: React.FC<SurferItemProps & { onClick: () => void }> = ({
-  url,
-  method,
-  onClick,
-}) => {
-  const safeMethod = method ?? "UNKNOWN";
-  const safeUrl = url ?? "No URL";
+const SurferItem: React.FC<SurferItemProps> = ({ controller, methods }) => {
+  const [showMethods, setShowMethods] = useState(false);
 
   return (
     <div
-      className={`surfer-item-box ${safeMethod.toLocaleLowerCase()}`}
-      onClick={onClick}
+      className="surfer-item-box"
+      onClick={() => setShowMethods((prev) => !prev)}
     >
-      <div className="method">{safeMethod}</div>
-      <div className="url">{safeUrl}</div>
+      <div className="controller-box">
+        <div className="controller">{controller}</div>
+        <div className={`dropdown-icon ${showMethods ? "open" : ""}`}>
+          <FontAwesomeIcon icon={faAngleDown} />
+        </div>
+      </div>
+
+      <div className={`method-list ${showMethods ? "visible" : ""}`}>
+        <SurferMethodList methods={methods} />
+      </div>
     </div>
   );
 };
