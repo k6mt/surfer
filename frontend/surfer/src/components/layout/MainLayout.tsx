@@ -1,4 +1,3 @@
-import Header from "@components/layout/Header/Header";
 import RouteAside from "@components/RouteSide/RouteAside";
 import SurferList from "@components/SurferList/SurferList";
 import { Outlet } from "react-router-dom";
@@ -7,11 +6,12 @@ const MainLayout = () => {
   const handleApiClick = async (method: string, url: string) => {
     try {
       console.log(method, url);
-    } catch (e) {}
+    } catch (e) {
+      console.log(e);
+    }
   };
   return (
     <>
-      {/* <Header /> */}
       <RouteAside />
       <SurferList onApiClick={handleApiClick} />
       <main>

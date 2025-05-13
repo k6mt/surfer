@@ -1,33 +1,24 @@
 import { Tab } from "@_types/shared";
 import ScannerContent from "@components/scanner/ScannerContent";
-import ScannerList from "@components/scanner/ScannerList";
 import { useState } from "react";
 
 const Tracer = () => {
   const [tabs, setTabs] = useState<Tab[]>([]);
   const [activeTab, setActiveTab] = useState<string | null>(null);
 
-  const handleApiClick = async (method: string, url: string) => {
-    try {
-      // const response = await API.get("/api/scan", {
-      //   params: {
-      //     methodType: method,
-      //     encodeUrl: url,
-      //   },
-      // });
-
-      const id = `${method}_${url}_${Date.now()}`;
-      const newTab: Tab = { id, method, url, isLoading: true };
-      setTabs((prev) => [...prev, newTab]);
-      setActiveTab(id);
-    } catch (e) {
-      alert(e);
-    }
-  };
+  // const handleApiClick = async (method: string, url: string) => {
+  //   try {
+  //     const id = `${method}_${url}_${Date.now()}`;
+  //     const newTab: Tab = { id, method, url, isLoading: true };
+  //     setTabs((prev) => [...prev, newTab]);
+  //     setActiveTab(id);
+  //   } catch (e) {
+  //     alert(e);
+  //   }
+  // };
 
   return (
     <div className="scanner-container">
-      {/* <ScannerList onApiClick={handleApiClick} /> */}
       <ScannerContent
         tabs={tabs}
         activeTab={activeTab}
