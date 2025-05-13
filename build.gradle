@@ -59,7 +59,11 @@ sourceSets {
 
 processResources { dependsOn "copyBuildFiles" }
 
-tasks.register('installReact', Exec) {
+tasks.register("deleteCopiesFile", Delete) {
+    delete file("$projectDir/src/main/resources/META-INF/resources/k6m-surfer")
+}
+
+tasks.register('installReact', Exec){
     workingDir("$frontendDir")
     inputs.dir("$frontendDir")
     group = BasePlugin.BUILD_GROUP
@@ -85,7 +89,7 @@ tasks.register("buildReact", Exec) {
 }
 
 tasks.register("copyBuildFiles", Copy) {
-    dependsOn("buildReact")
+    dependsOn("deleteCopiesFile", "buildReact")
     from("$frontendDir/dist")
     into("$projectDir/src/main/resources/META-INF/resources/k6m-surfer")
 }
