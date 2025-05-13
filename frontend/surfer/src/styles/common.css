@@ -33,12 +33,6 @@
   color: white;
 }
 
-.divider {
-  width: 1px;
-  height: 1.3rem;
-  background-color: gray;
-}
-
 .form-label {
   white-space: nowrap;
   font-weight: var(--fs-md);

@@ -1,6 +1,14 @@
+import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
+
 export interface Nav {
   to: string;
   label: string;
+}
+
+export interface AsideNav {
+  to: string;
+  label: string;
+  icon?: IconDefinition;
 }
 
 export interface Field {

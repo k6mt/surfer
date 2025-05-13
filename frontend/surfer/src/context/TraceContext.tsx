@@ -1,4 +1,12 @@
-import { Trace } from "@context/TraceContextProvider";
-import { createContext } from "react";
+import { createContext, useState } from "react";
 
-export const TraceContext = createContext<Trace | undefined>(undefined);
+interface ContextType {
+  apis: any;
+  loading: boolean;
+  error: any;
+  refetch: () => void;
+  activeItem: any | null;
+  setActiveItem: (api: any | null) => void;
+}
+
+export const TraceContext = createContext<ContextType | null>(null);

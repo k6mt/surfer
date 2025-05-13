@@ -5,11 +5,11 @@ const TabContentCenter: React.FC<TabProps> = ({ tab, onFieldChange }) => {
   console.log(onFieldChange);
   return (
     <div className="tab-content center-container">
-      {tab.response?.trace ? (
-        JSON.stringify(tab.response?.trace, null, 2)
-      ) : (
-        <div className="trace"></div>
-      )}
+      <div className="trace">
+        {tab.response?.trace
+          ? JSON.stringify(tab.response?.trace, null, 2)
+          : ""}
+      </div>
     </div>
   );
 };
