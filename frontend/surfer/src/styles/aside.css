@@ -152,6 +152,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 0.3rem 0;
 }
 
 .surfer-item-box .controller-box .controller {
@@ -234,13 +235,33 @@
 }
 
 .method-item-box {
+  position: relative;
   display: grid;
   grid-template-columns: 80px 120px;
+
   gap: 0.3rem;
+  cursor: pointer;
+  overflow: hidden;
+  border-radius: 8px;
+  border-bottom: 1px solid rgba(119, 119, 119, 0.6);
 }
 
-.method-item-box:hover {
-  box-shadow: 0 0 0 1px gray inset;
+.method-item-box::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: rgba(119, 119, 119, 0);
+  z-index: 999;
+  transition: background-color 0.2s ease;
+}
+
+.method-item-box:hover::before {
+  background-color: rgba(119, 119, 119, 0.3);
+}
+
+.method-item-box > * {
+  position: relative;
+  z-index: 2;
 }
 
 .method-item-box .method {

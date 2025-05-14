@@ -1,23 +1,26 @@
-import { TabModel } from "@_types/shared";
+import { RawParams, TabModel } from "@_types/shared";
 import { TabModelsContext } from "@context/TabModelsContext";
+import { useScan } from "@hooks/useScan";
 import { ReactNode, useState } from "react";
 
 export const TabModelsProvider = ({ children }: { children: ReactNode }) => {
   const [tabModels, setTabModels] = useState<TabModel[]>([]);
-
   const [activeTabModel, setActiveTabModel] = useState<string | null>(null);
 
-  const addTabModel = async (
-    controller: string,
-    method: string,
-    url: string
-  ) => {
+  const { ApiScanByMethod } = useScan();
+
+  const addTabModel = async (controller: string, method: string, url: string) => {
     const id = `${method}_${url}_${Date.now()}`;
+    const raw = await ApiScanByMethod(method, url);
+    // const params = convertParams(raw);
+
     const newTabModel: TabModel = {
       id,
       controller,
       method,
       url,
+      response: null,
+      params: raw ?? null,
       isLoading: false,
     };
 
@@ -31,13 +34,17 @@ export const TabModelsProvider = ({ children }: { children: ReactNode }) => {
       const nextTabModels = prev?.filter((t) => t.id !== id);
 
       if (activeTabModel === id) {
-        const nextActiveTabModel =
-          nextTabModels[curIdx - 1] ?? nextTabModels[0] ?? null;
+        const nextActiveTabModel = nextTabModels[curIdx - 1] ?? nextTabModels[0] ?? null;
         setActiveTabModel(nextActiveTabModel?.id ?? null);
       }
 
       return nextTabModels;
     });
+  };
+
+  //convertParam
+  const convertParams = (raw: RawParams) => {
+    return Object.entries(raw);
   };
 
   return (

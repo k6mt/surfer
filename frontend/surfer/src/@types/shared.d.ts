@@ -22,9 +22,7 @@ export interface Field {
 export interface LoadTest {
   value: string;
   handleInputChange: (
-    event: React.ChangeEvent<
-      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >
+    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => void;
   hasError: boolean;
 }
@@ -47,20 +45,30 @@ export interface TabModel {
   controller: string;
   method: string;
   url: string;
-  response?: any | null;
-  body?: any | null;
+  response: any | null;
+  params: any | null;
   isLoading: boolean;
 }
 
 export interface TabProps {
   tab: Tab;
-  onFieldChange: (
-    tabId: string,
-    field: "method" | "url" | "response",
-    value: string
-  ) => void;
+  onFieldChange: (tabId: string, field: "method" | "url" | "response", value: string) => void;
 }
 
+export interface TracedParams {
+  root: "RequestParam" | "PathVariable" | "RequestHeader" | "RequestBody";
+  name?: string;
+  type: string;
+  fields?: TracedParams[];
+  element?: TraceParams;
+  keyType?: TracedParams;
+  value?: TracedParams;
+}
+
+export type RawParams = Record<
+  string,
+  { name: string; type: string; fields?: any; element?: any }[]
+>;
 /*
 const fields: Field[] = [
   {

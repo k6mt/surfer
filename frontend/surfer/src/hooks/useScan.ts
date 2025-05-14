@@ -1,4 +1,5 @@
 import { API } from "@apis/axios";
+
 import { useState } from "react";
 
 export function useScan<T = any>() {
@@ -31,5 +32,24 @@ export function useScan<T = any>() {
     }
   }
 
-  return { apis, ApiScan, loading, error };
+  async function ApiScanByMethod(method: any, url: any) {
+    try {
+      setLoading(true);
+      const response = await API.get("/scan", {
+        params: {
+          methodType: method,
+          encodeUrl: url,
+        },
+      });
+
+      if (response.status === 200) {
+        console.log(response.data, "SCAN");
+        return response.data;
+      }
+    } catch (error) {
+      setError(error);
+    }
+  }
+
+  return { apis, ApiScan, ApiScanByMethod, loading, error };
 }

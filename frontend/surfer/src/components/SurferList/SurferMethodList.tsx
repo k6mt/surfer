@@ -1,4 +1,3 @@
-import { useTabModelsContext } from "@hooks/useTabModels";
 import SurferMethodItem from "./SurferMethodItem";
 
 const SurferMethodList = ({
@@ -11,8 +10,9 @@ const SurferMethodList = ({
   return (
     <div className="method">
       <div className="method-inner">
-        {methods.map((item: any) => (
+        {methods.map((item: any, index: number) => (
           <SurferMethodItem
+            key={index}
             controller={controller}
             method={item.method}
             url={item.url}
