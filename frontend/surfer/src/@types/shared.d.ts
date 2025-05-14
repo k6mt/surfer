@@ -42,6 +42,16 @@ export interface Tab {
   isLoading: boolean;
 }
 
+export interface TabModel {
+  id: string;
+  controller: string;
+  method: string;
+  url: string;
+  response?: any | null;
+  body?: any | null;
+  isLoading: boolean;
+}
+
 export interface TabProps {
   tab: Tab;
   onFieldChange: (

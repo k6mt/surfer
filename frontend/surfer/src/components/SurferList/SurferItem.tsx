@@ -12,11 +12,11 @@ const SurferItem: React.FC<SurferItemProps> = ({ controller, methods }) => {
   const [showMethods, setShowMethods] = useState(false);
 
   return (
-    <div
-      className="surfer-item-box"
-      onClick={() => setShowMethods((prev) => !prev)}
-    >
-      <div className="controller-box">
+    <div className="surfer-item-box">
+      <div
+        className="controller-box"
+        onClick={() => setShowMethods((prev) => !prev)}
+      >
         <div className="controller">{controller}</div>
         <div className={`dropdown-icon ${showMethods ? "open" : ""}`}>
           <FontAwesomeIcon icon={faAngleDown} />
@@ -24,7 +24,7 @@ const SurferItem: React.FC<SurferItemProps> = ({ controller, methods }) => {
       </div>
 
       <div className={`method-list ${showMethods ? "visible" : ""}`}>
-        <SurferMethodList methods={methods} />
+        <SurferMethodList controller={controller} methods={methods} />
       </div>
     </div>
   );

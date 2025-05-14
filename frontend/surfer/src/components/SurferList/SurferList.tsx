@@ -4,8 +4,6 @@ import { useTraceContext } from "@hooks/useTraceContext";
 const SurferList = () => {
   const { apis } = useTraceContext();
 
-  console.log(apis);
-
   return (
     <div className="aside_surfer">
       <div className="aside_surfer_title">
