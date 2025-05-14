@@ -26,10 +26,18 @@ export const TabModelsProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const removeTabModel = (id: any) => {
-    setTabModels((prev) => prev?.filter((t) => t.id !== id));
-    if (activeTabModel === id) {
-      setActiveTabModel(null);
-    }
+    setTabModels((prev) => {
+      const curIdx = prev.findIndex((t) => t.id === id);
+      const nextTabModels = prev?.filter((t) => t.id !== id);
+
+      if (activeTabModel === id) {
+        const nextActiveTabModel =
+          nextTabModels[curIdx - 1] ?? nextTabModels[0] ?? null;
+        setActiveTabModel(nextActiveTabModel?.id ?? null);
+      }
+
+      return nextTabModels;
+    });
   };
 
   return (
