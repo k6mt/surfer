@@ -2,6 +2,8 @@ import TraceTreeView from "@components/Trace/DeepInformation/TraceTreeview";
 import DeepSurfing from "@components/Trace/DeepSurfing";
 import InfoCard from "@components/Trace/InfoCard";
 import ParamTreeView from "@components/Trace/ParamTreeView";
+import { faGear, faGears, faPlay } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { useTabModelsContext } from "@hooks/useTabModels";
 import { useTrace } from "@hooks/useTrace";
@@ -96,12 +98,12 @@ const MethodInfo = () => {
           <div className="header">
             <h2>Deep Information</h2>
             <div className="actions" ref={dropdownRef}>
-              <button className="btn-config" onClick={() => setShowConfig((s) => !s)}>
-                설정
-              </button>
-              <button className="btn-run" onClick={handleExecute}>
-                실행
-              </button>
+              <div className="btn-config" onClick={() => setShowConfig((s) => !s)}>
+                <FontAwesomeIcon icon={faGear} />
+              </div>
+              <div className="btn-run" onClick={handleExecute}>
+                <FontAwesomeIcon icon={faPlay} />
+              </div>
 
               {showConfig && (
                 <div className="modal-overlay">

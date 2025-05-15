@@ -24,22 +24,22 @@ const TraceTreeView: React.FC<TraceTreeViewProps> = ({ data, placeholder }) => {
           label={`${trace.className}.${trace.methodName} (${trace.resultTimeMs}ms)`}
           defaultOpen={trace.depth === 0}
           hasChildren={
-            (trace.parameters && trace.parameters.length > 0) ||
-            (trace.nextTraces && trace.nextTraces.length > 0)
+            // (trace.parameters && trace.parameters.length > 0) ||
+            trace.nextTraces && trace.nextTraces.length > 0
           }
           isRoot={trace.depth === 0}
         >
           {/* Render parameters if exist */}
-          {trace.parameters?.length > 0 && (
+          {/* {trace.parameters?.length > 0 && (
             <div>
               {trace.parameters.map((param, i) => (
                 <TraceFieldNode key={`param-${trace.depth}-${i}`} field={param} />
               ))}
             </div>
-          )}
+          )} */}
 
           {/* Recursively render child traces */}
-          {trace.returnValue !== undefined && <TraceFieldNode field={trace.returnValue} />}
+          {/* {trace.returnValue !== undefined && <TraceFieldNode field={trace.returnValue} />} */}
 
           {trace.nextTraces?.length > 0 && <TraceTreeView data={trace.nextTraces} />}
         </TraceTreeNode>

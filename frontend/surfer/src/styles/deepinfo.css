@@ -35,16 +35,18 @@
   border-radius: 4px;
   cursor: pointer;
   user-select: none;
-  background-color: rgba(38, 50, 56, 0.6);
+  background-color: var(--color-samsung);
 }
 
 .tree-node-label:hover {
-  background-color: rgba(38, 50, 56, 0.8);
+  background-color: rgba(56, 38, 38, 0.8);
 }
 
 .tree-node-icon {
-  display: inline-block;
+  display: flex;
   width: 1rem;
+  align-items: center;
+  justify-content: center;
   text-align: center;
   margin-right: 6px;
   color: #4caf50;

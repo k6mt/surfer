@@ -4,11 +4,12 @@ interface FieldNodeProps {
   field: any;
 }
 const TraceFieldNode: React.FC<FieldNodeProps> = ({ field }) => {
+  console.log(field);
   if (field === null || field === undefined) {
     return <div className="field-node-null">null</div>;
   }
   if (typeof field !== "object") {
-    return <div>{String(field)}</div>;
+    return;
   }
   const entries = Array.isArray(field) ? field.map((v, i) => [i, v]) : Object.entries(field);
 
@@ -17,7 +18,8 @@ const TraceFieldNode: React.FC<FieldNodeProps> = ({ field }) => {
       {entries.map(([key, value]) => (
         <TraceTreeNode
           key={key}
-          label={Array.isArray(field) ? `${key}` : `${key}:`}
+          name={key}
+          label={Array.isArray(field) ? `${value}` : `${value}`}
           hasChildren={typeof value === "object" && value !== null && Object.keys(value).length > 0}
         >
           <TraceFieldNode field={value} />
