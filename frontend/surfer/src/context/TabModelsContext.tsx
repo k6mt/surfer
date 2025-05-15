@@ -7,6 +7,7 @@ interface TabsContextType {
   setActiveTabModel: (id: string) => void;
   removeTabModel: (id: string) => void;
   addTabModel: (controller: string, method: string, url: string) => void;
+  updateTabModel: (id: string, updates: Partial<TabModel>) => void;
 }
 
 export const TabModelsContext = createContext<TabsContextType | null>(null);

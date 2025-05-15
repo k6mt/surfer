@@ -1,4 +1,4 @@
-import { RawParams, TabModel } from "@_types/shared";
+import { TabModel } from "@_types/shared";
 import { TabModelsContext } from "@context/TabModelsContext";
 import { useScan } from "@hooks/useScan";
 import { ReactNode, useState } from "react";
@@ -9,10 +9,13 @@ export const TabModelsProvider = ({ children }: { children: ReactNode }) => {
 
   const { ApiScanByMethod } = useScan();
 
-  const addTabModel = async (controller: string, method: string, url: string) => {
+  const addTabModel = async (
+    controller: string,
+    method: string,
+    url: string
+  ) => {
     const id = `${method}_${url}_${Date.now()}`;
     const raw = await ApiScanByMethod(method, url);
-    // const params = convertParams(raw);
 
     const newTabModel: TabModel = {
       id,
@@ -21,6 +24,7 @@ export const TabModelsProvider = ({ children }: { children: ReactNode }) => {
       url,
       response: null,
       params: raw ?? null,
+      trace: null,
       isLoading: false,
     };
 
@@ -34,7 +38,8 @@ export const TabModelsProvider = ({ children }: { children: ReactNode }) => {
       const nextTabModels = prev?.filter((t) => t.id !== id);
 
       if (activeTabModel === id) {
-        const nextActiveTabModel = nextTabModels[curIdx - 1] ?? nextTabModels[0] ?? null;
+        const nextActiveTabModel =
+          nextTabModels[curIdx - 1] ?? nextTabModels[0] ?? null;
         setActiveTabModel(nextActiveTabModel?.id ?? null);
       }
 
@@ -42,9 +47,17 @@ export const TabModelsProvider = ({ children }: { children: ReactNode }) => {
     });
   };
 
-  //convertParam
-  const convertParams = (raw: RawParams) => {
-    return Object.entries(raw);
+  const updateTabModel = (id: string, updates: Partial<TabModel>) => {
+    setTabModels((prev) =>
+      prev.map((m) =>
+        m.id === id
+          ? {
+              ...m,
+              ...updates,
+            }
+          : m
+      )
+    );
   };
 
   return (
@@ -55,6 +68,7 @@ export const TabModelsProvider = ({ children }: { children: ReactNode }) => {
         setActiveTabModel,
         removeTabModel,
         addTabModel,
+        updateTabModel,
       }}
     >
       {children}

@@ -22,7 +22,9 @@ export interface Field {
 export interface LoadTest {
   value: string;
   handleInputChange: (
-    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+    event: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
   ) => void;
   hasError: boolean;
 }
@@ -47,22 +49,64 @@ export interface TabModel {
   url: string;
   response: any | null;
   params: any | null;
+  trace: any | null;
   isLoading: boolean;
 }
 
 export interface TabProps {
   tab: Tab;
-  onFieldChange: (tabId: string, field: "method" | "url" | "response", value: string) => void;
+  onFieldChange: (
+    tabId: string,
+    field: "method" | "url" | "response",
+    value: string
+  ) => void;
 }
 
 export interface TracedParams {
   root: "RequestParam" | "PathVariable" | "RequestHeader" | "RequestBody";
+  type?: string;
   name?: string;
-  type: string;
   fields?: TracedParams[];
   element?: TraceParams;
   keyType?: TracedParams;
   value?: TracedParams;
+}
+
+export interface PathVariableParam {
+  name: string;
+  type: string;
+}
+
+export interface RequestBody {
+  name: string;
+  type: string;
+  fields: CommonField[];
+  element: ListElement;
+  keyType: { type: string };
+  value: CommonField;
+}
+
+export interface CommonField {
+  name?: string;
+  type: string;
+  fields?: CommonField[];
+  element?: CommonField;
+  keyType?: { type: string };
+  value?: CommonField;
+}
+
+export interface ListElement {
+  type: string;
+  name: string;
+  fields: CommonField[];
+  element: ListElement;
+}
+
+export interface MapType {
+  keyType: { type: string };
+  name: string;
+  type: string;
+  value: CommonField;
 }
 
 export type RawParams = Record<

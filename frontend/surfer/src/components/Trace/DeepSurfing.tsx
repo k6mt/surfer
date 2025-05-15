@@ -1,0 +1,166 @@
+import React, { useState } from "react";
+import { useTrace } from "@hooks/useTrace";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faClose } from "@fortawesome/free-solid-svg-icons";
+
+type KeyValue = { key: string; value: string };
+
+interface DeepSurfingProps {
+  method: string;
+  url: string;
+  id: string;
+  onClose: () => void;
+}
+
+const DeepSurfing: React.FC<DeepSurfingProps> = ({
+  method,
+  url,
+  id,
+  onClose,
+}) => {
+  const { TraceAPI } = useTrace();
+
+  // dynamic fields
+  const [pathVar, setPathVar] = useState<KeyValue[]>([]);
+  const [params, setParams] = useState<KeyValue[]>([]);
+  const [body, setBody] = useState<string>("");
+
+  const [result, setResult] = useState<any>(null);
+  const [error, setError] = useState<string>("");
+
+  // React SetState helper
+  const handleAddField = (
+    list: KeyValue[],
+    setter: React.Dispatch<React.SetStateAction<KeyValue[]>>
+  ) => setter([...list, { key: "", value: "" }]);
+
+  const handleFieldChange = (
+    list: KeyValue[],
+    setter: React.Dispatch<React.SetStateAction<KeyValue[]>>,
+    idx: number,
+    field: "key" | "value",
+    val: string
+  ) => {
+    const newList = list.map((it, i) =>
+      i === idx ? { ...it, [field]: val } : it
+    );
+    setter(newList);
+  };
+
+  const buildRecord = (list: KeyValue[]) =>
+    list.reduce<Record<string, string>>((acc, { key, value }) => {
+      if (key) acc[key] = value;
+      return acc;
+    }, {});
+
+  const handleSend = async () => {
+    setError("");
+    setResult(null);
+    try {
+      const res = await TraceAPI({
+        method: method.toLowerCase() as "get" | "post" | "put" | "delete",
+        url,
+        id,
+        pathVariables: buildRecord(pathVar),
+        params: buildRecord(params),
+        data: body ? JSON.parse(body) : undefined,
+      });
+      setResult(res);
+    } catch (err: any) {
+      setError(err.message || "Unknown error");
+    }
+  };
+
+  return (
+    <div className="deep-surfing-container">
+      <div className="deep-surfing-header">
+        <h3>DeepSurfing</h3>
+        <div className="btn-close" onClick={onClose}>
+          <FontAwesomeIcon icon={faClose} />
+        </div>
+      </div>
+
+      <div className="deep-surfing-info">
+        <strong>Method:</strong> {method}
+        <br />
+        <strong>URL:</strong> {url}
+      </div>
+
+      <div className="field-section">
+        <h4>Path Variables</h4>
+        {pathVar.map((pv, i) => (
+          <div key={i} className="field-row">
+            <input
+              placeholder="name"
+              value={pv.key}
+              onChange={(e) =>
+                handleFieldChange(pathVar, setPathVar, i, "key", e.target.value)
+              }
+            />
+            <input
+              placeholder="value"
+              value={pv.value}
+              onChange={(e) =>
+                handleFieldChange(
+                  pathVar,
+                  setPathVar,
+                  i,
+                  "value",
+                  e.target.value
+                )
+              }
+            />
+          </div>
+        ))}
+        <button onClick={() => handleAddField(pathVar, setPathVar)}>
+          + Add PathVar
+        </button>
+      </div>
+
+      <div className="field-section">
+        <h4>Query Params</h4>
+        {params.map((p, i) => (
+          <div key={i} className="field-row">
+            <input
+              placeholder="name"
+              value={p.key}
+              onChange={(e) =>
+                handleFieldChange(params, setParams, i, "key", e.target.value)
+              }
+            />
+            <input
+              placeholder="value"
+              value={p.value}
+              onChange={(e) =>
+                handleFieldChange(params, setParams, i, "value", e.target.value)
+              }
+            />
+          </div>
+        ))}
+        <button onClick={() => handleAddField(params, setParams)}>
+          + Add Param
+        </button>
+      </div>
+
+      {method.toLowerCase() !== "get" && method.toLowerCase() !== "delete" && (
+        <div className="field-section">
+          <h4>Request Body (JSON)</h4>
+          <textarea
+            rows={6}
+            value={body}
+            onChange={(e) => setBody(e.target.value)}
+            placeholder='{"name":"john","age":25}'
+          />
+        </div>
+      )}
+
+      <div className="actions-footer">
+        <button className="btn-send" onClick={handleSend}>
+          <p>Save</p>
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default DeepSurfing;
