@@ -22,9 +22,7 @@ export interface Field {
 export interface LoadTest {
   value: string;
   handleInputChange: (
-    event: React.ChangeEvent<
-      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >
+    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => void;
   hasError: boolean;
 }
@@ -51,15 +49,12 @@ export interface TabModel {
   params: any | null;
   trace: any | null;
   isLoading: boolean;
+  config: any | null;
 }
 
 export interface TabProps {
   tab: Tab;
-  onFieldChange: (
-    tabId: string,
-    field: "method" | "url" | "response",
-    value: string
-  ) => void;
+  onFieldChange: (tabId: string, field: "method" | "url" | "response", value: string) => void;
 }
 
 export interface TracedParams {
@@ -113,50 +108,16 @@ export type RawParams = Record<
   string,
   { name: string; type: string; fields?: any; element?: any }[]
 >;
-/*
-const fields: Field[] = [
-  {
-    name: "url",
-    value: "",
-    validationFn: validateUrl,
-    label: "Target URL",
-    type: "text",
-  },
-  {
-    name: "method",
-    value: "GET",
-    validationFn: (value: string) => ["GET", "POST", "PUT", "DELETE"].includes(value),
-    label: "HTTP Method",
-    type: "select",
-    options: ["GET", "POST", "PUT", "DELETE"], // select 요소 옵션
-  },
-  {
-    name: "body",
-    value: '{"key":"value"}',
-    validationFn: validateBody,
-    label: "Request Body (JSON, POST/PUT only)",
-    type: "textarea",
-  },
-  {
-    name: "threadCount",
-    value: "10",
-    validationFn: validateThreadCount,
-    label: "Thread Count",
-    type: "number",
-  },
-  {
-    name: "requestPerSecond",
-    value: "5",
-    validationFn: validateRequestPerSecond,
-    label: "Requests Per Second (per thread)",
-    type: "number",
-  },
-  {
-    name: "durationSeconds",
-    value: "60",
-    validationFn: validateDurationSeconds,
-    label: "Duration (seconds)",
-    type: "number",
-  },
-];
-*/
+
+export interface TraceRecord {
+  traceId: string;
+  depth: number;
+  className: string;
+  methodName: string;
+  startTimeMs: number;
+  endTimeMs: number;
+  resultTimeMs: number;
+  parameters: any[];
+  returnValue: any;
+  nextTraces: TraceRecord[];
+}

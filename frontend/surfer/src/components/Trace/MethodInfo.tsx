@@ -1,24 +1,20 @@
+import TraceTreeView from "@components/Trace/DeepInformation/TraceTreeview";
 import DeepSurfing from "@components/Trace/DeepSurfing";
 import InfoCard from "@components/Trace/InfoCard";
 import ParamTreeView from "@components/Trace/ParamTreeView";
-import TraceTreeView from "@components/Trace/TraceTreeView";
 
 import { useTabModelsContext } from "@hooks/useTabModels";
+import { useTrace } from "@hooks/useTrace";
 import { useEffect, useRef, useState } from "react";
 
 const MethodInfo = () => {
   const [showConfig, setShowConfig] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const { tabModels, activeTabModel } = useTabModelsContext();
+  const { tabModels, activeTabModel, updateTabModel } = useTabModelsContext();
+  const { TraceAPI } = useTrace();
 
-  if (!activeTabModel) return;
-
-  const safeActiveModel = tabModels.find(
-    (model) => model.id === activeTabModel
-  );
-
-  if (safeActiveModel === undefined) return <div>Wrong Surfing</div>;
+  const safeActiveModel = tabModels.find((model) => model.id === activeTabModel);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -34,7 +30,45 @@ const MethodInfo = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [showConfig]);
 
-  const handleExecute = () => {};
+  if (!safeActiveModel) {
+    return <div>Wrong Surfing</div>;
+  }
+
+  const handleExecute = async () => {
+    if (!safeActiveModel.config) {
+      // no config
+      const { response, trace } = await TraceAPI({
+        id: safeActiveModel.id,
+        method: safeActiveModel.method.toLowerCase() as any,
+        url: safeActiveModel.url,
+      });
+
+      if (response.status === 200 && trace.status === 200) {
+        updateTabModel(safeActiveModel.id, { response: response.data });
+        updateTabModel(safeActiveModel.id, { trace: trace.data });
+      }
+
+      return;
+    }
+
+    const { pathVariables, params, body } = safeActiveModel.config;
+
+    const { response, trace } = await TraceAPI({
+      id: safeActiveModel.id,
+      method: safeActiveModel.method.toLowerCase() as any,
+      url: safeActiveModel.url,
+      pathVariables: pathVariables,
+      params: params,
+      data: body,
+    });
+
+    if (response.status === 200 && trace.status === 200) {
+      updateTabModel(safeActiveModel.id, { response: response.data });
+      updateTabModel(safeActiveModel.id, { trace: trace.data });
+    }
+
+    return;
+  };
 
   return (
     <>
@@ -62,10 +96,7 @@ const MethodInfo = () => {
           <div className="header">
             <h2>Deep Information</h2>
             <div className="actions" ref={dropdownRef}>
-              <button
-                className="btn-config"
-                onClick={() => setShowConfig((s) => !s)}
-              >
+              <button className="btn-config" onClick={() => setShowConfig((s) => !s)}>
                 설정
               </button>
               <button className="btn-run" onClick={handleExecute}>
@@ -88,12 +119,17 @@ const MethodInfo = () => {
           </div>
           <div className="infos-trace">
             <div className="table-title">Trace</div>
-            <TraceTreeView data={safeActiveModel.params} />
+            <div className="trace-wrapper">
+              <TraceTreeView
+                data={safeActiveModel.trace}
+                placeholder={<div>버튼을 눌러 API를 서핑해보세요</div>}
+              />
+            </div>
           </div>
 
           <div className="infos-response">
-            <div className="table-title">Trace</div>
-            <TraceTreeView data={safeActiveModel.params} />
+            <div className="table-title">Response</div>
+            <TraceTreeView data={safeActiveModel.response} />
           </div>
         </div>
       </div>

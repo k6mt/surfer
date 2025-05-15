@@ -10,14 +10,7 @@ interface TraceAPIOptions {
 }
 
 export function useTrace() {
-  async function TraceAPI({
-    method,
-    url,
-    id,
-    pathVariables,
-    params,
-    data,
-  }: TraceAPIOptions) {
+  async function TraceAPI({ method, url, id, pathVariables, params, data }: TraceAPIOptions) {
     const headers = {
       "X-Surfer-Header": id,
     };
@@ -26,10 +19,7 @@ export function useTrace() {
     let finalUrl = url;
     if (pathVariables) {
       for (const [key, value] of Object.entries(pathVariables)) {
-        finalUrl = finalUrl.replace(
-          `{${key}}`,
-          encodeURIComponent(String(value))
-        );
+        finalUrl = finalUrl.replace(`{${key}}`, encodeURIComponent(String(value)));
       }
     }
 

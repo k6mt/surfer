@@ -9,11 +9,7 @@ export const TabModelsProvider = ({ children }: { children: ReactNode }) => {
 
   const { ApiScanByMethod } = useScan();
 
-  const addTabModel = async (
-    controller: string,
-    method: string,
-    url: string
-  ) => {
+  const addTabModel = async (controller: string, method: string, url: string) => {
     const id = `${method}_${url}_${Date.now()}`;
     const raw = await ApiScanByMethod(method, url);
 
@@ -26,6 +22,7 @@ export const TabModelsProvider = ({ children }: { children: ReactNode }) => {
       params: raw ?? null,
       trace: null,
       isLoading: false,
+      config: null,
     };
 
     setTabModels((prev) => [...prev, newTabModel]);
@@ -38,8 +35,7 @@ export const TabModelsProvider = ({ children }: { children: ReactNode }) => {
       const nextTabModels = prev?.filter((t) => t.id !== id);
 
       if (activeTabModel === id) {
-        const nextActiveTabModel =
-          nextTabModels[curIdx - 1] ?? nextTabModels[0] ?? null;
+        const nextActiveTabModel = nextTabModels[curIdx - 1] ?? nextTabModels[0] ?? null;
         setActiveTabModel(nextActiveTabModel?.id ?? null);
       }
 

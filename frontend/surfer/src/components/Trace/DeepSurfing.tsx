@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { useTrace } from "@hooks/useTrace";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
+import { useTabModelsContext } from "@hooks/useTabModels";
 
 type KeyValue = { key: string; value: string };
 
@@ -12,21 +12,13 @@ interface DeepSurfingProps {
   onClose: () => void;
 }
 
-const DeepSurfing: React.FC<DeepSurfingProps> = ({
-  method,
-  url,
-  id,
-  onClose,
-}) => {
-  const { TraceAPI } = useTrace();
+const DeepSurfing: React.FC<DeepSurfingProps> = ({ method, url, id, onClose }) => {
+  const { updateTabModel } = useTabModelsContext();
 
   // dynamic fields
   const [pathVar, setPathVar] = useState<KeyValue[]>([]);
   const [params, setParams] = useState<KeyValue[]>([]);
   const [body, setBody] = useState<string>("");
-
-  const [result, setResult] = useState<any>(null);
-  const [error, setError] = useState<string>("");
 
   // React SetState helper
   const handleAddField = (
@@ -41,9 +33,7 @@ const DeepSurfing: React.FC<DeepSurfingProps> = ({
     field: "key" | "value",
     val: string
   ) => {
-    const newList = list.map((it, i) =>
-      i === idx ? { ...it, [field]: val } : it
-    );
+    const newList = list.map((it, i) => (i === idx ? { ...it, [field]: val } : it));
     setter(newList);
   };
 
@@ -53,22 +43,15 @@ const DeepSurfing: React.FC<DeepSurfingProps> = ({
       return acc;
     }, {});
 
-  const handleSend = async () => {
-    setError("");
-    setResult(null);
-    try {
-      const res = await TraceAPI({
-        method: method.toLowerCase() as "get" | "post" | "put" | "delete",
-        url,
-        id,
-        pathVariables: buildRecord(pathVar),
-        params: buildRecord(params),
-        data: body ? JSON.parse(body) : undefined,
-      });
-      setResult(res);
-    } catch (err: any) {
-      setError(err.message || "Unknown error");
-    }
+  const handleSave = () => {
+    const config = {
+      pathVariables: buildRecord(pathVar),
+      params: buildRecord(params),
+      body: body ? JSON.parse(body) : undefined,
+    };
+
+    updateTabModel(id, { config: config });
+    onClose();
   };
 
   return (
@@ -93,28 +76,16 @@ const DeepSurfing: React.FC<DeepSurfingProps> = ({
             <input
               placeholder="name"
               value={pv.key}
-              onChange={(e) =>
-                handleFieldChange(pathVar, setPathVar, i, "key", e.target.value)
-              }
+              onChange={(e) => handleFieldChange(pathVar, setPathVar, i, "key", e.target.value)}
             />
             <input
               placeholder="value"
               value={pv.value}
-              onChange={(e) =>
-                handleFieldChange(
-                  pathVar,
-                  setPathVar,
-                  i,
-                  "value",
-                  e.target.value
-                )
-              }
+              onChange={(e) => handleFieldChange(pathVar, setPathVar, i, "value", e.target.value)}
             />
           </div>
         ))}
-        <button onClick={() => handleAddField(pathVar, setPathVar)}>
-          + Add PathVar
-        </button>
+        <button onClick={() => handleAddField(pathVar, setPathVar)}>+ Add PathVar</button>
       </div>
 
       <div className="field-section">
@@ -124,22 +95,16 @@ const DeepSurfing: React.FC<DeepSurfingProps> = ({
             <input
               placeholder="name"
               value={p.key}
-              onChange={(e) =>
-                handleFieldChange(params, setParams, i, "key", e.target.value)
-              }
+              onChange={(e) => handleFieldChange(params, setParams, i, "key", e.target.value)}
             />
             <input
               placeholder="value"
               value={p.value}
-              onChange={(e) =>
-                handleFieldChange(params, setParams, i, "value", e.target.value)
-              }
+              onChange={(e) => handleFieldChange(params, setParams, i, "value", e.target.value)}
             />
           </div>
         ))}
-        <button onClick={() => handleAddField(params, setParams)}>
-          + Add Param
-        </button>
+        <button onClick={() => handleAddField(params, setParams)}>+ Add Param</button>
       </div>
 
       {method.toLowerCase() !== "get" && method.toLowerCase() !== "delete" && (
@@ -155,7 +120,7 @@ const DeepSurfing: React.FC<DeepSurfingProps> = ({
       )}
 
       <div className="actions-footer">
-        <button className="btn-send" onClick={handleSend}>
+        <button className="btn-save" onClick={handleSave}>
           <p>Save</p>
         </button>
       </div>
