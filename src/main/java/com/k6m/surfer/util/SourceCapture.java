@@ -1,22 +1,66 @@
-package com.k6m.surfer.error.core;
+package com.k6m.surfer.util;
 
 import com.github.javaparser.Range;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.MethodDeclaration;
 
+import com.k6m.surfer.error.core.ErrorInfo;
 import java.io.File;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class ErrorSourceCapture {
+public class SourceCapture {
     private final String sourceRoot;
 
-    public ErrorSourceCapture(String sourceRoot) {
+    public SourceCapture(String sourceRoot) {
         this.sourceRoot = sourceRoot;
     }
+
+    /**
+     * Captures the source code of a method.
+     * @param className The fully qualified class name
+     * @param methodName The method name
+     * @return The source code of the method
+     */
+    public String captureMethodSource(String className, String methodName) {
+        try {
+            File file = getSourceFile(className);
+            CompilationUnit cu = StaticJavaParser.parse(file);
+
+            Optional<MethodDeclaration> mdOpt = cu.findAll(MethodDeclaration.class).stream()
+                .filter(m -> m.getNameAsString().equals(methodName))
+                .findFirst();
+
+            if (mdOpt.isPresent()) {
+                MethodDeclaration md = mdOpt.get();
+                return md.toString();
+            }
+        } catch (Exception ex) {
+            System.err.println("[MethodSourceCapture] Failed to read source: " + ex.getMessage());
+        }
+
+        return "// Source code not found for method: " + className + "." + methodName;
+    }
+
+    /**
+     * Captures the source code of a class.
+     * @param className The fully qualified class name
+     * @return The source code of the class
+     */
+    public String captureClassSource(String className) {
+        try {
+            File file = getSourceFile(className);
+            return new String(Files.readAllBytes(file.toPath()));
+        } catch (Exception ex) {
+            System.err.println("[MethodSourceCapture] Failed to read class source: " + ex.getMessage());
+        }
+
+        return "// Source code not found for class: " + className;
+    }
+
 
     /**
      * Captures the error context and returns an ErrorInfo object, including method arguments.

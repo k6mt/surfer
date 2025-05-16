@@ -1,15 +1,17 @@
 package com.k6m.surfer.config;
 
+import com.k6m.surfer.analysis.controller.MethodAnalysisController;
+import com.k6m.surfer.analysis.core.MethodFlowAnalysisService;
 import com.k6m.surfer.apiscan.controller.ApiScanController;
 import com.k6m.surfer.apiscan.core.SurferApiAnalyzer;
 import com.k6m.surfer.apiscan.core.SurferApiScanner;
 import com.k6m.surfer.error.controller.ErrorController;
-import com.k6m.surfer.error.core.AIClient;
-import com.k6m.surfer.error.core.AnthropicClient;
-import com.k6m.surfer.error.core.AzureOpenAIClient;
-import com.k6m.surfer.error.core.DefaultAIClient;
+import com.k6m.surfer.ai.core.AIClient;
+import com.k6m.surfer.ai.core.AnthropicClient;
+import com.k6m.surfer.ai.core.AzureOpenAIClient;
+import com.k6m.surfer.ai.core.DefaultAIClient;
 import com.k6m.surfer.error.core.ErrorAnalysisService;
-import com.k6m.surfer.error.core.OpenAIClient;
+import com.k6m.surfer.ai.core.OpenAIClient;
 import com.k6m.surfer.error.repository.ErrorRepository;
 import com.k6m.surfer.error.repository.MemoryErrorRepository;
 import com.k6m.surfer.loadtest.controller.LoadTestController;
@@ -19,12 +21,11 @@ import com.k6m.surfer.methodtrace.Tracer;
 import com.k6m.surfer.methodtrace.controller.TraceController;
 import com.k6m.surfer.system.controller.SystemController;
 import com.k6m.surfer.util.CsvConverter;
-import com.k6m.surfer.error.core.ErrorSourceCapture;
+import com.k6m.surfer.util.SourceCapture;
 import org.springframework.aop.Advisor;
 import org.springframework.aop.aspectj.AspectJExpressionPointcut;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
@@ -75,9 +76,9 @@ public class SurferAutoConfiguration {
     }
 
     @Bean
-    public ErrorSourceCapture errorSourceReader() {
+    public SourceCapture errorSourceReader() {
         String basePackage = detectMainPackage();
-        return new ErrorSourceCapture(basePackage);
+        return new SourceCapture(basePackage);
     }
 
     @Bean
@@ -97,7 +98,7 @@ public class SurferAutoConfiguration {
     }
 
     @Bean
-    public Advisor traceAdvisor(Tracer tracer, ErrorSourceCapture errorSourceCapture, ErrorRepository errorRepository) {
+    public Advisor traceAdvisor(Tracer tracer, SourceCapture sourceCapture, ErrorRepository errorRepository) {
         AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
         String basePackage = detectMainPackage();
 
@@ -108,7 +109,7 @@ public class SurferAutoConfiguration {
         pointcut.setExpression(expression);
 
         return new DefaultPointcutAdvisor(pointcut, new SurferMethodInterceptor(basePackage, tracer,
-            errorSourceCapture,errorRepository));
+            sourceCapture,errorRepository));
     }
 
     @Bean
@@ -147,5 +148,15 @@ public class SurferAutoConfiguration {
     @Bean
     public SystemController systemController() {
         return new SystemController();
+    }
+
+    @Bean
+    public MethodAnalysisController methodAnalysisController(Tracer tracer, MethodFlowAnalysisService service) {
+        return new MethodAnalysisController(tracer, service);
+    }
+
+    @Bean
+    public MethodFlowAnalysisService methodFlowAnalysisService(AIClient aiClient, SourceCapture sourceCapture) {
+        return new MethodFlowAnalysisService(aiClient, sourceCapture);
     }
 }

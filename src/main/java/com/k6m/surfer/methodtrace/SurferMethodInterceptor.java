@@ -1,7 +1,7 @@
 package com.k6m.surfer.methodtrace;
 
 import com.k6m.surfer.error.core.ErrorInfo;
-import com.k6m.surfer.error.core.ErrorSourceCapture;
+import com.k6m.surfer.util.SourceCapture;
 import com.k6m.surfer.error.repository.ErrorRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import org.aopalliance.intercept.MethodInterceptor;
@@ -13,14 +13,14 @@ public class SurferMethodInterceptor implements MethodInterceptor {
 
   private final String basePackage;
   private final Tracer tracer;
-  private final ErrorSourceCapture errorSourceCapture;
+  private final SourceCapture sourceCapture;
   private final ErrorRepository errorRepository;
 
-  public SurferMethodInterceptor(String basePackage, Tracer tracer, ErrorSourceCapture errorSourceCapture,
+  public SurferMethodInterceptor(String basePackage, Tracer tracer, SourceCapture sourceCapture,
       ErrorRepository errorRepository) {
     this.basePackage = basePackage;
     this.tracer = tracer;
-    this.errorSourceCapture = errorSourceCapture;
+    this.sourceCapture = sourceCapture;
     this.errorRepository = errorRepository;
   }
 
@@ -37,11 +37,13 @@ public class SurferMethodInterceptor implements MethodInterceptor {
     try {
       tracer.begin(traceId, invocation);
       result = invocation.proceed();
+
+
     } catch (Exception e) {
       Trace trace = tracer.getTraceHolder().get();
       trace.setExceptionMessage(e.getMessage());
 
-      ErrorInfo errorInfo = errorSourceCapture.captureErrorContext(e, invocation.getArguments());
+      ErrorInfo errorInfo = sourceCapture.captureErrorContext(e, invocation.getArguments());
       errorRepository.storeError(traceId, errorInfo);
       throw e;
     } finally {
