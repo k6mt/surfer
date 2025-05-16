@@ -1,6 +1,7 @@
 package com.k6m.surfer.ai.core;
 
 import com.k6m.surfer.config.ConfigProperties;
+import com.k6m.surfer.util.StaticRestTemplate;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpEntity;
@@ -19,8 +20,8 @@ public class AnthropicClient implements AIClient {
     private final RestTemplate restTemplate;
     private final ConfigProperties configProperties;
 
-    public AnthropicClient(@Qualifier("surferRestTemplate")RestTemplate restTemplate, ConfigProperties configProperties) {
-        this.restTemplate = restTemplate;
+    public AnthropicClient(ConfigProperties configProperties) {
+        this.restTemplate = StaticRestTemplate.getInstance();
         this.configProperties = configProperties;
     }
 
