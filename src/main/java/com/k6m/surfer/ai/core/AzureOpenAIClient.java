@@ -1,4 +1,4 @@
-package com.k6m.surfer.error.core;
+package com.k6m.surfer.ai.core;
 
 import com.k6m.surfer.config.ConfigProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -13,13 +13,13 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-@ConditionalOnProperty(prefix = "surfer.config.ai", name = "provider", havingValue = "openai")
-public class OpenAIClient implements AIClient {
+@ConditionalOnProperty(prefix = "surfer.config.ai", name = "provider", havingValue = "azure")
+public class AzureOpenAIClient implements AIClient {
 
     private final RestTemplate restTemplate;
     private final ConfigProperties configProperties;
 
-    public OpenAIClient(RestTemplate restTemplate, ConfigProperties configProperties) {
+    public AzureOpenAIClient(RestTemplate restTemplate, ConfigProperties configProperties) {
         this.restTemplate = restTemplate;
         this.configProperties = configProperties;
     }
@@ -33,14 +33,13 @@ public class OpenAIClient implements AIClient {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
-            headers.set("Authorization", "Bearer " + configProperties.getAi().getApiKey());
+            headers.set("api-key", configProperties.getAi().getApiKey());
 
             Map<String, Object> messageObj = new HashMap<>();
             messageObj.put("role", "user");
             messageObj.put("content", prompt);
 
             Map<String, Object> requestBody = new HashMap<>();
-            requestBody.put("model", configProperties.getAi().getModelName());
             requestBody.put("messages", List.of(messageObj));
             requestBody.put("temperature", configProperties.getAi().getTemperature());
             requestBody.put("max_tokens", configProperties.getAi().getMaxTokens());
@@ -65,7 +64,7 @@ public class OpenAIClient implements AIClient {
             }
             return "Failed to retrieve AI analysis results.";
         } catch (Exception e) {
-            return "OpenAI service error: " + e.getMessage();
+            return "Azure OpenAI service error: " + e.getMessage();
         }
     }
 }

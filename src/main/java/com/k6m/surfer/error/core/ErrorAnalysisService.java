@@ -1,5 +1,6 @@
 package com.k6m.surfer.error.core;
 
+import com.k6m.surfer.ai.core.AIClient;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

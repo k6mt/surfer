@@ -1,4 +1,4 @@
-package com.k6m.surfer.error.core;
+package com.k6m.surfer.ai.core;
 
 public interface AIClient {
 

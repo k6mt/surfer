@@ -1,6 +1,6 @@
 package com.k6m.surfer.error.controller;
 
-import com.k6m.surfer.error.core.AIAnalysisResponse;
+import com.k6m.surfer.ai.core.AIAnalysisResponse;
 import com.k6m.surfer.error.core.ErrorAnalysisService;
 import com.k6m.surfer.error.core.ErrorInfo;
 import com.k6m.surfer.error.repository.ErrorRepository;

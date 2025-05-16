@@ -1,4 +1,4 @@
-package com.k6m.surfer.error.core;
+package com.k6m.surfer.ai.core;
 
 import com.k6m.surfer.config.ConfigProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -9,16 +9,17 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Component
-@ConditionalOnProperty(prefix = "surfer.config.ai", name = "provider", havingValue = "anthropic")
-public class AnthropicClient implements AIClient {
+@ConditionalOnProperty(prefix = "surfer.config.ai", name = "provider", havingValue = "openai")
+public class OpenAIClient implements AIClient {
 
     private final RestTemplate restTemplate;
     private final ConfigProperties configProperties;
 
-    public AnthropicClient(RestTemplate restTemplate, ConfigProperties configProperties) {
+    public OpenAIClient(RestTemplate restTemplate, ConfigProperties configProperties) {
         this.restTemplate = restTemplate;
         this.configProperties = configProperties;
     }
@@ -32,14 +33,17 @@ public class AnthropicClient implements AIClient {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
-            headers.set("x-api-key", configProperties.getAi().getApiKey());
-            headers.set("anthropic-version", "2023-06-01");
+            headers.set("Authorization", "Bearer " + configProperties.getAi().getApiKey());
+
+            Map<String, Object> messageObj = new HashMap<>();
+            messageObj.put("role", "user");
+            messageObj.put("content", prompt);
 
             Map<String, Object> requestBody = new HashMap<>();
             requestBody.put("model", configProperties.getAi().getModelName());
-            requestBody.put("prompt", "\n\nHuman: " + prompt + "\n\nAssistant:");
+            requestBody.put("messages", List.of(messageObj));
             requestBody.put("temperature", configProperties.getAi().getTemperature());
-            requestBody.put("max_tokens_to_sample", configProperties.getAi().getMaxTokens());
+            requestBody.put("max_tokens", configProperties.getAi().getMaxTokens());
 
             HttpEntity<Map<String, Object>> request = new HttpEntity<>(requestBody, headers);
 
@@ -49,12 +53,19 @@ public class AnthropicClient implements AIClient {
                     Map.class
             );
 
-            if (response != null && response.containsKey("completion")) {
-                return (String) response.get("completion");
+            if (response != null && response.containsKey("choices")) {
+                List<Map<String, Object>> choices = (List<Map<String, Object>>) response.get("choices");
+                if (!choices.isEmpty()) {
+                    Map<String, Object> choice = choices.get(0);
+                    Map<String, Object> message = (Map<String, Object>) choice.get("message");
+                    if (message != null && message.containsKey("content")) {
+                        return (String) message.get("content");
+                    }
+                }
             }
             return "Failed to retrieve AI analysis results.";
         } catch (Exception e) {
-            return "Anthropic service error: " + e.getMessage();
+            return "OpenAI service error: " + e.getMessage();
         }
     }
 }
