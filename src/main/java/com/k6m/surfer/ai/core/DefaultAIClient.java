@@ -1,4 +1,4 @@
-package com.k6m.surfer.error.core;
+package com.k6m.surfer.ai.core;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.stereotype.Component;
