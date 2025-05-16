@@ -1,25 +1,26 @@
+import AnalyzeContainer from "@components/Analyze/AnalyzeContainer";
+import ModelHeader from "@components/Analyze/ModelHeader";
 import RouteAside from "@components/RouteSide/RouteAside";
 import SurferList from "@components/SurferList/SurferList";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 
 const MainLayout = () => {
-  const handleApiClick = async (method: string, url: string) => {
-    try {
-      console.log(method, url);
-    } catch (e) {
-      console.log(e);
-    }
-  };
+  const location = useLocation();
+  const isHome = location.pathname === "/";
+
   return (
-    <>
+    <div className={`layout ${isHome ? "home" : ""}`}>
       <RouteAside />
-      <SurferList onApiClick={handleApiClick} />
+      {!isHome && <SurferList />}
       <main>
-        <div className="layout__container">
-          <Outlet />
+        <div className="container">
+          <ModelHeader />
+          <AnalyzeContainer>
+            <Outlet />
+          </AnalyzeContainer>
         </div>
       </main>
-    </>
+    </div>
   );
 };
 

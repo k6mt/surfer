@@ -1,12 +1,7 @@
-import { TraceContextProvider } from "@context/TraceProvider";
 import AppRouter from "@utils/AppRouter";
 
 function App() {
-  return (
-    <TraceContextProvider>
-      <AppRouter />
-    </TraceContextProvider>
-  );
+  return <AppRouter />;
 }
 
 export default App;

@@ -19,7 +19,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "http://localhost:8888",
+        target: "http://localhost:8080",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },
@@ -46,6 +46,7 @@ export default defineConfig({
       output: {
         entryFileNames: "[name].js",
         assetFileNames: "[name].[ext]",
+        chunkFileNames: "[name].js",
         manualChunks: {
           react: ["react", "react-dom"],
           reactRouter: ["react-router-dom"],
