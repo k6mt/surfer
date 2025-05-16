@@ -21,8 +21,8 @@ public class MethodAnalysisController {
     this.analysisService = analysisService;
   }
 
-  @GetMapping("/{traceId}")
-  public ApiUtils.ApiResult<?> analyzeMethodFlow(@PathVariable(name = "traceId") String traceId) {
+  @GetMapping("")
+  public ApiUtils.ApiResult<?> analyzeMethodFlow(@RequestHeader(name = "X-Surfer-Header") String traceId) {
     Trace trace = tracer.getTraceMap().get(traceId);
 
     if (trace == null) {
