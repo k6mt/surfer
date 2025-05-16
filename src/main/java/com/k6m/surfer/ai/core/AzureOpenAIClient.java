@@ -1,6 +1,7 @@
 package com.k6m.surfer.ai.core;
 
 import com.k6m.surfer.config.ConfigProperties;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -19,7 +20,7 @@ public class AzureOpenAIClient implements AIClient {
     private final RestTemplate restTemplate;
     private final ConfigProperties configProperties;
 
-    public AzureOpenAIClient(RestTemplate restTemplate, ConfigProperties configProperties) {
+    public AzureOpenAIClient(@Qualifier("surferRestTemplate")RestTemplate restTemplate, ConfigProperties configProperties) {
         this.restTemplate = restTemplate;
         this.configProperties = configProperties;
     }
