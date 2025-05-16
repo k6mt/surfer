@@ -15,12 +15,13 @@ const LoadContent = () => {
   );
 
   const handleExecute = () => {
-    console.log("EXE");
+    console.log(tabModels);
   };
 
   if (!safeActiveModel) {
     return <div>Wrong Surfing</div>;
   }
+
   return (
     <div className="load-content">
       <div className="header">

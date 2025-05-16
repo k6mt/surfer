@@ -1,13 +1,16 @@
-import { Field } from "@_types/shared";
+import { LoadField } from "@_types/shared";
+import BodyFields from "@components/Load/BodyFields";
+import CountFields from "@components/Load/CountFields";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useTabModelsContext } from "@hooks/useTabModels";
+import { useEffect, useState } from "react";
 
 interface ConfigModalProps {
   baseController: string;
   baseMethod: string;
   baseUrl: string;
-  fields: Field[];
+  fields: LoadField[] | null;
   id: string;
   onClose: () => void;
 }
@@ -22,15 +25,29 @@ const ConfigModal: React.FC<ConfigModalProps> = ({
 }) => {
   const { updateTabModel } = useTabModelsContext();
 
+  const [fieldState, setFieldState] = useState<LoadField[]>(fields || []);
+
+  useEffect(() => {
+    if (fields) {
+      setFieldState(fields);
+    }
+  }, [fields]);
+
   const handleSave = () => {
-    /*
-            1. Tab에 저장된 fields를 찾는다
-            2. fields 비교해 업데이트 되어야함
-        */
-    console.log(fields);
-    console.log(id);
-    console.log(updateTabModel);
+    const updatedFields = fieldState;
+    updateTabModel(id, { load: updatedFields });
     onClose();
+  };
+
+  const handleFieldChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >,
+    index: number
+  ) => {
+    const updatedFields = [...fieldState];
+    updatedFields[index].value = e.target.value;
+    setFieldState(updatedFields);
   };
 
   return (
@@ -49,6 +66,35 @@ const ConfigModal: React.FC<ConfigModalProps> = ({
           <strong>Method:</strong> {baseMethod}
           <br />
           <strong>URL:</strong> {baseUrl}
+        </div>
+
+        <div className="form-data-container">
+          <div className="form-data-count">
+            <CountFields
+              field={fieldState[0]}
+              index={0}
+              handleInputChange={handleFieldChange}
+            />
+
+            <CountFields
+              field={fieldState[1]}
+              index={1}
+              handleInputChange={handleFieldChange}
+            />
+
+            <CountFields
+              field={fieldState[2]}
+              index={2}
+              handleInputChange={handleFieldChange}
+            />
+          </div>
+          <div className="form-data-body">
+            <BodyFields
+              field={fieldState[3]}
+              index={3}
+              handleInputChange={handleFieldChange}
+            />
+          </div>
         </div>
       </div>
 

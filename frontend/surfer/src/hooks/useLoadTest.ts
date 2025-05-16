@@ -16,10 +16,9 @@ export function useLoadTest(
         HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
       >
     ) => {
+      console.log(event.target.value);
       setValue(event.target.value);
       setHasError(!validationFn(event.target.value));
-
-      console.log(hasError, event.target.value);
     },
     [validationFn]
   );
