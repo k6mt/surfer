@@ -1,6 +1,7 @@
 package com.k6m.surfer.ai.core;
 
 import com.k6m.surfer.config.ConfigProperties;
+import com.k6m.surfer.util.StaticRestTemplate;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpEntity;
@@ -20,8 +21,8 @@ public class OpenAIClient implements AIClient {
     private final RestTemplate restTemplate;
     private final ConfigProperties configProperties;
 
-    public OpenAIClient(@Qualifier("surferRestTemplate")RestTemplate restTemplate, ConfigProperties configProperties) {
-        this.restTemplate = restTemplate;
+    public OpenAIClient(ConfigProperties configProperties) {
+        this.restTemplate = StaticRestTemplate.getInstance();
         this.configProperties = configProperties;
     }
 
