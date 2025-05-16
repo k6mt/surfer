@@ -19,6 +19,14 @@ export interface Field {
   state: LoadTest;
 }
 
+export interface LoadField {
+  name: string;
+  label: string;
+  type: "text" | "number" | "select" | "textarea"; // 'text', 'number', or 'select'
+  value: string;
+  validate: (value: string) => boolean;
+}
+
 export interface LoadTest {
   value: string;
   handleInputChange: (
@@ -52,7 +60,7 @@ export interface TabModel {
   trace: any | null;
   isLoading: boolean;
   config: any | null;
-  load: Field[];
+  load: LoadField[] | null;
 }
 
 export interface TabProps {
