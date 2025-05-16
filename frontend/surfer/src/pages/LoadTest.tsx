@@ -1,6 +1,5 @@
 import PageTitle from "@components/common/PageTitle";
 import LoadContent from "@components/Load/LoadContent";
-import LoadTestForm from "@components/loadtest/LoadTestForm";
 import { LoadTestProvider } from "@context/LoadTestContextProvider";
 
 function LoadTest() {
@@ -9,7 +8,7 @@ function LoadTest() {
       <div className="load-container">
         <PageTitle title="Load Test" />
         <LoadContent />
-        <LoadTestForm />
+        {/* <LoadTestForm /> */}
       </div>
     </LoadTestProvider>
   );
