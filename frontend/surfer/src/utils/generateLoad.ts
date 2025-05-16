@@ -1,4 +1,4 @@
-import { Field, LoadField } from "@_types/shared";
+import { LoadField } from "@_types/shared";
 
 // Validation 함수들
 const validateThreadCount = (value: string) => parseInt(value, 10) > 0;

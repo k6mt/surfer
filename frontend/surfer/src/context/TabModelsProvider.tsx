@@ -1,4 +1,4 @@
-import { Field, TabModel } from "@_types/shared";
+import { TabModel } from "@_types/shared";
 import { TabModelsContext } from "@context/TabModelsContext";
 import { useScan } from "@hooks/useScan";
 import { useLoadTestFields } from "@utils/generateLoad";
