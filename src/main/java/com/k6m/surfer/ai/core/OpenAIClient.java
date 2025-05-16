@@ -1,4 +1,4 @@
-package com.k6m.surfer.error.core;
+package com.k6m.surfer.ai.core;
 
 import com.k6m.surfer.config.ConfigProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
