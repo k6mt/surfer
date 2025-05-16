@@ -11,7 +11,9 @@ const TraceFieldNode: React.FC<FieldNodeProps> = ({ field }) => {
   if (typeof field !== "object") {
     return;
   }
-  const entries = Array.isArray(field) ? field.map((v, i) => [i, v]) : Object.entries(field);
+  const entries = Array.isArray(field)
+    ? field.map((v, i) => [i, v])
+    : Object.entries(field);
 
   return (
     <>
@@ -20,7 +22,11 @@ const TraceFieldNode: React.FC<FieldNodeProps> = ({ field }) => {
           key={key}
           name={key}
           label={Array.isArray(field) ? `${value}` : `${value}`}
-          hasChildren={typeof value === "object" && value !== null && Object.keys(value).length > 0}
+          hasChildren={
+            typeof value === "object" &&
+            value !== null &&
+            Object.keys(value).length > 0
+          }
         >
           <TraceFieldNode field={value} />
         </TraceTreeNode>

@@ -27,6 +27,9 @@ const ConfigModal: React.FC<ConfigModalProps> = ({
             1. Tab에 저장된 fields를 찾는다
             2. fields 비교해 업데이트 되어야함
         */
+    console.log(fields);
+    console.log(id);
+    console.log(updateTabModel);
     onClose();
   };
 

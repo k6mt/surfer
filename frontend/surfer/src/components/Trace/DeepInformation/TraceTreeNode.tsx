@@ -9,7 +9,7 @@ import { ReactNode, useState } from "react";
 interface TreeNodeProps {
   name?: string;
   label: string;
-  node: any;
+  node?: any;
   defaultOpen?: boolean;
   hasChildren?: boolean;
   isRoot?: boolean;
