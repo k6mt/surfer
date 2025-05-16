@@ -25,8 +25,9 @@ public class ErrorController {
   /**
    * Get only error information without AI analysis
    */
-  @GetMapping("/{traceId}")
-  public ApiUtils.ApiResult<?> getErrorInfo(@PathVariable(name = "traceId") String traceId) {
+  @GetMapping("")
+  public ApiUtils.ApiResult<?> getErrorInfo(@RequestHeader(name = "X-Surfer-Header") String traceId) {
+    System.out.println("traceId:" + traceId);
     ErrorInfo errorInfo = errorRepository.getError(traceId);
 
     if (errorInfo == null) {
@@ -39,8 +40,8 @@ public class ErrorController {
   /**
    * Get only AI analysis for an error
    */
-  @GetMapping("/{traceId}/analysis")
-  public ApiUtils.ApiResult<?> getErrorAnalysis(@PathVariable(name = "traceId") String traceId) {
+  @GetMapping("/analysis")
+  public ApiUtils.ApiResult<?> getErrorAnalysis(@RequestHeader(name = "X-Surfer-Header") String traceId) {
     ErrorInfo errorInfo = errorRepository.getError(traceId);
 
     if (errorInfo == null) {

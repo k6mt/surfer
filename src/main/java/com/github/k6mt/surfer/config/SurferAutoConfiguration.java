@@ -34,28 +34,28 @@ import org.springframework.context.annotation.Bean;
 public class SurferAutoConfiguration {
 
   @Bean
-  LoadGenerator loadGenerator() {
+  public LoadGenerator surferLoadGenerator() {
     return new LoadGenerator();
   }
 
   @Bean
-  public CsvConverter csvConverter() {
+  public CsvConverter surferCsvConverter() {
     return new CsvConverter();
   }
 
   @Bean
-  public HomeConfig config(ConfigProperties configProperties) {
+  public HomeConfig surferConfig(ConfigProperties configProperties) {
     return new HomeConfig(configProperties);
   }
 
   @Bean
-  LoadTestController loadTestController(CsvConverter csvConverter, HomeConfig homeConfig) {
-    return new LoadTestController(loadGenerator(), csvConverter, homeConfig);
+  LoadTestController surferLoadTestController(CsvConverter csvConverter, HomeConfig homeConfig) {
+    return new LoadTestController(surferLoadGenerator(), csvConverter, homeConfig);
   }
 
   @Bean
   SurferApiScanner surferApiScanner() {
-    return new SurferApiScanner(detectMainPackage());
+    return new SurferApiScanner(surferDetectMainPackage());
   }
 
   @Bean
@@ -64,30 +64,24 @@ public class SurferAutoConfiguration {
   }
 
   @Bean
-  ApiScanController apiScanController(SurferApiScanner surferApiScanner,
+  ApiScanController surferApiScanController(SurferApiScanner surferApiScanner,
       SurferApiAnalyzer surferApiAnalyzer) {
     return new ApiScanController(surferApiScanner, surferApiAnalyzer);
   }
 
   @Bean
-  public ErrorController errorController(ErrorRepository errorRepository,
-      ErrorAnalysisService service) {
-    return new ErrorController(errorRepository, service);
-  }
-
-  @Bean
-  public SourceCapture errorSourceReader() {
-    String basePackage = detectMainPackage();
+  public SourceCapture surferErrorSourceReader() {
+    String basePackage = surferDetectMainPackage();
     return new SourceCapture(basePackage);
   }
 
   @Bean
-  public ErrorRepository errorRepository() {
+  public ErrorRepository surferErrorRepository() {
     return new MemoryErrorRepository();
   }
 
   @Bean
-  public AIClient aiClient(ConfigProperties configProperties) {
+  public AIClient surferAiClient(ConfigProperties configProperties) {
     String provider = configProperties.getAi().getProvider().toLowerCase();
 
     return switch (provider) {
@@ -99,10 +93,10 @@ public class SurferAutoConfiguration {
   }
 
   @Bean
-  public Advisor traceAdvisor(Tracer tracer, SourceCapture sourceCapture,
+  public Advisor surferTraceAdvisor(Tracer tracer, SourceCapture sourceCapture,
       ErrorRepository errorRepository) {
     AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
-    String basePackage = detectMainPackage();
+    String basePackage = surferDetectMainPackage();
 
     String expression = basePackage.isBlank()
         ? "execution(public * *(..))"
@@ -115,11 +109,11 @@ public class SurferAutoConfiguration {
   }
 
   @Bean
-  public Tracer tracer() {
+  public Tracer surferTracer() {
     return new Tracer();
   }
 
-  private String detectMainPackage() {
+  private String surferDetectMainPackage() {
     for (StackTraceElement element : Thread.currentThread().getStackTrace()) {
       if (element.getMethodName().equals("main")) {
         String className = element.getClassName();
@@ -131,30 +125,37 @@ public class SurferAutoConfiguration {
   }
 
   @Bean
-  public ErrorAnalysisService errorAnalysisService(AIClient aiClient) {
+  public ErrorAnalysisService surferErrorAnalysisService(AIClient aiClient) {
     return new ErrorAnalysisService(aiClient);
   }
 
   @Bean
-  public TraceController traceController(Tracer tracer, HomeConfig homeConfig,
+  public ErrorController surferErrorController(ErrorRepository errorRepository,
+      ErrorAnalysisService errorAnalysisService) {
+    return new ErrorController(errorRepository, errorAnalysisService);
+  }
+
+  @Bean
+  public TraceController surferTraceController(Tracer tracer, HomeConfig homeConfig,
       CsvConverter csvConverter) {
     return new TraceController(tracer, homeConfig, csvConverter);
   }
 
   @Bean
-  public SystemController systemController() {
+  public SystemController surferSystemController() {
     return new SystemController();
   }
-
   @Bean
-  public MethodAnalysisController methodAnalysisController(Tracer tracer,
-      MethodFlowAnalysisService service) {
-    return new MethodAnalysisController(tracer, service);
-  }
-
-  @Bean
-  public MethodFlowAnalysisService methodFlowAnalysisService(AIClient aiClient,
+  public MethodFlowAnalysisService surferMethodFlowAnalysisService(AIClient aiClient,
       SourceCapture sourceCapture) {
     return new MethodFlowAnalysisService(aiClient, sourceCapture);
   }
+
+
+  @Bean
+  public MethodAnalysisController surferMethodAnalysisController(Tracer tracer,
+      MethodFlowAnalysisService methodFlowAnalysisService) {
+    return new MethodAnalysisController(tracer, methodFlowAnalysisService);
+  }
+
 }
