@@ -16,10 +16,14 @@
 }
 
 .trace-tree-placeholder {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   font-size: var(--fs-md);
   color: #90a4ae;
   padding: 1rem;
   text-align: center;
+  height: 100%;
 }
 
 .tree-node {
@@ -30,6 +34,7 @@
 
 .tree-node-label {
   display: flex;
+  position: relative;
   align-items: center;
   padding: 6px 8px;
   border-radius: 4px;
@@ -67,10 +72,33 @@
 
 .tree-node-children > div:not(.tree-node) {
   padding-left: 0.75rem;
-  color: #cfd8dc;
+  color: #eceff1;
 }
 
 .tree-node-children,
 .tree-node-label {
   transition: all 0.2s ease;
+}
+
+.tooltip {
+  visibility: hidden;
+  width: max-content;
+  max-width: 400px;
+  background-color: rgba(0, 0, 0);
+  color: #fff;
+  text-align: left;
+  padding: 1rem 0.5rem;
+  border-radius: 4px;
+  font-size: var(--fs-md);
+  line-height: 1.4;
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  white-space: pre-wrap;
+  z-index: 10;
+}
+
+.tree-node-label:hover .tooltip {
+  visibility: visible;
 }

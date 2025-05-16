@@ -1,5 +1,4 @@
 import { TraceRecord } from "@_types/shared";
-import TraceFieldNode from "@components/Trace/DeepInformation/TraceFieldNode";
 import TraceTreeNode from "@components/Trace/DeepInformation/TraceTreeNode";
 import { ReactNode } from "react";
 
@@ -21,7 +20,8 @@ const TraceTreeView: React.FC<TraceTreeViewProps> = ({ data, placeholder }) => {
       {traces.map((trace, idx) => (
         <TraceTreeNode
           key={`${trace.traceId}-${trace.depth}-${idx}`}
-          label={`${trace.className}.${trace.methodName} (${trace.resultTimeMs}ms)`}
+          label={`${trace.className}.${trace.methodName}`}
+          node={trace}
           defaultOpen={trace.depth === 0}
           hasChildren={
             // (trace.parameters && trace.parameters.length > 0) ||
@@ -41,7 +41,9 @@ const TraceTreeView: React.FC<TraceTreeViewProps> = ({ data, placeholder }) => {
           {/* Recursively render child traces */}
           {/* {trace.returnValue !== undefined && <TraceFieldNode field={trace.returnValue} />} */}
 
-          {trace.nextTraces?.length > 0 && <TraceTreeView data={trace.nextTraces} />}
+          {trace.nextTraces?.length > 0 && (
+            <TraceTreeView data={trace.nextTraces} />
+          )}
         </TraceTreeNode>
       ))}
     </div>

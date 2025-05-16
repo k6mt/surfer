@@ -93,7 +93,7 @@ const ParamTreeView = ({ data }: { data: Record<string, any> }) => {
             >
               {value.map((param) => (
                 <FieldNode
-                  key={root}
+                  key={param.name}
                   field={{
                     name: param.name,
                     type: param.type,

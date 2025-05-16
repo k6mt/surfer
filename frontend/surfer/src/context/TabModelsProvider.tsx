@@ -1,5 +1,6 @@
 import { TabModel } from "@_types/shared";
 import { TabModelsContext } from "@context/TabModelsContext";
+import { useLoadTestFields } from "@hooks/useLoadTestFields";
 import { useScan } from "@hooks/useScan";
 import { ReactNode, useState } from "react";
 
@@ -8,8 +9,13 @@ export const TabModelsProvider = ({ children }: { children: ReactNode }) => {
   const [activeTabModel, setActiveTabModel] = useState<string | null>(null);
 
   const { ApiScanByMethod } = useScan();
+  const fields = useLoadTestFields();
 
-  const addTabModel = async (controller: string, method: string, url: string) => {
+  const addTabModel = async (
+    controller: string,
+    method: string,
+    url: string
+  ) => {
     const id = `${method}_${url}_${Date.now()}`;
     const raw = await ApiScanByMethod(method, url);
 
@@ -23,6 +29,7 @@ export const TabModelsProvider = ({ children }: { children: ReactNode }) => {
       trace: null,
       isLoading: false,
       config: null,
+      load: fields,
     };
 
     setTabModels((prev) => [...prev, newTabModel]);
@@ -35,7 +42,8 @@ export const TabModelsProvider = ({ children }: { children: ReactNode }) => {
       const nextTabModels = prev?.filter((t) => t.id !== id);
 
       if (activeTabModel === id) {
-        const nextActiveTabModel = nextTabModels[curIdx - 1] ?? nextTabModels[0] ?? null;
+        const nextActiveTabModel =
+          nextTabModels[curIdx - 1] ?? nextTabModels[0] ?? null;
         setActiveTabModel(nextActiveTabModel?.id ?? null);
       }
 

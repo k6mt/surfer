@@ -1,4 +1,5 @@
 import { API } from "@apis/axios";
+import { AxiosRequestConfig } from "axios";
 
 interface TraceAPIOptions {
   method: "get" | "post" | "put" | "delete";
@@ -10,7 +11,14 @@ interface TraceAPIOptions {
 }
 
 export function useTrace() {
-  async function TraceAPI({ method, url, id, pathVariables, params, data }: TraceAPIOptions) {
+  async function TraceAPI({
+    method,
+    url,
+    id,
+    pathVariables,
+    params,
+    data,
+  }: TraceAPIOptions) {
     const headers = {
       "X-Surfer-Header": id,
     };
@@ -19,13 +27,17 @@ export function useTrace() {
     let finalUrl = url;
     if (pathVariables) {
       for (const [key, value] of Object.entries(pathVariables)) {
-        finalUrl = finalUrl.replace(`{${key}}`, encodeURIComponent(String(value)));
+        console.log(key, value);
+        finalUrl = finalUrl.replace(
+          `{${key}}`,
+          encodeURIComponent(String(value))
+        );
       }
     }
 
     try {
       // config 구성
-      const config = {
+      const config: AxiosRequestConfig = {
         headers,
         params,
       };
@@ -38,9 +50,9 @@ export function useTrace() {
           case "delete":
             return API.delete(finalUrl, config);
           case "post":
-            return API.post(finalUrl, data, { headers });
+            return API.post(finalUrl, data, config);
           case "put":
-            return API.put(finalUrl, data, { headers });
+            return API.put(finalUrl, data, config);
           default:
             throw new Error("Invalid HTTP method");
         }

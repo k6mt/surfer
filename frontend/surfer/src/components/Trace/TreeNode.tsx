@@ -1,9 +1,4 @@
-import {
-  faAngleDown,
-  faAngleRight,
-  faArrowDown,
-  faArrowRight,
-} from "@fortawesome/free-solid-svg-icons";
+import { faAngleDown, faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 
@@ -13,7 +8,13 @@ const TreeNode: React.FC<{
   defaultOpen?: boolean;
   hasChildren?: boolean;
   isRoot: boolean;
-}> = ({ label, children, defaultOpen = false, hasChildren = true, isRoot = true }) => {
+}> = ({
+  label,
+  children,
+  defaultOpen = false,
+  hasChildren = true,
+  isRoot = true,
+}) => {
   const [open, setOpen] = useState(defaultOpen);
   return (
     <div className="tree-node">

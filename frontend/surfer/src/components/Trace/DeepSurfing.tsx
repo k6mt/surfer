@@ -6,13 +6,20 @@ import { useTabModelsContext } from "@hooks/useTabModels";
 type KeyValue = { key: string; value: string };
 
 interface DeepSurfingProps {
+  controller: string;
   method: string;
   url: string;
   id: string;
   onClose: () => void;
 }
 
-const DeepSurfing: React.FC<DeepSurfingProps> = ({ method, url, id, onClose }) => {
+const DeepSurfing: React.FC<DeepSurfingProps> = ({
+  controller,
+  method,
+  url,
+  id,
+  onClose,
+}) => {
   const { updateTabModel } = useTabModelsContext();
 
   // dynamic fields
@@ -39,7 +46,9 @@ const DeepSurfing: React.FC<DeepSurfingProps> = ({ method, url, id, onClose }) =
     field: "key" | "value",
     val: string
   ) => {
-    const newList = list.map((it, i) => (i === idx ? { ...it, [field]: val } : it));
+    const newList = list.map((it, i) =>
+      i === idx ? { ...it, [field]: val } : it
+    );
     setter(newList);
   };
 
@@ -53,7 +62,7 @@ const DeepSurfing: React.FC<DeepSurfingProps> = ({ method, url, id, onClose }) =
     const config = {
       pathVariables: buildRecord(pathVar),
       params: buildRecord(params),
-      body: body ? JSON.parse(body) : undefined,
+      body: body ? JSON.parse(body) : null,
     };
 
     updateTabModel(id, { config: config });
@@ -71,6 +80,8 @@ const DeepSurfing: React.FC<DeepSurfingProps> = ({ method, url, id, onClose }) =
 
       <div className="deep-surfing-main">
         <div className="deep-surfing-info">
+          <strong>Controller:</strong> {controller}
+          <br />
           <strong>Method:</strong> {method}
           <br />
           <strong>URL:</strong> {url}
@@ -83,12 +94,28 @@ const DeepSurfing: React.FC<DeepSurfingProps> = ({ method, url, id, onClose }) =
               <input
                 placeholder="name"
                 value={pv.key}
-                onChange={(e) => handleFieldChange(pathVar, setPathVar, i, "key", e.target.value)}
+                onChange={(e) =>
+                  handleFieldChange(
+                    pathVar,
+                    setPathVar,
+                    i,
+                    "key",
+                    e.target.value
+                  )
+                }
               />
               <input
                 placeholder="value"
                 value={pv.value}
-                onChange={(e) => handleFieldChange(pathVar, setPathVar, i, "value", e.target.value)}
+                onChange={(e) =>
+                  handleFieldChange(
+                    pathVar,
+                    setPathVar,
+                    i,
+                    "value",
+                    e.target.value
+                  )
+                }
               />
 
               <div
@@ -99,7 +126,9 @@ const DeepSurfing: React.FC<DeepSurfingProps> = ({ method, url, id, onClose }) =
               </div>
             </div>
           ))}
-          <button onClick={() => handleAddField(pathVar, setPathVar)}>+ Add PathVar</button>
+          <button onClick={() => handleAddField(pathVar, setPathVar)}>
+            + Add PathVar
+          </button>
         </div>
 
         <div className="field-section">
@@ -109,12 +138,22 @@ const DeepSurfing: React.FC<DeepSurfingProps> = ({ method, url, id, onClose }) =
               <input
                 placeholder="name"
                 value={p.key}
-                onChange={(e) => handleFieldChange(params, setParams, i, "key", e.target.value)}
+                onChange={(e) =>
+                  handleFieldChange(params, setParams, i, "key", e.target.value)
+                }
               />
               <input
                 placeholder="value"
                 value={p.value}
-                onChange={(e) => handleFieldChange(params, setParams, i, "value", e.target.value)}
+                onChange={(e) =>
+                  handleFieldChange(
+                    params,
+                    setParams,
+                    i,
+                    "value",
+                    e.target.value
+                  )
+                }
               />
 
               <div
@@ -125,20 +164,23 @@ const DeepSurfing: React.FC<DeepSurfingProps> = ({ method, url, id, onClose }) =
               </div>
             </div>
           ))}
-          <button onClick={() => handleAddField(params, setParams)}>+ Add Param</button>
+          <button onClick={() => handleAddField(params, setParams)}>
+            + Add Param
+          </button>
         </div>
 
-        {method.toLowerCase() !== "get" && method.toLowerCase() !== "delete" && (
-          <div className="field-section">
-            <h4>Request Body (JSON)</h4>
-            <textarea
-              rows={6}
-              value={body}
-              onChange={(e) => setBody(e.target.value)}
-              placeholder='{"name":"john","age":25}'
-            />
-          </div>
-        )}
+        {method.toLowerCase() !== "get" &&
+          method.toLowerCase() !== "delete" && (
+            <div className="field-section">
+              <h4>Request Body (JSON)</h4>
+              <textarea
+                rows={6}
+                value={body}
+                onChange={(e) => setBody(e.target.value)}
+                placeholder='{"name":"john","age":25}'
+              />
+            </div>
+          )}
       </div>
 
       <div className="actions-footer">

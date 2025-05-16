@@ -22,7 +22,9 @@ export interface Field {
 export interface LoadTest {
   value: string;
   handleInputChange: (
-    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+    event: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
   ) => void;
   hasError: boolean;
 }
@@ -50,11 +52,16 @@ export interface TabModel {
   trace: any | null;
   isLoading: boolean;
   config: any | null;
+  load: Field[];
 }
 
 export interface TabProps {
   tab: Tab;
-  onFieldChange: (tabId: string, field: "method" | "url" | "response", value: string) => void;
+  onFieldChange: (
+    tabId: string,
+    field: "method" | "url" | "response",
+    value: string
+  ) => void;
 }
 
 export interface TracedParams {
