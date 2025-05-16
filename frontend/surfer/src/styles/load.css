@@ -2,6 +2,60 @@
   height: 90%;
 }
 
+.load-content {
+  margin-top: 0.5rem;
+  
+}
+
+.load-content .header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.load-content .actions {
+  padding: 0;
+  padding-top: 0.1rem;
+  display: flex;
+  gap: 1rem;
+}
+
+.load-content .actions .btn-config,
+.load-content .actions .btn-run {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.3rem;
+  width: 4rem;
+  height: 1.5rem;
+  position: relative;
+  background: rgb(75, 130, 231);
+  color: #e2e8f0;
+  border: none;
+  padding: 0.4rem 0.5rem;
+
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.load-content .actions .btn-config:hover,
+.load-content .actions .btn-run:hover {
+  background: #3b4a6b;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.load-content .actions .btn-config svg,
+.load-content .actions .btn-run svg {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
 .textarea-container {
   display: contents;
   position: relative;

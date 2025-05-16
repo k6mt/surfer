@@ -42,6 +42,19 @@ export interface Tab {
   isLoading: boolean;
 }
 
+export interface TabModel {
+  id: string;
+  controller: string;
+  method: string;
+  url: string;
+  response: any | null;
+  params: any | null;
+  trace: any | null;
+  isLoading: boolean;
+  config: any | null;
+  load: Field[];
+}
+
 export interface TabProps {
   tab: Tab;
   onFieldChange: (
@@ -51,50 +64,67 @@ export interface TabProps {
   ) => void;
 }
 
-/*
-const fields: Field[] = [
-  {
-    name: "url",
-    value: "",
-    validationFn: validateUrl,
-    label: "Target URL",
-    type: "text",
-  },
-  {
-    name: "method",
-    value: "GET",
-    validationFn: (value: string) => ["GET", "POST", "PUT", "DELETE"].includes(value),
-    label: "HTTP Method",
-    type: "select",
-    options: ["GET", "POST", "PUT", "DELETE"], // select 요소 옵션
-  },
-  {
-    name: "body",
-    value: '{"key":"value"}',
-    validationFn: validateBody,
-    label: "Request Body (JSON, POST/PUT only)",
-    type: "textarea",
-  },
-  {
-    name: "threadCount",
-    value: "10",
-    validationFn: validateThreadCount,
-    label: "Thread Count",
-    type: "number",
-  },
-  {
-    name: "requestPerSecond",
-    value: "5",
-    validationFn: validateRequestPerSecond,
-    label: "Requests Per Second (per thread)",
-    type: "number",
-  },
-  {
-    name: "durationSeconds",
-    value: "60",
-    validationFn: validateDurationSeconds,
-    label: "Duration (seconds)",
-    type: "number",
-  },
-];
-*/
+export interface TracedParams {
+  root: "RequestParam" | "PathVariable" | "RequestHeader" | "RequestBody";
+  type?: string;
+  name?: string;
+  fields?: TracedParams[];
+  element?: TraceParams;
+  keyType?: TracedParams;
+  value?: TracedParams;
+}
+
+export interface PathVariableParam {
+  name: string;
+  type: string;
+}
+
+export interface RequestBody {
+  name: string;
+  type: string;
+  fields: CommonField[];
+  element: ListElement;
+  keyType: { type: string };
+  value: CommonField;
+}
+
+export interface CommonField {
+  name?: string;
+  type: string;
+  fields?: CommonField[];
+  element?: CommonField;
+  keyType?: { type: string };
+  value?: CommonField;
+}
+
+export interface ListElement {
+  type: string;
+  name: string;
+  fields: CommonField[];
+  element: ListElement;
+}
+
+export interface MapType {
+  keyType: { type: string };
+  name: string;
+  type: string;
+  value: CommonField;
+}
+
+export type RawParams = Record<
+  string,
+  { name: string; type: string; fields?: any; element?: any }[]
+>;
+
+export interface TraceRecord {
+  traceId: string;
+  depth: number;
+  className: string;
+  methodName: string;
+  startTimeMs: number;
+  endTimeMs: number;
+  resultTimeMs: number;
+  parameters: any[];
+  returnValue: any;
+  nextTraces: TraceRecord[];
+}

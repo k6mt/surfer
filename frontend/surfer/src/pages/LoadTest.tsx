@@ -1,12 +1,16 @@
-import LoadMetricsChart from "@components/loadtest/LoadMetricsChart";
+import PageTitle from "@components/common/PageTitle";
+import LoadContent from "@components/Load/LoadContent";
 import LoadTestForm from "@components/loadtest/LoadTestForm";
 import { LoadTestProvider } from "@context/LoadTestContextProvider";
 
 function LoadTest() {
   return (
     <LoadTestProvider>
-      <LoadTestForm />
-      <LoadMetricsChart />
+      <div className="load-container">
+        <PageTitle title="Load Test" />
+        <LoadContent />
+        <LoadTestForm />
+      </div>
     </LoadTestProvider>
   );
 }
