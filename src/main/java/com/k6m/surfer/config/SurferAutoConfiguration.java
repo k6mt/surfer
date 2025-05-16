@@ -28,7 +28,6 @@ import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.web.client.RestTemplate;
 
 @AutoConfiguration
 @EnableConfigurationProperties(ConfigProperties.class)
@@ -85,14 +84,15 @@ public class SurferAutoConfiguration {
     public ErrorRepository errorRepository() {
         return new MemoryErrorRepository();
     }
+
     @Bean
-    public AIClient aiClient(ConfigProperties configProperties, RestTemplate restTemplate) {
+    public AIClient aiClient(ConfigProperties configProperties) {
         String provider = configProperties.getAi().getProvider().toLowerCase();
 
       return switch (provider) {
-        case "openai" -> new OpenAIClient(restTemplate, configProperties);
-        case "anthropic" -> new AnthropicClient(restTemplate, configProperties);
-        case "azure" -> new AzureOpenAIClient(restTemplate, configProperties);
+        case "openai" -> new OpenAIClient(configProperties);
+        case "anthropic" -> new AnthropicClient(configProperties);
+        case "azure" -> new AzureOpenAIClient(configProperties);
         default -> new DefaultAIClient();
       };
     }
@@ -127,12 +127,6 @@ public class SurferAutoConfiguration {
         }
         return "";
     }
-
-    @Bean("surferRestTemplate")
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
-    }
-
 
     @Bean
     public ErrorAnalysisService errorAnalysisService(AIClient aiClient) {
