@@ -3,7 +3,7 @@ plugins {
     id 'maven-publish'
 }
 
-group = 'com.k6m'
+group = 'com.github.k6mt'
 version = '0.0.1'
 
 java {
@@ -15,7 +15,10 @@ java {
 publishing {
     publications {
         mavenJava(MavenPublication) {
-            from components.java
+            groupId = "com.github.k6mt"
+            artifactId = "surfer"
+            version = "0.0.1"
+            from(components["java"])
         }
     }
     repositories {
@@ -63,7 +66,7 @@ tasks.register("deleteCopiesFile", Delete) {
     delete file("$projectDir/src/main/resources/META-INF/resources/k6m-surfer")
 }
 
-tasks.register('installReact', Exec){
+tasks.register('installReact', Exec) {
     workingDir("$frontendDir")
     inputs.dir("$frontendDir")
     group = BasePlugin.BUILD_GROUP
