@@ -128,7 +128,7 @@ public class SurferAutoConfiguration {
         return "";
     }
 
-    @Bean
+    @Bean("surferRestTemplate")
     public RestTemplate restTemplate() {
         return new RestTemplate();
     }
