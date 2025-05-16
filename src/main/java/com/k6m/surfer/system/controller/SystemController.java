@@ -10,14 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/k6m-system")
 public class SystemController {
-    private final SystemMonitorService systemMonitorService;
-
-    public SystemController() {
-        this.systemMonitorService = new SystemMonitorService();
-    }
 
     @GetMapping()
     public ResponseEntity<SystemStatusDto> system() throws InterruptedException {
-        return ResponseEntity.ok(systemMonitorService.getSystemStatus(1000));
+        return ResponseEntity.ok(new SystemMonitorService().getSystemStatus(1000));
     }
 }
