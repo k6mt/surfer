@@ -13,10 +13,7 @@ import {
 
 import { useEffect, useState } from "react";
 import ChartBox from "@components/loadtest/LoadMetricsChartBox";
-import {
-  getChartData,
-  getChartOptionsWithRange,
-} from "@utils/charts/chartConfig";
+import { getChartData, getChartOptionsWithRange } from "@utils/charts/chartConfig";
 import { useLoadTestContext } from "@hooks/useLoadTestContext";
 import { TimePoint } from "@_types/shared";
 
@@ -35,9 +32,7 @@ const LoadMetricsChart = () => {
   const { metrics, config } = useLoadTestContext();
 
   const [startTime, setStartTime] = useState<Date>(new Date());
-  const [endTime, setEndTime] = useState<Date>(
-    new Date(new Date().getTime() + 60000)
-  );
+  const [endTime, setEndTime] = useState<Date>(new Date(new Date().getTime() + 60000));
   const [labels, setLabels] = useState<Date[]>([new Date()]);
   const [success, setSuccess] = useState<TimePoint[]>([]);
   const [failure, setFailure] = useState<TimePoint[]>([]);
@@ -53,10 +48,7 @@ const LoadMetricsChart = () => {
     setSuccess((prev) => [...prev, { x: now, y: metrics.successCount }]);
 
     setFailure((prev) => [...prev, { x: now, y: metrics.failureCount }]);
-    setResponseTime((prev) => [
-      ...prev,
-      { x: now, y: metrics.averageResponseTimeMs },
-    ]);
+    setResponseTime((prev) => [...prev, { x: now, y: metrics.averageResponseTimeMs }]);
 
     setErrorRate((prev) => [
       ...prev,
@@ -78,10 +70,7 @@ const LoadMetricsChart = () => {
 
       const now = Date.now();
       const count = Math.floor((config.duration * 1000) / 1000) + 1;
-      const labelArray = Array.from(
-        { length: count },
-        (_, i) => new Date(now + i * 1000)
-      );
+      const labelArray = Array.from({ length: count }, (_, i) => new Date(now + i * 1000));
       setStartTime(new Date(now));
       setEndTime(new Date(now + (count - 1) * 1000));
       setLabels(labelArray);
@@ -116,7 +105,7 @@ const LoadMetricsChart = () => {
         max: 100,
         ticks: {
           ...defaultOption.scales?.y?.ticks,
-          stepSize: 10,
+          stepSize: 20,
           callback: (value: number | string) => `${value}%`,
         },
       },
@@ -140,12 +129,7 @@ const LoadMetricsChart = () => {
       />
       <ChartBox
         title="Response Time (ms)"
-        data={getChartData(
-          labels,
-          responseTime,
-          "Response Time (ms)",
-          "#3674B5"
-        )}
+        data={getChartData(labels, responseTime, "Response Time (ms)", "#3674B5")}
         options={responseTimeChartOption}
       />
       <ChartBox

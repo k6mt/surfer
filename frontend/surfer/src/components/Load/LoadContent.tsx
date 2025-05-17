@@ -1,57 +1,62 @@
 import ConfigModal from "@components/Load/ConfigModal";
-import LoadMetricsChart from "@components/loadtest/LoadMetricsChart";
+import LoadMetricsChart from "@components/Load/LoadMetricsChart";
 import { faGear, faPlay } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 import { useTabModelsContext } from "@hooks/useTabModels";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const LoadContent = () => {
   const [showConfig, setShowConfig] = useState<boolean>(false);
 
-  const { tabModels, activeTabModel } = useTabModelsContext();
+  const { tabModels, activeTabModel, startLoadTest } = useTabModelsContext();
+  const safeActiveModel = tabModels.find((model) => model.id === activeTabModel)!;
 
-  const safeActiveModel = tabModels.find(
-    (model) => model.id === activeTabModel
-  );
+  // const { onStartLoadTest } = useLoad(safeActiveModel.id);
 
-  const handleExecute = () => {
-    console.log(tabModels);
-  };
+  useEffect(() => {
+    console.log(safeActiveModel.test);
+    console.log(safeActiveModel.chartState.success);
+  }, [safeActiveModel.test]);
 
-  if (!safeActiveModel) {
-    return <div>Wrong Surfing</div>;
-  }
+  useEffect(() => {
+    console.log(safeActiveModel.id);
+  }, [safeActiveModel.id]);
 
   return (
-    <div className="load-content">
-      <div className="header">
-        <div className="actions">
-          <div className="btn-config" onClick={() => setShowConfig((s) => !s)}>
-            <FontAwesomeIcon icon={faGear} />
-          </div>
-          <div className="btn-run" onClick={handleExecute}>
-            <FontAwesomeIcon icon={faPlay} />
-          </div>
-
-          {showConfig && (
-            <div className="modal-overlay">
-              <div className="modal-content">
-                <ConfigModal
-                  baseController={safeActiveModel.controller}
-                  baseMethod={safeActiveModel.method}
-                  baseUrl={safeActiveModel.url}
-                  fields={safeActiveModel.load}
-                  id={safeActiveModel.id}
-                  onClose={() => setShowConfig(false)}
-                />
+    <>
+      {safeActiveModel && (
+        <div className="load-content">
+          <div className="header">
+            <div className="actions">
+              <div className="btn-config" onClick={() => setShowConfig((s) => !s)}>
+                <FontAwesomeIcon icon={faGear} />
               </div>
-            </div>
-          )}
-        </div>
-      </div>
+              <div className="btn-run">
+                <FontAwesomeIcon icon={faPlay} onClick={() => startLoadTest(safeActiveModel.id)} />
+              </div>
 
-      <LoadMetricsChart />
-    </div>
+              {showConfig && (
+                <div className="modal-overlay">
+                  <div className="modal-content">
+                    <ConfigModal
+                      baseController={safeActiveModel.controller}
+                      baseMethod={safeActiveModel.method}
+                      baseUrl={safeActiveModel.url}
+                      fields={safeActiveModel.loadConfig}
+                      id={safeActiveModel.id}
+                      onClose={() => setShowConfig(false)}
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+
+          <LoadMetricsChart />
+        </div>
+      )}
+    </>
   );
 };
 

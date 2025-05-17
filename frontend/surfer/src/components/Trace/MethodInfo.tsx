@@ -17,9 +17,7 @@ const MethodInfo = () => {
   const { tabModels, activeTabModel, updateTabModel } = useTabModelsContext();
   const { TraceAPI } = useTrace();
 
-  const safeActiveModel = tabModels.find(
-    (model) => model.id === activeTabModel
-  );
+  const safeActiveModel = tabModels.find((model) => model.id === activeTabModel);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -42,7 +40,6 @@ const MethodInfo = () => {
   const handleExecute = async () => {
     console.log(safeActiveModel.config);
     if (!safeActiveModel.config) {
-      console.log("NO CONFIG");
       // no config
       const { response, trace } = await TraceAPI({
         id: safeActiveModel.id,
@@ -102,10 +99,7 @@ const MethodInfo = () => {
         <div className="header">
           <h2>Deep Information</h2>
           <div className="actions" ref={dropdownRef}>
-            <div
-              className="btn-config"
-              onClick={() => setShowConfig((s) => !s)}
-            >
+            <div className="btn-config" onClick={() => setShowConfig((s) => !s)}>
               <FontAwesomeIcon icon={faGear} />
             </div>
             <div className="btn-run" onClick={handleExecute}>
@@ -130,20 +124,14 @@ const MethodInfo = () => {
         <div className="infos-trace">
           <div className="table-title">Trace</div>
           <div className="trace-wrapper">
-            <TraceTreeView
-              data={safeActiveModel.trace}
-              placeholder={<>버튼을 눌러 API를 서핑해보세요</>}
-            />
+            <TraceTreeView data={safeActiveModel.trace} placeholder={<>API를 서핑해보세요</>} />
           </div>
         </div>
 
         <div className="infos-response">
           <div className="table-title">Response</div>
           <div className="trace-wrapper">
-            <ResponseView
-              data={safeActiveModel.response}
-              placeholder={<>버튼을 눌러 API를 서핑해보세요</>}
-            />
+            <ResponseView data={safeActiveModel.response} placeholder={<>API를 서핑해보세요</>} />
           </div>
         </div>
       </div>
