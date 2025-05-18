@@ -5,7 +5,6 @@ const validateThreadCount = (value: string) => parseInt(value, 10) > 0;
 const validateRequestPerSecond = (value: string) =>
   parseInt(value, 10) >= 1 && parseInt(value, 10) <= 100;
 const validateDurationSeconds = (value: string) => parseInt(value, 10) > 0;
-const validateBody = (value: string) => value.trim() !== "";
 
 // 필드를 생성하는 함수 (기본값만 생성)
 const generateField = (
@@ -22,16 +21,9 @@ const generateField = (
   validate,
 });
 
-// 필드를 생성하는 메인 훅
-export function useLoadTestFields(): LoadField[] {
+export default function generateDefaultField(): LoadField[] {
   return [
-    generateField(
-      "threadCount",
-      "Thread Count",
-      "number",
-      "10",
-      validateThreadCount
-    ),
+    generateField("threadCount", "Thread Count", "number", "10", validateThreadCount),
     generateField(
       "requestPerSecond",
       "Requests Per Second",
@@ -39,19 +31,6 @@ export function useLoadTestFields(): LoadField[] {
       "5",
       validateRequestPerSecond
     ),
-    generateField(
-      "durationSeconds",
-      "Duration (seconds)",
-      "number",
-      "60",
-      validateDurationSeconds
-    ),
-    generateField(
-      "body",
-      "Request Body (JSON)",
-      "textarea",
-      `{"key":"value"}`,
-      validateBody
-    ),
+    generateField("durationSeconds", "Duration (seconds)", "number", "60", validateDurationSeconds),
   ];
 }

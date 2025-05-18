@@ -30,9 +30,7 @@ export interface LoadField {
 export interface LoadTest {
   value: string;
   handleInputChange: (
-    event: React.ChangeEvent<
-      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >
+    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => void;
   hasError: boolean;
 }
@@ -60,16 +58,15 @@ export interface TabModel {
   trace: any | null;
   isLoading: boolean;
   config: any | null;
-  load: LoadField[] | null;
+  loadConfig: LoadField[];
+  metrics: LoadMetrics;
+  chartState: ChartState;
+  test: number;
 }
 
 export interface TabProps {
   tab: Tab;
-  onFieldChange: (
-    tabId: string,
-    field: "method" | "url" | "response",
-    value: string
-  ) => void;
+  onFieldChange: (tabId: string, field: "method" | "url" | "response", value: string) => void;
 }
 
 export interface TracedParams {
@@ -136,3 +133,36 @@ export interface TraceRecord {
   returnValue: any;
   nextTraces: TraceRecord[];
 }
+
+//Load Metrics
+export interface LoadMetrics {
+  successCount: number;
+  failureCount: number;
+  averageResponseTimeMs: number;
+  isRunning: boolean;
+  timestamp: string;
+}
+
+export interface LoadTestConfig {
+  threadCount: number;
+  requestPerSecond: number;
+  duration: number;
+}
+
+export interface LoadTestContextProps {
+  metrics: LoadMetrics;
+  config: LoadTestConfig;
+  setMetrics: (m: LoadMetrics) => void;
+  setConfig: (m: LoadTestConfig) => void;
+}
+
+export type ChartState = {
+  // labels: Date[];
+  success: TimePoint[];
+  failure: TimePoint[];
+  responseTime: TimePoint[];
+  errorRate: TimePoint[];
+  startTime: Date;
+  endTime: Date;
+  initialized?: boolean;
+};

@@ -2,41 +2,40 @@ package com.github.k6mt.surfer.loadtest.core;
 
 
 import org.springframework.stereotype.Component;
+
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Component
 public class MetricsCollector {
 
-  private static final AtomicLong successCount = new AtomicLong(0);
-  private static final AtomicLong failureCount = new AtomicLong(0);
-  private static final AtomicLong totalResponseTimeNano = new AtomicLong(0);
+  private static final ConcurrentMap<String, AtomicLong> successMap    = new ConcurrentHashMap<>();
+  private static final ConcurrentMap<String, AtomicLong> failureMap    = new ConcurrentHashMap<>();
+  private static final ConcurrentMap<String, AtomicLong> latencyMapNano = new ConcurrentHashMap<>();
 
-  public static void recordSuccess(long elapsedNano) {
-    successCount.incrementAndGet();
-    totalResponseTimeNano.addAndGet(elapsedNano);
+  public static void recordSuccess(String testId, long elapsedNano) {
+    successMap.computeIfAbsent(testId, id -> new AtomicLong()).incrementAndGet();
+    latencyMapNano.computeIfAbsent(testId, id -> new AtomicLong()).addAndGet(elapsedNano);
   }
-
-  public static void recordFailure() {
-    failureCount.incrementAndGet();
+  public static void recordFailure(String testId) {
+    failureMap.computeIfAbsent(testId, id -> new AtomicLong()).incrementAndGet();
   }
-
-  public static long getSuccessCount() {
-    return successCount.get();
+  public static void reset(String testId) {
+    successMap.remove(testId);
+    failureMap.remove(testId);
+    latencyMapNano.remove(testId);
   }
-
-  public static long getFailureCount() {
-    return failureCount.get();
+  public static long getSuccessCount(String testId) {
+    return successMap.getOrDefault(testId, new AtomicLong()).get();
   }
-
-  public static double getAverageResponseMillis() {
-    long successes = successCount.get();
-    return successes == 0 ? 0 : (totalResponseTimeNano.get() / successes) / 1_000_000.0;
+  public static long getFailureCount(String testId) {
+    return failureMap.getOrDefault(testId, new AtomicLong()).get();
   }
-
-  public static void reset() {
-    successCount.set(0);
-    failureCount.set(0);
-    totalResponseTimeNano.set(0);
+  public static double getAverageResponseMillis(String testId) {
+    long s = getSuccessCount(testId);
+    long totalNano = latencyMapNano.getOrDefault(testId, new AtomicLong()).get();
+    return s == 0 ? 0 : ((double) totalNano / s) / 1_000_000.0;
   }
 }
 

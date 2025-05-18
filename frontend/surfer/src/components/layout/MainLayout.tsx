@@ -12,14 +12,16 @@ const MainLayout = () => {
     <div className={`layout ${isHome ? "home" : ""}`}>
       <RouteAside />
       {!isHome && <SurferList />}
-      <main>
-        <div className="container">
-          <ModelHeader />
-          <AnalyzeContainer>
-            <Outlet />
-          </AnalyzeContainer>
-        </div>
-      </main>
+      {!isHome && (
+        <main>
+          <div className="container">
+            <ModelHeader />
+            <AnalyzeContainer>
+              <Outlet />
+            </AnalyzeContainer>
+          </div>
+        </main>
+      )}
     </div>
   );
 };

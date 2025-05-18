@@ -66,8 +66,7 @@ export default function LoadTestForm() {
   //   state: useLoadTest("60", validateDurationSeconds),
   // };
   const fields = useLoadTestFields();
-  const [url, method, body, threadCount, requestPerSecond, durationSeconds] =
-    fields;
+  const [url, method, body, threadCount, requestPerSecond, durationSeconds] = fields;
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
@@ -79,9 +78,7 @@ export default function LoadTestForm() {
     }
 
     // Prepare form data to send to the server
-    const formData = Object.fromEntries(
-      fields.map((f) => [f.name, f.state.value])
-    );
+    const formData = Object.fromEntries(fields.map((f) => [f.name, f.state.value]));
 
     //Axios
     try {
