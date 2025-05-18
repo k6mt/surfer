@@ -32,7 +32,7 @@ export const defaultOptions: ChartOptions<"line"> = {
         stepSize: 50,
         font: {
           size: 14,
-          family: "'Noto Sans KR', 'sans-serif'",
+          family: "'Pretendard Variable', 'sans-serif'",
           weight: "normal",
         },
       },
@@ -40,7 +40,7 @@ export const defaultOptions: ChartOptions<"line"> = {
         display: true,
         font: {
           size: 14,
-          family: "'Noto Sans KR', 'sans-serif'",
+          family: "'Pretendard Variable', 'sans-serif'",
           weight: "normal",
         },
       },
@@ -58,7 +58,7 @@ export const defaultOptions: ChartOptions<"line"> = {
         maxRotation: 45,
         font: {
           size: 14,
-          family: "'Noto Sans KR', 'sans-serif'",
+          family: "'Pretendard Variable', 'sans-serif'",
           weight: "normal",
         },
       },
@@ -70,7 +70,7 @@ export const defaultOptions: ChartOptions<"line"> = {
       labels: {
         font: {
           size: 16,
-          family: "'Noto Sans KR', 'sans-serif'",
+          family: "'Pretendard Variable', 'sans-serif'",
           weight: "normal",
         },
       },
@@ -85,10 +85,7 @@ export const defaultOptions: ChartOptions<"line"> = {
 
 /** Get X-axis(timeSeries) */
 
-export const getChartOptionsWithRange = (
-  startTime: Date,
-  endTime: Date
-): ChartOptions<"line"> => {
+export const getChartOptionsWithEndRange = (endTime: Date): ChartOptions<"line"> => {
   return {
     responsive: true,
     maintainAspectRatio: false,
@@ -101,7 +98,7 @@ export const getChartOptionsWithRange = (
           stepSize: 200,
           font: {
             size: 14,
-            family: "'Noto Sans KR', 'sans-serif'",
+            family: "'Pretendard Variable', 'sans-serif'",
             weight: "normal",
           },
         },
@@ -109,7 +106,7 @@ export const getChartOptionsWithRange = (
           display: true,
           font: {
             size: 14,
-            family: "'Noto Sans KR', 'sans-serif'",
+            family: "'Pretendard Variable', 'sans-serif'",
             weight: "normal",
           },
         },
@@ -123,15 +120,14 @@ export const getChartOptionsWithRange = (
             millisecond: "HH:mm:ss.SSS",
           },
         },
-        min: new Date(startTime.getTime() - 500).toISOString(),
-        max: new Date(endTime.getTime() + 500).toISOString(),
+        max: new Date(endTime.getTime()).toISOString(),
         ticks: {
           stepSize: 10000,
           maxRotation: 45,
           minRotation: 0,
           font: {
             size: 12,
-            family: "'Noto Sans KR', 'sans-serif'",
+            family: "'Pretendard Variable', 'sans-serif'",
             weight: "normal",
           },
         },
@@ -143,7 +139,76 @@ export const getChartOptionsWithRange = (
         labels: {
           font: {
             size: 16,
-            family: "'Noto Sans KR', 'sans-serif'",
+            family: "'Pretendard Variable', 'sans-serif'",
+            weight: "normal",
+          },
+        },
+      },
+      tooltip: {
+        enabled: true,
+        mode: "x",
+        position: "nearest",
+      },
+    },
+  };
+};
+
+export const getChartOptionsWithRange = (startTime: Date, endTime: Date): ChartOptions<"line"> => {
+  return {
+    responsive: true,
+    maintainAspectRatio: false,
+
+    scales: {
+      y: {
+        type: "linear",
+        beginAtZero: true,
+        ticks: {
+          stepSize: 200,
+          font: {
+            size: 14,
+            family: "'Pretendard Variable', 'sans-serif'",
+            weight: "normal",
+          },
+        },
+        title: {
+          display: true,
+          font: {
+            size: 14,
+            family: "'Pretendard Variable', 'sans-serif'",
+            weight: "normal",
+          },
+        },
+      },
+      x: {
+        type: "time",
+        time: {
+          unit: "millisecond",
+          tooltipFormat: "HH:mm:ss.SSS",
+          displayFormats: {
+            millisecond: "HH:mm:ss.SSS",
+          },
+        },
+        min: new Date(startTime.getTime()).toISOString(),
+        max: new Date(endTime.getTime() + 500).toISOString(),
+        ticks: {
+          stepSize: 10000,
+          maxRotation: 45,
+          minRotation: 0,
+          font: {
+            size: 12,
+            family: "'Pretendard Variable', 'sans-serif'",
+            weight: "normal",
+          },
+        },
+      },
+    },
+
+    plugins: {
+      legend: {
+        labels: {
+          font: {
+            size: 16,
+            family: "'Pretendard Variable', 'sans-serif'",
             weight: "normal",
           },
         },

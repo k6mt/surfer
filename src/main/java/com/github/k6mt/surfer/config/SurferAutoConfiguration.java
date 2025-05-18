@@ -22,6 +22,7 @@ import com.github.k6mt.surfer.methodtrace.controller.TraceController;
 import com.github.k6mt.surfer.system.controller.SystemController;
 import com.github.k6mt.surfer.util.CsvConverter;
 import com.github.k6mt.surfer.util.SourceCapture;
+import com.github.k6mt.surfer.util.SurferRuntimePort;
 import org.springframework.aop.Advisor;
 import org.springframework.aop.aspectj.AspectJExpressionPointcut;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
@@ -34,8 +35,8 @@ import org.springframework.context.annotation.Bean;
 public class SurferAutoConfiguration {
 
   @Bean
-  public LoadGenerator surferLoadGenerator() {
-    return new LoadGenerator();
+  public LoadGenerator surferLoadGenerator(SurferRuntimePort surferRuntimePort) {
+    return new LoadGenerator(surferRuntimePort);
   }
 
   @Bean
@@ -49,8 +50,12 @@ public class SurferAutoConfiguration {
   }
 
   @Bean
-  LoadTestController surferLoadTestController(CsvConverter csvConverter, HomeConfig homeConfig) {
-    return new LoadTestController(surferLoadGenerator(), csvConverter, homeConfig);
+  LoadTestController surferLoadTestController(
+          LoadGenerator loadGenerator,
+          CsvConverter csvConverter,
+          HomeConfig homeConfig
+  ) {
+    return new LoadTestController(loadGenerator, csvConverter, homeConfig);
   }
 
   @Bean
@@ -151,11 +156,14 @@ public class SurferAutoConfiguration {
     return new MethodFlowAnalysisService(aiClient, sourceCapture);
   }
 
-
   @Bean
   public MethodAnalysisController surferMethodAnalysisController(Tracer tracer,
       MethodFlowAnalysisService methodFlowAnalysisService) {
     return new MethodAnalysisController(tracer, methodFlowAnalysisService);
   }
 
+  @Bean
+  public SurferRuntimePort surferRuntimePort(){
+    return new SurferRuntimePort();
+  }
 }
