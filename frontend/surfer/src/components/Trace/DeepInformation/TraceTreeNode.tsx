@@ -26,7 +26,7 @@ const TraceTreeNode: React.FC<TreeNodeProps> = ({
   children,
 }) => {
   const [open, setOpen] = useState(defaultOpen);
-  const [execption, setException] = useState(null);
+  const [exception, setException] = useState(null);
 
   const tooltipContent =
     `Parameters: ${JSON.stringify(node.parameters)}\n` +
@@ -49,7 +49,7 @@ const TraceTreeNode: React.FC<TreeNodeProps> = ({
   return (
     <div className={`tree-node ${isRoot ? "indent" : ""}`}>
       <div
-        className={`tree-node-label ${!execption ? "" : "execption"}`}
+        className={`tree-node-label ${!exception ? "" : "exception"}`}
         onClick={() => hasChildren && setOpen(!open)}
       >
         {hasChildren && (
