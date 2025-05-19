@@ -11,7 +11,7 @@ interface TraceAPIOptions {
 }
 
 export function useTrace() {
-  async function TraceAPI({
+  async function requestWithHeader({
     method,
     url,
     id,
@@ -35,29 +35,39 @@ export function useTrace() {
       }
     }
 
+    // config 구성
+    const config: AxiosRequestConfig = {
+      headers,
+      params,
+    };
+
+    // method case
+    const apiRequest = (() => {
+      switch (method) {
+        case "get":
+          return API.get(finalUrl, config);
+        case "delete":
+          return API.delete(finalUrl, config);
+        case "post":
+          return API.post(finalUrl, data, config);
+        case "put":
+          return API.put(finalUrl, data, config);
+        default:
+          throw new Error("Invalid HTTP method");
+      }
+    })();
+
+    const response = await apiRequest;
+
+    return response;
+  }
+
+  async function TraceAPI({ method, url, id }: TraceAPIOptions) {
+    const headers = {
+      "X-Surfer-Header": id,
+    };
+
     try {
-      // config 구성
-      const config: AxiosRequestConfig = {
-        headers,
-        params,
-      };
-
-      // method case
-      const apiRequest = (() => {
-        switch (method) {
-          case "get":
-            return API.get(finalUrl, config);
-          case "delete":
-            return API.delete(finalUrl, config);
-          case "post":
-            return API.post(finalUrl, data, config);
-          case "put":
-            return API.put(finalUrl, data, config);
-          default:
-            throw new Error("Invalid HTTP method");
-        }
-      })();
-
       // trace => GET + params
       const traceRequest = API.get("/trace", {
         headers,
@@ -67,14 +77,32 @@ export function useTrace() {
         },
       });
 
-      const [response, trace] = await Promise.all([apiRequest, traceRequest]);
+      const trace = await traceRequest;
 
-      return { response, trace };
+      return trace;
     } catch (err) {
       console.error(err);
       throw err;
     }
   }
 
-  return { TraceAPI };
+  async function AnanlyzeMethod(id: string) {
+    const headers = {
+      "X-Surfer-Header": id,
+    };
+
+    const config: AxiosRequestConfig = {
+      headers,
+      timeout: 0,
+    };
+
+    //Analyze Method
+    const analyzMethodRequest = API.get("/method-analysis", config);
+
+    const analysis = await analyzMethodRequest;
+
+    return analysis;
+  }
+
+  return { TraceAPI, requestWithHeader, AnanlyzeMethod };
 }

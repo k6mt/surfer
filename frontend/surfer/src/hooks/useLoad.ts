@@ -32,19 +32,26 @@ export const useLoad = (id: string) => {
       return;
     }
 
-    const config = Object.fromEntries(fields.map((field) => [field.name, field.value]));
+    const config = Object.fromEntries(
+      fields.map((field) => [field.name, field.value])
+    );
 
     let finalUrl = tab.url;
 
     if (tab.config?.pathVariables) {
       for (const [key, value] of Object.entries(tab.config?.pathVariables)) {
-        finalUrl = finalUrl.replace(`{${key}}`, encodeURIComponent(String(value)));
+        finalUrl = finalUrl.replace(
+          `{${key}}`,
+          encodeURIComponent(String(value))
+        );
       }
     }
 
     if (tab.config?.params && Object.keys(tab.config?.params).length > 0) {
       const queryString = new URLSearchParams(tab.config?.params).toString();
-      finalUrl += finalUrl.includes("?") ? `&${queryString}` : `?${queryString}`;
+      finalUrl += finalUrl.includes("?")
+        ? `&${queryString}`
+        : `?${queryString}`;
     }
 
     const rawBody = tab.config?.body;
@@ -125,8 +132,14 @@ export const useLoad = (id: string) => {
 
       const newChartState = {
         ...prev,
-        success: [...prev.success, { x: xTime, y: data.successCount } as TimePoint],
-        failure: [...prev.failure, { x: xTime, y: data.failureCount } as TimePoint],
+        success: [
+          ...prev.success,
+          { x: xTime, y: data.successCount } as TimePoint,
+        ],
+        failure: [
+          ...prev.failure,
+          { x: xTime, y: data.failureCount } as TimePoint,
+        ],
         responseTime: [
           ...prev.responseTime,
           { x: xTime, y: data.averageResponseTimeMs } as TimePoint,
@@ -142,7 +155,6 @@ export const useLoad = (id: string) => {
       // Update charts with the fetched metrics data
       updateTabModel(tab.id, { metrics: newMetrics });
       updateTabModel(tab.id, { chartState: newChartState });
-      updateTabModel(tab.id, { test: n });
     } catch (error) {
       console.error("Error fetching metrics:", error);
     }

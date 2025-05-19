@@ -47,6 +47,14 @@
   background-color: rgba(56, 38, 38, 0.8);
 }
 
+.tree-node-label.exception {
+  background-color: var(--color-accent-danger);
+}
+
+.tree-node-label.exception:hover {
+  background-color: rgba(56, 38, 38, 0.8);
+}
+
 .tree-node-icon {
   display: flex;
   width: 1rem;

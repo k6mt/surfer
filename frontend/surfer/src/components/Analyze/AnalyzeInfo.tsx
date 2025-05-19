@@ -1,6 +1,7 @@
+import { API } from "@apis/axios";
+import AnalyzeModal from "@components/Analyze/AnalyzeModal";
+import AnalyzeView from "@components/Analyze/AnalyzeView";
 import ResponseView from "@components/Trace/DeepInformation/ResponseView";
-import TraceTreeView from "@components/Trace/DeepInformation/TraceTreeView";
-import DeepSurfing from "@components/Trace/DeepSurfing";
 import InfoCard from "@components/Trace/InfoCard";
 import ParamTreeView from "@components/Trace/ParamTreeView";
 import { faGear, faPlay } from "@fortawesome/free-solid-svg-icons";
@@ -10,12 +11,12 @@ import { useTabModelsContext } from "@hooks/useTabModels";
 import { useTrace } from "@hooks/useTrace";
 import { useEffect, useRef, useState } from "react";
 
-const MethodInfo = () => {
+const AnalyzeInfo = () => {
   const [showConfig, setShowConfig] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const { tabModels, activeTabModel, updateTabModel } = useTabModelsContext();
-  const { requestWithHeader, TraceAPI } = useTrace();
+  const { requestWithHeader, AnanlyzeMethod } = useTrace();
 
   const safeActiveModel = tabModels.find(
     (model) => model.id === activeTabModel
@@ -48,16 +49,14 @@ const MethodInfo = () => {
         url: safeActiveModel.url,
       });
 
-      updateTabModel(safeActiveModel.id, { response: response.data });
+      if (response.status === 200) {
+        updateTabModel(safeActiveModel.id, { response: response.data });
+      }
 
-      const trace = await TraceAPI({
-        id: safeActiveModel.id,
-        method: safeActiveModel.method.toLowerCase() as any,
-        url: safeActiveModel.url,
-      });
+      const analysis = await AnanlyzeMethod(safeActiveModel.id);
 
-      if (trace.status === 200) {
-        updateTabModel(safeActiveModel.id, { trace: trace.data });
+      if (analysis.status === 200) {
+        updateTabModel(safeActiveModel.id, { analysis: analysis.data });
       }
 
       return;
@@ -76,20 +75,12 @@ const MethodInfo = () => {
 
     if (response.status === 200) {
       updateTabModel(safeActiveModel.id, { response: response.data });
-    } else {
-      updateTabModel(safeActiveModel.id, { response: response });
     }
 
-    const trace = await TraceAPI({
-      id: safeActiveModel.id,
-      method: safeActiveModel.method.toLowerCase() as any,
-      url: safeActiveModel.url,
-    });
+    const analysis = await AnanlyzeMethod(safeActiveModel.id);
 
-    if (trace.status === 200) {
-      updateTabModel(safeActiveModel.id, { trace: trace.data });
-    } else {
-      updateTabModel(safeActiveModel.id, { trace: trace });
+    if (analysis.status === 200) {
+      updateTabModel(safeActiveModel.id, { analysis: analysis.data });
     }
 
     return;
@@ -118,7 +109,7 @@ const MethodInfo = () => {
 
       <div className="deep-information">
         <div className="header">
-          <h2>Deep Information</h2>
+          <h2>Analyze Method</h2>
           <div className="actions" ref={dropdownRef}>
             <div
               className="btn-config"
@@ -133,7 +124,7 @@ const MethodInfo = () => {
             {showConfig && (
               <div className="modal-overlay">
                 <div className="modal-content">
-                  <DeepSurfing
+                  <AnalyzeModal
                     controller={safeActiveModel.controller}
                     method={safeActiveModel.method}
                     url={safeActiveModel.url}
@@ -146,16 +137,6 @@ const MethodInfo = () => {
           </div>
         </div>
         <div className="infos-trace">
-          <div className="table-title">Trace</div>
-          <div className="trace-wrapper">
-            <TraceTreeView
-              data={safeActiveModel.trace}
-              placeholder={<>API를 서핑해보세요</>}
-            />
-          </div>
-        </div>
-
-        <div className="infos-response">
           <div className="table-title">Response</div>
           <div className="trace-wrapper">
             <ResponseView
@@ -164,9 +145,16 @@ const MethodInfo = () => {
             />
           </div>
         </div>
+
+        <div className="infos-response">
+          <div className="table-title">Analyze</div>
+          <div className="trace-wrapper">
+            <AnalyzeView data={safeActiveModel?.analysis} />
+          </div>
+        </div>
       </div>
     </>
   );
 };
 
-export default MethodInfo;
+export default AnalyzeInfo;

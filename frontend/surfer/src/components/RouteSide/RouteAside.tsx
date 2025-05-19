@@ -4,12 +4,14 @@ import {
   faHome,
   faMicrochip,
   faRoute,
+  faSearch,
 } from "@fortawesome/free-solid-svg-icons";
 
 const NAV_ITMES: AsideNav[] = [
   { to: "/", label: "Home", icon: faHome },
   { to: "/trace", label: "Trace", icon: faRoute },
   { to: "/loadtest", label: "Load Test", icon: faMicrochip },
+  { to: "/analyze", label: "Analyze Code", icon: faSearch },
 ];
 
 const RouteAside = () => {

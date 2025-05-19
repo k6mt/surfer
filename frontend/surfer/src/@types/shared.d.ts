@@ -30,7 +30,9 @@ export interface LoadField {
 export interface LoadTest {
   value: string;
   handleInputChange: (
-    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+    event: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
   ) => void;
   hasError: boolean;
 }
@@ -61,12 +63,16 @@ export interface TabModel {
   loadConfig: LoadField[];
   metrics: LoadMetrics;
   chartState: ChartState;
-  test: number;
+  analysis: any | null;
 }
 
 export interface TabProps {
   tab: Tab;
-  onFieldChange: (tabId: string, field: "method" | "url" | "response", value: string) => void;
+  onFieldChange: (
+    tabId: string,
+    field: "method" | "url" | "response",
+    value: string
+  ) => void;
 }
 
 export interface TracedParams {

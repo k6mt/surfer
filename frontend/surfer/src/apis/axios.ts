@@ -38,7 +38,7 @@ API.interceptors.response.use(
     return response;
   },
   async (error: AxiosError) => {
-    console.warn(error.config?.url + " API response error", {
+    console.log(error.config?.url + " API response error", {
       response_data: error.response?.data,
       status: error.response?.status,
       request_info: {
@@ -50,9 +50,7 @@ API.interceptors.response.use(
         data: error.config?.data,
       },
     });
-    const errorData: Shared.ErrorResponse = error.response
-      ?.data as Shared.ErrorResponse;
-    alert(`${errorData.error.code}: ${errorData.error.message}`);
-    return Promise.reject(error);
+
+    return error.response;
   }
 );
