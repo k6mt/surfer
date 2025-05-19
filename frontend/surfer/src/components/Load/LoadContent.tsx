@@ -1,6 +1,6 @@
 import ConfigModal from "@components/Load/ConfigModal";
 import LoadMetricsChart from "@components/Load/LoadMetricsChart";
-import { faGear, faPlay } from "@fortawesome/free-solid-svg-icons";
+import { faGear, faPlay, faStop } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { useTabModelsContext } from "@hooks/useTabModels";
@@ -9,7 +9,8 @@ import { useEffect, useState } from "react";
 const LoadContent = () => {
   const [showConfig, setShowConfig] = useState<boolean>(false);
 
-  const { tabModels, activeTabModel, startLoadTest } = useTabModelsContext();
+  const { tabModels, activeTabModel, startLoadTest, stopLoadTest } =
+    useTabModelsContext();
   const safeActiveModel = tabModels.find(
     (model) => model.id === activeTabModel
   )!;
@@ -33,10 +34,17 @@ const LoadContent = () => {
                 <FontAwesomeIcon icon={faGear} />
               </div>
               <div className="btn-run">
-                <FontAwesomeIcon
-                  icon={faPlay}
-                  onClick={() => startLoadTest(safeActiveModel.id)}
-                />
+                {safeActiveModel.metrics.isRunning ? (
+                  <FontAwesomeIcon
+                    icon={faStop}
+                    onClick={() => stopLoadTest(safeActiveModel.id)}
+                  />
+                ) : (
+                  <FontAwesomeIcon
+                    icon={faPlay}
+                    onClick={() => startLoadTest(safeActiveModel.id)}
+                  />
+                )}
               </div>
 
               {showConfig && (
