@@ -27,7 +27,6 @@ public class ErrorController {
    */
   @GetMapping("")
   public ApiUtils.ApiResult<?> getErrorInfo(@RequestHeader(name = "X-Surfer-Header") String traceId) {
-    System.out.println("traceId:" + traceId);
     ErrorInfo errorInfo = errorRepository.getError(traceId);
 
     if (errorInfo == null) {
