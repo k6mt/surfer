@@ -1,4 +1,3 @@
-import { API } from "@apis/axios";
 import AnalyzeModal from "@components/Analyze/AnalyzeModal";
 import AnalyzeView from "@components/Analyze/AnalyzeView";
 import ResponseView from "@components/Trace/DeepInformation/ResponseView";

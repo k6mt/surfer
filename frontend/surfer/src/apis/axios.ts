@@ -4,8 +4,6 @@ import axios, {
   InternalAxiosRequestConfig,
 } from "axios";
 
-import { Shared } from "../apis/@types/shared";
-
 const isDev = import.meta.env.MODE === "development";
 
 export const API = axios.create({
