@@ -27,11 +27,15 @@ public class MethodAnalysisController {
   public ApiResult<?> analyzeMethodFlow(@RequestHeader(name = "X-Surfer-Header") String traceId) {
     Trace trace = tracer.getTraceMap().get(traceId);
 
+    System.out.println(trace.toString());
+
     if (trace == null) {
       return ApiUtils.error("Trace with ID: " + traceId + " not found", HttpStatus.NOT_FOUND);
     }
 
     String analysis = analysisService.analyzeMethodFlow(trace);
+
+    System.out.println(analysis);
 
     MethodAnalysisResponse response = new MethodAnalysisResponse(
         traceId,
@@ -39,6 +43,9 @@ public class MethodAnalysisController {
         trace.getResultTimeMs(),
         analysis
     );
+
+    System.out.println(response);
+    System.out.println(ApiUtils.success(response));
 
     return ApiUtils.success(response);
   }

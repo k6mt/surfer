@@ -50,9 +50,9 @@ API.interceptors.response.use(
         data: error.config?.data,
       },
     });
-    const errorData: Shared.ErrorResponse = error.response
-      ?.data as Shared.ErrorResponse;
-    alert(`${errorData.error.code}: ${errorData.error.message}`);
+
+    console.log(error);
+
     return Promise.reject(error);
   }
 );

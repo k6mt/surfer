@@ -1,5 +1,5 @@
-import AnalyzeContainer from "@components/Analyze/AnalyzeContainer";
-import ModelHeader from "@components/Analyze/ModelHeader";
+import CommonContainer from "@components/common/CommonContainer";
+import ModelHeader from "@components/common/ModelHeader";
 import RouteAside from "@components/RouteSide/RouteAside";
 import SurferList from "@components/SurferList/SurferList";
 import { Outlet, useLocation } from "react-router-dom";
@@ -16,9 +16,17 @@ const MainLayout = () => {
         <main>
           <div className="container">
             <ModelHeader />
-            <AnalyzeContainer>
+            <CommonContainer>
               <Outlet />
-            </AnalyzeContainer>
+            </CommonContainer>
+          </div>
+        </main>
+      )}
+
+      {isHome && (
+        <main>
+          <div className="container">
+            <Outlet />
           </div>
         </main>
       )}

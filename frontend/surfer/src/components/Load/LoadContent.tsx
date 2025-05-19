@@ -10,14 +10,11 @@ const LoadContent = () => {
   const [showConfig, setShowConfig] = useState<boolean>(false);
 
   const { tabModels, activeTabModel, startLoadTest } = useTabModelsContext();
-  const safeActiveModel = tabModels.find((model) => model.id === activeTabModel)!;
+  const safeActiveModel = tabModels.find(
+    (model) => model.id === activeTabModel
+  )!;
 
   // const { onStartLoadTest } = useLoad(safeActiveModel.id);
-
-  useEffect(() => {
-    console.log(safeActiveModel.test);
-    console.log(safeActiveModel.chartState.success);
-  }, [safeActiveModel.test]);
 
   useEffect(() => {
     console.log(safeActiveModel.id);
@@ -29,11 +26,17 @@ const LoadContent = () => {
         <div className="load-content">
           <div className="header">
             <div className="actions">
-              <div className="btn-config" onClick={() => setShowConfig((s) => !s)}>
+              <div
+                className="btn-config"
+                onClick={() => setShowConfig((s) => !s)}
+              >
                 <FontAwesomeIcon icon={faGear} />
               </div>
               <div className="btn-run">
-                <FontAwesomeIcon icon={faPlay} onClick={() => startLoadTest(safeActiveModel.id)} />
+                <FontAwesomeIcon
+                  icon={faPlay}
+                  onClick={() => startLoadTest(safeActiveModel.id)}
+                />
               </div>
 
               {showConfig && (

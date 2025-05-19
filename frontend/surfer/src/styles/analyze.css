@@ -1,0 +1,8 @@
+.analysis {
+  display: flex;
+  flex-direction: column;
+}
+
+.analysis-infos {
+  padding: 0 2rem;
+}

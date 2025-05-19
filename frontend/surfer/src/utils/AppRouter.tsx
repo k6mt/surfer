@@ -3,10 +3,9 @@ import Home from "@pages/Home";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import NotFound from "@pages/NotFound";
 import ErrorLayout from "@components/layout/ErrorLayout";
-import { lazy } from "react";
 import TracePage from "@pages/TracePage";
-
-const DashBoard = lazy(() => import("@pages/LoadTest"));
+import LoadTest from "@pages/LoadTest";
+import Analyze from "@pages/Analyze";
 
 const router = createBrowserRouter(
   [
@@ -16,7 +15,8 @@ const router = createBrowserRouter(
       children: [
         { index: true, element: <Home /> },
         { path: "trace", element: <TracePage /> },
-        { path: "loadtest", element: <DashBoard /> },
+        { path: "loadtest", element: <LoadTest /> },
+        { path: "analyze", element: <Analyze /> },
       ],
     },
     {

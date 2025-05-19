@@ -12,7 +12,11 @@ export const TabModelsProvider = ({ children }: { children: ReactNode }) => {
 
   const { ApiScanByMethod } = useScan();
 
-  const addTabModel = async (controller: string, method: string, url: string) => {
+  const addTabModel = async (
+    controller: string,
+    method: string,
+    url: string
+  ) => {
     const id = `${method}_${url}_${Date.now()}`;
     const raw = await ApiScanByMethod(method, url);
 
@@ -57,7 +61,7 @@ export const TabModelsProvider = ({ children }: { children: ReactNode }) => {
       loadConfig: load,
       metrics: defaultMetrics,
       chartState: defaultChartState,
-      test: 0,
+      analysis: null,
     };
 
     setTabModels((prev) => [...prev, newTabModel]);
@@ -70,7 +74,8 @@ export const TabModelsProvider = ({ children }: { children: ReactNode }) => {
       const nextTabModels = prev?.filter((t) => t.id !== id);
 
       if (activeTabModel === id) {
-        const nextActiveTabModel = nextTabModels[curIdx - 1] ?? nextTabModels[0] ?? null;
+        const nextActiveTabModel =
+          nextTabModels[curIdx - 1] ?? nextTabModels[0] ?? null;
         setActiveTabModel(nextActiveTabModel?.id ?? null);
       }
 
@@ -121,8 +126,14 @@ export const TabModelsProvider = ({ children }: { children: ReactNode }) => {
             chartState: {
               ...prevChart,
               endTime: xTime,
-              success: [...prevChart.success, { x: xTime, y: data.successCount }],
-              failure: [...prevChart.failure, { x: xTime, y: data.failureCount }],
+              success: [
+                ...prevChart.success,
+                { x: xTime, y: data.successCount },
+              ],
+              failure: [
+                ...prevChart.failure,
+                { x: xTime, y: data.failureCount },
+              ],
               responseTime: [
                 ...prevChart.responseTime,
                 { x: xTime, y: data.averageResponseTimeMs },
@@ -157,19 +168,26 @@ export const TabModelsProvider = ({ children }: { children: ReactNode }) => {
       return;
     }
 
-    const config = Object.fromEntries(fields.map((field) => [field.name, field.value]));
+    const config = Object.fromEntries(
+      fields.map((field) => [field.name, field.value])
+    );
 
     let finalUrl = model.url;
 
     if (model.config?.pathVariables) {
       for (const [key, value] of Object.entries(model.config?.pathVariables)) {
-        finalUrl = finalUrl.replace(`{${key}}`, encodeURIComponent(String(value)));
+        finalUrl = finalUrl.replace(
+          `{${key}}`,
+          encodeURIComponent(String(value))
+        );
       }
     }
 
     if (model.config?.params && Object.keys(model.config?.params).length > 0) {
       const queryString = new URLSearchParams(model.config?.params).toString();
-      finalUrl += finalUrl.includes("?") ? `&${queryString}` : `?${queryString}`;
+      finalUrl += finalUrl.includes("?")
+        ? `&${queryString}`
+        : `?${queryString}`;
     }
 
     const rawBody = model.config?.body;
