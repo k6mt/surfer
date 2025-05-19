@@ -1,7 +1,7 @@
 import { useTabModelsContext } from "@hooks/useTabModels";
 import { ReactNode } from "react";
 
-const AnalyzeContainer = ({ children }: { children: ReactNode }) => {
+const CommonContainer = ({ children }: { children: ReactNode }) => {
   const { tabModels, activeTabModel } = useTabModelsContext();
   const noneModel = tabModels.length === 0 || !activeTabModel;
 
@@ -12,4 +12,4 @@ const AnalyzeContainer = ({ children }: { children: ReactNode }) => {
   );
 };
 
-export default AnalyzeContainer;
+export default CommonContainer;

@@ -4,7 +4,7 @@ import {
   faFolderOpen,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 
 interface TreeNodeProps {
   name?: string;
@@ -26,18 +26,30 @@ const TraceTreeNode: React.FC<TreeNodeProps> = ({
   children,
 }) => {
   const [open, setOpen] = useState(defaultOpen);
+  const [execption, setException] = useState(null);
 
   const tooltipContent =
     `Parameters: ${JSON.stringify(node.parameters)}\n` +
     `Return Value: ${JSON.stringify(node.returnValue)}\n` +
     `ExecutionTime: ${node.resultTimeMs} ms\n` +
     `Time: ${new Date(node.startTimeMs).toLocaleTimeString()}\n` +
-    `Call Depth: ${node.depth}`;
+    `Call Depth: ${node.depth}\n` +
+    `Exception: ${node.exceptionMessage}`;
+
+  useEffect(() => {
+    if (node.exceptionMessage === undefined || node.exceptionMessage === null) {
+      setException(null);
+      return;
+    } else {
+      setException(node.exceptionMessage);
+      return;
+    }
+  }, [node.exceptionMessage]);
 
   return (
     <div className={`tree-node ${isRoot ? "indent" : ""}`}>
       <div
-        className="tree-node-label"
+        className={`tree-node-label ${!execption ? "" : "execption"}`}
         onClick={() => hasChildren && setOpen(!open)}
       >
         {hasChildren && (

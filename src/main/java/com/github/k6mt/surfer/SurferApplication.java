@@ -4,8 +4,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * packageName    : com.k6m.surfer fileName       : SurferAppication author         : cheonbi date
- * : 25. 4. 28. description    :
+ *
+ * K6M Surfer ლ(╹◡╹ლ)
  */
 
 @SpringBootApplication
