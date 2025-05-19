@@ -90,23 +90,55 @@
 
 .tooltip {
   visibility: hidden;
-  width: max-content;
-  max-width: 400px;
-  background-color: rgba(0, 0, 0);
-  color: #fff;
+  height: auto;
+  max-height: 240px;
+  max-width: 480px;
+  background-color: rgba(30, 30, 30, 0.95);
+  color: #f1f1f1;
   text-align: left;
-  padding: 1rem 0.5rem;
-  border-radius: 4px;
+  padding: 1rem;
+  border-radius: 6px;
   font-size: var(--fs-md);
-  line-height: 1.4;
+  line-height: 1.5;
 
   position: absolute;
   top: 50%;
-  left: 50%;
+  left: 30%;
   white-space: pre-wrap;
   z-index: 10;
+  overflow-y: auto;
+  overflow-x: auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  border: 1px solid #555;
+}
+
+/* Firefox */
+.tooltip {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(150, 150, 150, 0.5) transparent;
 }
 
 .tree-node-label:hover .tooltip {
   visibility: visible;
+}
+
+/* WebKit (Chrome, Safari, Edge) */
+.tooltip::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.tooltip::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.tooltip::-webkit-scrollbar-thumb {
+  background-color: rgba(150, 150, 150, 0.5);
+  border-radius: 6px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+.tooltip::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(180, 180, 180, 0.7);
 }
