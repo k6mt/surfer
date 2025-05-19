@@ -38,7 +38,7 @@ API.interceptors.response.use(
     return response;
   },
   async (error: AxiosError) => {
-    console.warn(error.config?.url + " API response error", {
+    console.log(error.config?.url + " API response error", {
       response_data: error.response?.data,
       status: error.response?.status,
       request_info: {
@@ -51,8 +51,6 @@ API.interceptors.response.use(
       },
     });
 
-    console.log(error);
-
-    return Promise.reject(error);
+    return error.response;
   }
 );
