@@ -1,10 +1,13 @@
+import com.vanniktech.maven.publish.SonatypeHost
+
 plugins {
     id 'java'
-    id 'maven-publish'
+    id "com.vanniktech.maven.publish" version "0.28.0"
+    id 'signing'
 }
 
-group = 'com.github.k6mt'
-version = '0.0.1'
+group = 'io.github.k6mt'
+version = '1.0.2'
 
 java {
     toolchain {
@@ -12,37 +15,62 @@ java {
     }
 }
 
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            groupId = "com.github.k6mt"
-            artifactId = "surfer"
-            version = "0.0.1"
-            from(components["java"])
-        }
-    }
-    repositories {
-        mavenLocal()
-    }
+tasks.withType(Javadoc).configureEach {
+    options.encoding = 'UTF-8'
 }
 
 repositories {
     mavenCentral()
 }
 
+signing {
+    sign publishing.publications
+}
+
+mavenPublishing {
+    signAllPublications()
+    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
+
+    coordinates("io.github.k6mt", "surfer", "1.0.2")
+
+    pom {
+        name = 'surfer'
+        description = 'surfer'
+        url = '<https://github.com/k6mt/surfer>'
+
+        licenses {
+            license {
+                name = "The Apache License, Version 2.0"
+                url = "https://www.apache.org/licenses/LICENSE-2.0.txt"
+                distribution = "https://www.apache.org/licenses/LICENSE-2.0.txt"
+            }
+        }
+
+        developers {
+            developer {
+                id = 'jjoonior'
+                name = 'Injoo Huh'
+                email = 'jjoonior97@gmail.com'
+            }
+        }
+
+        scm {
+            connection = 'scm:git:github.com/k6mt/surfer.git'
+            developerConnection = 'scm:git:ssh://github.com/k6mt/surfer.git'
+            url = 'https://github.com/k6mt/surfer/tree/develop'
+        }
+    }
+}
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-aop:3.4.4'
-
     implementation 'org.springframework.boot:spring-boot-starter-web:3.4.4'
     implementation 'org.springframework.boot:spring-boot-starter-webflux:3.4.4'
     implementation 'org.reflections:reflections:0.10.2'
-
     implementation 'org.apache.commons:commons-lang3:3.12.0'
     implementation 'commons-io:commons-io:2.19.0'
     implementation 'com.github.oshi:oshi-core:6.8.1'
-
     implementation 'com.opencsv:opencsv:5.9'
-
     implementation 'com.github.javaparser:javaparser-symbol-solver-core:3.26.4'
 
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
@@ -97,4 +125,8 @@ tasks.register("copyBuildFiles", Copy) {
     into("$projectDir/src/main/resources/META-INF/resources/k6mt-surfer")
 }
 
-
+afterEvaluate {
+    tasks.named("sourcesJar") {
+        dependsOn("copyBuildFiles")
+    }
+}
