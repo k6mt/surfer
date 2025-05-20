@@ -7,7 +7,7 @@ plugins {
 }
 
 group = 'io.github.k6mt'
-version = '1.0.1'
+version = '1.0.2'
 
 java {
     toolchain {
@@ -31,7 +31,7 @@ mavenPublishing {
     signAllPublications()
     publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
 
-    coordinates("io.github.k6mt", "surfer", "1.0.1")
+    coordinates("io.github.k6mt", "surfer", "1.0.2")
 
     pom {
         name = 'surfer'
@@ -57,7 +57,7 @@ mavenPublishing {
         scm {
             connection = 'scm:git:github.com/k6mt/surfer.git'
             developerConnection = 'scm:git:ssh://github.com/k6mt/surfer.git'
-            url = '<https://github.com/k6mt/surfer/tree/develop>'
+            url = 'https://github.com/k6mt/surfer/tree/develop'
         }
     }
 }
