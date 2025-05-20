@@ -19,7 +19,7 @@ import com.github.k6mt.surfer.loadtest.core.LoadGenerator;
 import com.github.k6mt.surfer.methodtrace.SurferMethodInterceptor;
 import com.github.k6mt.surfer.methodtrace.Tracer;
 import com.github.k6mt.surfer.methodtrace.controller.TraceController;
-import com.github.k6mt.surfer.system.controller.SystemController;
+//import com.github.k6mt.surfer.system.controller.SystemController;
 import com.github.k6mt.surfer.util.CsvConverter;
 import com.github.k6mt.surfer.util.SourceCapture;
 import com.github.k6mt.surfer.util.SurferRuntimePort;
@@ -146,10 +146,10 @@ public class SurferAutoConfiguration {
     return new TraceController(tracer, homeConfig, csvConverter);
   }
 
-  @Bean
-  public SystemController surferSystemController() {
-    return new SystemController();
-  }
+//  @Bean
+//  public SystemController surferSystemController() {
+//    return new SystemController();
+//  }
   @Bean
   public MethodFlowAnalysisService surferMethodFlowAnalysisService(AIClient aiClient,
       SourceCapture sourceCapture) {
