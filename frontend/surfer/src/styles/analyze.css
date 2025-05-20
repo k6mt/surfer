@@ -1,0 +1,18 @@
+.analysis {
+  display: flex;
+  flex-direction: column;
+}
+
+.analysis-infos {
+  padding: 0 2rem;
+}
+
+.run-loading {
+  font-size: 0.9rem;
+}
+
+.analysis-loading {
+  padding: 1rem;
+  text-align: center;
+  font-style: italic;
+}

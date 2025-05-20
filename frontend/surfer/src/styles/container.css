@@ -1,0 +1,132 @@
+.main-header {
+  display: flex;
+  position: relative;
+  gap: 1rem;
+  border-top-right-radius: 8px;
+  width: 100%;
+  overflow: hidden;
+}
+
+.main-header .icon {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding-top: 0.5rem;
+}
+
+.main-header .icon.icon-left {
+  padding-left: 1rem;
+}
+
+.main-header .icon.icon-right {
+  justify-content: flex-end;
+  padding-right: 1rem;
+}
+
+.main-header .icon .fa-angle-left {
+  width: 1.5rem;
+  height: 1.5rem;
+  line-height: 1.5rem;
+  text-align: center;
+  border-radius: 50%;
+  font-size: var(--fs-md);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.main-header .icon .fa-angle-right {
+  width: 1.5rem;
+  height: 1.5rem;
+  line-height: 1.5rem;
+  text-align: center;
+  border-radius: 50%;
+  font-size: var(--fs-md);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.main-header .icon .fa-angle-left:hover {
+  background-color: rgba(128, 128, 128, 0.666);
+}
+
+.main-header .icon .fa-angle-right:hover {
+  background-color: rgba(128, 128, 128, 0.666);
+}
+
+.main-tabs {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  padding-top: 1.2rem;
+  gap: 0.35rem;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+.main-tabs.drag {
+  scroll-behavior: auto;
+  cursor: grab;
+}
+
+.main-tabs.drag .tab {
+  pointer-events: none;
+  user-select: none;
+}
+
+.main-tab {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  border-radius: 8px 8px 0 0;
+  background-color: rgb(161, 161, 161);
+  color: rgba(26, 26, 26, 0.55);
+  cursor: pointer;
+  width: 180px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-shrink: 0;
+}
+
+.main-tab:hover {
+  background-color: #cfd4dc;
+}
+
+.main-tab.active {
+  background-color: #f1f1f1;
+  color: #000000;
+  box-shadow: 0 -1px 0 #f1f1f1 inset;
+  z-index: 1;
+}
+
+.main-tab-method {
+  flex-shrink: 0;
+  margin-right: 0.5rem;
+  font-weight: bold;
+}
+
+.main-tab-url {
+  flex: 1 1 auto;
+  font-size: 0.75rem;
+  opacity: 0.8;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.main-tab-close {
+  flex: 0 0 auto;
+  margin-left: 0.5rem;
+  background: transparent;
+  border: none;
+  font-size: 1rem;
+  color: #d32f2f;
+  cursor: pointer;
+  opacity: 0.4;
+  transition: opacity 0.2s;
+}
+
+.main-tab-close:hover {
+  opacity: 1;
+  color: #ff0000;
+}

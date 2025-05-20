@@ -1,0 +1,136 @@
+@import "normalize.css";
+@import "index.css";
+@import "variables.css";
+
+html,
+body {
+  height: 100vh;
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+  line-height: 1.5;
+  font-family: "Pretendard Variable", sans-serif;
+  background-color: #f5f5f5;
+  overflow: hidden;
+}
+
+#root {
+  height: 100vh;
+  width: 100vw;
+}
+
+@media (max-width: 768px) {
+  #root {
+    grid-template-columns: 60px 1fr;
+  }
+}
+
+main {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 240px 300px 1fr; /* aside + content */
+  width: 100%;
+  height: 100%;
+}
+
+.layout.home {
+  grid-template-columns: 240px 1fr; /* aside + content */
+}
+
+.container {
+  display: grid;
+  grid-template-rows: 60px auto;
+
+  width: 100%;
+  height: 100%;
+  font-size: var(--fs-md);
+
+  background-color: #d9d9d9;
+  border-radius: 0 8px 8px 0;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+.main-body.none {
+  height: 100%;
+  width: 100%;
+  background-color: #d9d9d9;
+  padding: 1.5rem;
+  position: relative;
+  overflow-y: scroll;
+}
+
+.main-body {
+  height: 100%;
+  width: 100%;
+  background-color: #f1f1f1;
+  padding: 1.5rem;
+  position: relative;
+  overflow-y: scroll;
+}
+
+.outlet {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.page-title {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+/**
+  Responsive
+*/
+
+/* Mobile Small*/
+@media (max-width: 479px) {
+  #root {
+    font-size: var(--fs-sm);
+  }
+  .layout__container {
+    width: 100%;
+    font-size: var(--fs-sm);
+  }
+}
+
+/* Mobile Medium*/
+@media all and (min-width: 480px) and (max-width: 767px) {
+  #root {
+    font-size: var(--fs-sm);
+  }
+
+  .layout__container {
+    width: 100%;
+    font-size: var(--fs-sm);
+  }
+}
+
+/* Mobile Large*/
+@media all and (min-width: 768px) and (max-width: 1023px) {
+  #root {
+    font-size: var(--fs-md);
+  }
+
+  .layout__container {
+    width: 100%;
+    font-size: var(--fs-md);
+  }
+}
+
+/* Laptop & Tablet*/
+@media all and (min-width: 1024px) and (max-width: 1279px) {
+  #root {
+    font-size: var(--fs-md);
+  }
+
+  .layout__container {
+    width: 100%;
+    font-size: var(--fs-md);
+  }
+}
