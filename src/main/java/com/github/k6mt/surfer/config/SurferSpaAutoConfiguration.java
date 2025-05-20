@@ -14,26 +14,28 @@ import org.springframework.web.servlet.resource.PathResourceResolver;
 import java.io.IOException;
 
 /**
- * packageName    : com.k6m.surfer.config fileName       : SuferSpaAutoConfiguration author
- * : cheonbi date           : 25. 4. 30. description    :
+ * packageName : com.k6m.surfer.config
+ * fileName : SuferSpaAutoConfiguration
+ * author : cheonbi
+ * date : 25. 4. 30. description    :
  */
 
 @Configuration
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
-@ConditionalOnMissingBean(name = "k6m_surfer")
+@ConditionalOnMissingBean(name = "k6mt_surfer")
 @AutoConfigureAfter(WebMvcAutoConfiguration.class)
 public class SurferSpaAutoConfiguration implements WebMvcConfigurer {
 
   @Override
   public void addViewControllers(ViewControllerRegistry registry) {
-    registry.addViewController("/k6m-surfer").setViewName("forward:/k6m-surfer/index.html");
-    registry.addViewController("/k6m-surfer/").setViewName("forward:/k6m-surfer/index.html");
+    registry.addViewController("/k6mt-surfer").setViewName("forward:/k6mt-surfer/index.html");
+    registry.addViewController("/k6mt-surfer/").setViewName("forward:/k6mt-surfer/index.html");
   }
 
   @Override
   public void addResourceHandlers(ResourceHandlerRegistry registry) {
-    registry.addResourceHandler("/k6m-surfer/**")
-        .addResourceLocations("classpath:/META-INF/resources/k6m-surfer/")
+    registry.addResourceHandler("/k6mt-surfer/**")
+        .addResourceLocations("classpath:/META-INF/resources/k6mt-surfer/")
         .resourceChain(true)
         .addResolver(new PathResourceResolver() {
           @Override

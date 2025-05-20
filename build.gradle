@@ -63,7 +63,7 @@ sourceSets {
 processResources { dependsOn "copyBuildFiles" }
 
 tasks.register("deleteCopiesFile", Delete) {
-    delete file("$projectDir/src/main/resources/META-INF/resources/k6m-surfer")
+    delete file("$projectDir/src/main/resources/META-INF/resources/k6mt-surfer")
 }
 
 tasks.register('installReact', Exec) {
@@ -94,7 +94,7 @@ tasks.register("buildReact", Exec) {
 tasks.register("copyBuildFiles", Copy) {
     dependsOn("deleteCopiesFile", "buildReact")
     from("$frontendDir/dist")
-    into("$projectDir/src/main/resources/META-INF/resources/k6m-surfer")
+    into("$projectDir/src/main/resources/META-INF/resources/k6mt-surfer")
 }
 
 
