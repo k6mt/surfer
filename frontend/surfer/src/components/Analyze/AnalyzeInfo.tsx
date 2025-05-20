@@ -1,5 +1,6 @@
 import AnalyzeModal from "@components/Analyze/AnalyzeModal";
 import AnalyzeView from "@components/Analyze/AnalyzeView";
+import Loader from "@components/common/Loader";
 import ResponseView from "@components/Trace/DeepInformation/ResponseView";
 import InfoCard from "@components/Trace/InfoCard";
 import ParamTreeView from "@components/Trace/ParamTreeView";
@@ -60,12 +61,16 @@ const AnalyzeInfo = () => {
       const response = await requestWithHeader(args);
       if (response.status === 200) {
         updateTabModel(safeActiveModel.id, { response: response.data });
+      } else {
+        updateTabModel(safeActiveModel.id, { response: response });
       }
 
       // analyze
       const analysis = await AnanlyzeMethod(safeActiveModel.id);
       if (analysis.status === 200) {
         updateTabModel(safeActiveModel.id, { analysis: analysis.data });
+      } else {
+        updateTabModel(safeActiveModel.id, { analysis: analysis });
       }
     } catch (error) {
       alert(error);
@@ -151,7 +156,7 @@ const AnalyzeInfo = () => {
           <div className="table-title">Analyze</div>
           <div className="trace-wrapper">
             {loading ? (
-              <div className="analysis-loading">분석 중...</div>
+              <Loader size={32} />
             ) : (
               <AnalyzeView data={safeActiveModel.analysis} />
             )}
