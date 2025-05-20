@@ -198,6 +198,11 @@
   height: 1.1rem;
 }
 
+.deep-information .actions .btn-run.disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
 .modal-overlay {
   position: fixed;
   top: 0;

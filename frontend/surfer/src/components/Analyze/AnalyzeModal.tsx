@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleXmark, faClose } from "@fortawesome/free-solid-svg-icons";
 import { useTabModelsContext } from "@hooks/useTabModels";
+import { TabModel } from "@_types/shared";
 
 type KeyValue = { key: string; value: string };
 
@@ -20,7 +21,7 @@ const AnalyzeModal: React.FC<DeepSurfingProps> = ({
   id,
   onClose,
 }) => {
-  const { updateTabModel } = useTabModelsContext();
+  const { tabModels, updateTabModel } = useTabModelsContext();
 
   // dynamic fields
   const [pathVar, setPathVar] = useState<KeyValue[]>([]);
@@ -69,6 +70,33 @@ const AnalyzeModal: React.FC<DeepSurfingProps> = ({
 
     onClose();
   };
+
+  useEffect(() => {
+    const current: TabModel | undefined = tabModels.find((t) => t.id === id);
+    if (current?.config) {
+      const {
+        pathVariables = {},
+        params: cfgParams = {},
+        body: cfgBody,
+      } = current.config;
+
+      setPathVar(
+        Object.entries(pathVariables).map(([key, value]) => ({
+          key,
+          value: value as string,
+        }))
+      );
+
+      setParams(
+        Object.entries(cfgParams).map(([key, value]) => ({
+          key,
+          value: value as string,
+        }))
+      );
+
+      setBody(cfgBody ? JSON.stringify(cfgBody, null, 2) : "");
+    }
+  }, [id, tabModels]);
 
   return (
     <div className="deep-surfing-container">

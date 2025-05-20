@@ -33,19 +33,22 @@ const LoadContent = () => {
               >
                 <FontAwesomeIcon icon={faGear} />
               </div>
-              <div className="btn-run">
-                {safeActiveModel.metrics.isRunning ? (
-                  <FontAwesomeIcon
-                    icon={faStop}
-                    onClick={() => stopLoadTest(safeActiveModel.id)}
-                  />
-                ) : (
-                  <FontAwesomeIcon
-                    icon={faPlay}
-                    onClick={() => startLoadTest(safeActiveModel.id)}
-                  />
-                )}
-              </div>
+
+              {safeActiveModel.metrics.isRunning ? (
+                <div
+                  className="btn-run"
+                  onClick={() => stopLoadTest(safeActiveModel.id)}
+                >
+                  <FontAwesomeIcon icon={faStop} />
+                </div>
+              ) : (
+                <div
+                  className="btn-run"
+                  onClick={() => startLoadTest(safeActiveModel.id)}
+                >
+                  <FontAwesomeIcon icon={faPlay} />
+                </div>
+              )}
 
               {showConfig && (
                 <div className="modal-overlay">

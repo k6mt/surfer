@@ -26,7 +26,7 @@ const router = createBrowserRouter(
     },
   ],
   {
-    basename: "/k6m-surfer",
+    basename: "/k6mt-surfer",
   }
 );
 

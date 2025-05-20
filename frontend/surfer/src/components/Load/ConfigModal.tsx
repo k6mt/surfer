@@ -1,4 +1,4 @@
-import { LoadField } from "@_types/shared";
+import { LoadField, TabModel } from "@_types/shared";
 import CountFields from "@components/Load/CountFields";
 import { faCircleXmark, faClose } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -24,7 +24,7 @@ const ConfigModal: React.FC<ConfigModalProps> = ({
   id,
   onClose,
 }) => {
-  const { updateTabModel } = useTabModelsContext();
+  const { tabModels, updateTabModel } = useTabModelsContext();
 
   const [fieldState, setFieldState] = useState<LoadField[]>(fields || []);
 
@@ -58,13 +58,17 @@ const ConfigModal: React.FC<ConfigModalProps> = ({
     field: "key" | "value",
     val: string
   ) => {
-    const newList = list.map((it, i) => (i === idx ? { ...it, [field]: val } : it));
+    const newList = list.map((it, i) =>
+      i === idx ? { ...it, [field]: val } : it
+    );
     setter(newList);
   };
 
   //LoadConfig
   const handleConfigChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >,
     index: number
   ) => {
     const updatedFields = [...fieldState];
@@ -93,6 +97,42 @@ const ConfigModal: React.FC<ConfigModalProps> = ({
     onClose();
   };
 
+  useEffect(() => {
+    const current: TabModel | undefined = tabModels.find((t) => t.id === id);
+    if (current?.config) {
+      const {
+        pathVariables = {},
+        params: cfgParams = {},
+        body: cfgBody,
+      } = current.config;
+
+      setPathVar(
+        Object.entries(pathVariables).map(([key, value]) => ({
+          key,
+          value: value as string,
+        }))
+      );
+
+      setParams(
+        Object.entries(cfgParams).map(([key, value]) => ({
+          key,
+          value: value as string,
+        }))
+      );
+
+      setBody(cfgBody ? JSON.stringify(cfgBody, null, 2) : "");
+    }
+  }, [id, tabModels]);
+
+  useEffect(() => {
+    const current = tabModels.find((t) => t.id === id);
+    if (current?.loadConfig) {
+      setFieldState(current.loadConfig);
+    } else if (fields) {
+      setFieldState(fields);
+    }
+  }, [id, tabModels]);
+
   return (
     <div className="deep-surfing-container">
       <div className="deep-surfing-header">
@@ -113,11 +153,23 @@ const ConfigModal: React.FC<ConfigModalProps> = ({
 
         <div className="form-data-container">
           <div className="form-data-count">
-            <CountFields field={fieldState[0]} index={0} handleInputChange={handleConfigChange} />
+            <CountFields
+              field={fieldState[0]}
+              index={0}
+              handleInputChange={handleConfigChange}
+            />
 
-            <CountFields field={fieldState[1]} index={1} handleInputChange={handleConfigChange} />
+            <CountFields
+              field={fieldState[1]}
+              index={1}
+              handleInputChange={handleConfigChange}
+            />
 
-            <CountFields field={fieldState[2]} index={2} handleInputChange={handleConfigChange} />
+            <CountFields
+              field={fieldState[2]}
+              index={2}
+              handleInputChange={handleConfigChange}
+            />
           </div>
         </div>
 
@@ -128,12 +180,28 @@ const ConfigModal: React.FC<ConfigModalProps> = ({
               <input
                 placeholder="name"
                 value={pv.key}
-                onChange={(e) => handleFieldChange(pathVar, setPathVar, i, "key", e.target.value)}
+                onChange={(e) =>
+                  handleFieldChange(
+                    pathVar,
+                    setPathVar,
+                    i,
+                    "key",
+                    e.target.value
+                  )
+                }
               />
               <input
                 placeholder="value"
                 value={pv.value}
-                onChange={(e) => handleFieldChange(pathVar, setPathVar, i, "value", e.target.value)}
+                onChange={(e) =>
+                  handleFieldChange(
+                    pathVar,
+                    setPathVar,
+                    i,
+                    "value",
+                    e.target.value
+                  )
+                }
               />
 
               <div
@@ -144,7 +212,9 @@ const ConfigModal: React.FC<ConfigModalProps> = ({
               </div>
             </div>
           ))}
-          <button onClick={() => handleAddField(pathVar, setPathVar)}>+ Add PathVar</button>
+          <button onClick={() => handleAddField(pathVar, setPathVar)}>
+            + Add PathVar
+          </button>
         </div>
 
         <div className="field-section">
@@ -154,12 +224,22 @@ const ConfigModal: React.FC<ConfigModalProps> = ({
               <input
                 placeholder="name"
                 value={p.key}
-                onChange={(e) => handleFieldChange(params, setParams, i, "key", e.target.value)}
+                onChange={(e) =>
+                  handleFieldChange(params, setParams, i, "key", e.target.value)
+                }
               />
               <input
                 placeholder="value"
                 value={p.value}
-                onChange={(e) => handleFieldChange(params, setParams, i, "value", e.target.value)}
+                onChange={(e) =>
+                  handleFieldChange(
+                    params,
+                    setParams,
+                    i,
+                    "value",
+                    e.target.value
+                  )
+                }
               />
 
               <div
@@ -170,18 +250,21 @@ const ConfigModal: React.FC<ConfigModalProps> = ({
               </div>
             </div>
           ))}
-          <button onClick={() => handleAddField(params, setParams)}>+ Add Param</button>
-          {baseMethod.toLowerCase() !== "get" && baseMethod.toLowerCase() !== "delete" && (
-            <div className="field-section">
-              <h4>Request Body (JSON)</h4>
-              <textarea
-                rows={6}
-                value={body}
-                onChange={(e) => setBody(e.target.value)}
-                placeholder='{"name":"john","age":25}'
-              />
-            </div>
-          )}
+          <button onClick={() => handleAddField(params, setParams)}>
+            + Add Param
+          </button>
+          {baseMethod.toLowerCase() !== "get" &&
+            baseMethod.toLowerCase() !== "delete" && (
+              <div className="field-section">
+                <h4>Request Body (JSON)</h4>
+                <textarea
+                  rows={6}
+                  value={body}
+                  onChange={(e) => setBody(e.target.value)}
+                  placeholder='{"name":"john","age":25}'
+                />
+              </div>
+            )}
         </div>
       </div>
 

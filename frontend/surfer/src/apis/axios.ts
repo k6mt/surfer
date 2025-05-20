@@ -7,7 +7,7 @@ import axios, {
 const isDev = import.meta.env.MODE === "development";
 
 export const API = axios.create({
-  timeout: 10000,
+  timeout: 60000,
   headers: {
     "Content-Type": "application/json",
   },

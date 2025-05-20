@@ -93,7 +93,7 @@ export function useTrace() {
 
     const config: AxiosRequestConfig = {
       headers,
-      timeout: 300000000,
+      timeout: 0,
     };
 
     //Analyze Method
