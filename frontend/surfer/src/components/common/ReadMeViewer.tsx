@@ -10,6 +10,7 @@ const ReadMeViewer = ({ filePath }: { filePath: string }) => {
       .then((text) => marked.parse(text))
       .then((html) => setMarkdown(html));
   }, [filePath]);
+
   return (
     <div
       dangerouslySetInnerHTML={{ __html: markdown }}
