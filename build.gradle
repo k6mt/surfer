@@ -7,7 +7,7 @@ plugins {
 }
 
 group = 'io.github.k6mt'
-version = '1.0.2'
+version = '1.0.3'
 
 java {
     toolchain {
@@ -31,7 +31,7 @@ mavenPublishing {
     signAllPublications()
     publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
 
-    coordinates("io.github.k6mt", "surfer", "1.0.2")
+    coordinates("io.github.k6mt", "surfer", "1.0.3")
 
     pom {
         name = 'surfer'
