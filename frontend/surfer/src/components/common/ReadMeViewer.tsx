@@ -1,5 +1,5 @@
 import { marked } from "marked";
-import readmeText from "@assets/README-KO.md?raw";
+import readmeText from "@assets/README.md?raw";
 import { useMemo } from "react";
 
 const ReadMeViewer = () => {
