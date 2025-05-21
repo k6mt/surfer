@@ -1,21 +1,12 @@
-import { useEffect, useState } from "react";
 import { marked } from "marked";
+import readmeText from "@assets/README-KO.md?raw";
+import { useMemo } from "react";
 
-const ReadMeViewer = ({ filePath }: { filePath: string }) => {
-  const [markdown, setMarkdown] = useState("");
-
-  useEffect(() => {
-    fetch(filePath)
-      .then((res) => res.text())
-      .then((text) => marked.parse(text))
-      .then((html) => setMarkdown(html));
-  }, [filePath]);
+const ReadMeViewer = () => {
+  const html = useMemo(() => marked.parse(readmeText), [readmeText]);
 
   return (
-    <div
-      dangerouslySetInnerHTML={{ __html: markdown }}
-      className="markdown-body"
-    />
+    <div className="markdown-body" dangerouslySetInnerHTML={{ __html: html }} />
   );
 };
 

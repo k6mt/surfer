@@ -5,7 +5,7 @@ import { visualizer } from "rollup-plugin-visualizer";
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: "/k6mt-surfer",
+  base: "/k6mt-surfer/",
   plugins: [
     tsconfigPaths(),
     react(),
@@ -16,6 +16,8 @@ export default defineConfig({
       brotliSize: true,
     }),
   ],
+  assetsInclude: ["**/*.md"],
+
   server: {
     proxy: {
       "/api": {
