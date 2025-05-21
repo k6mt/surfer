@@ -25,7 +25,7 @@ const MainLayout = () => {
 
       {isHome && (
         <main>
-          <div className="container">
+          <div className="home-container">
             <Outlet />
           </div>
         </main>

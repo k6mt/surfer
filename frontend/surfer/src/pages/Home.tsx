@@ -1,10 +1,13 @@
 import PageTitle from "@components/common/PageTitle";
+import ReadMeViewer from "@components/common/ReadMeViewer";
 
 function Home() {
+  const readme = "/k6mt-surfer/public/README-KO.md";
   return (
-    <div className="home-container">
-      <PageTitle title="Surfer" />
-    </div>
+    <>
+      <PageTitle title="" />
+      <ReadMeViewer filePath={readme} />
+    </>
   );
 }
 
